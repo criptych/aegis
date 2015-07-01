@@ -3,13 +3,14 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 PROJECT(AEGIS CXX)
 
 IF(CMAKE_COMPILER_IS_GNUCXX)
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g -Wall -Werror")
 ENDIF()
 
 #FIND_PACKAGE(sqlite3 REQUIRED QUIET)
 FIND_PACKAGE(Lua51 REQUIRED QUIET)
 
 INCLUDE_DIRECTORIES(
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/
 #    ${SQLITE_INCLUDE_DIRS}
     ${LUA_INCLUDE_DIR}
 )
@@ -19,6 +20,15 @@ LINK_LIBRARIES(
     ${LUA_LIBRARIES}
 )
 
-ADD_EXECUTABLE(aegis 
+#~ ADD_EXECUTABLE(aegis
+    #~ src/aegis.cpp
+#~ )
+
+ADD_EXECUTABLE(aegis-test
+    src/testmain.cpp
+    src/tests.cpp
     src/aegis.cpp
 )
+
+ENABLE_TESTING()
+ADD_TEST(NAME builtin COMMAND aegis-test)
