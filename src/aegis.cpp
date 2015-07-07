@@ -168,14 +168,27 @@ bool aeGeometry::findIntersections(std::vector<aePoint> &intersections, bool abo
         }
 
         bool operator < (const Event &e) const {
-            if (point.x == e.point.x)
-                return point.y < e.point.y;
-            return point.x < e.point.x;
+            return (point.x == e.point.x) ?
+                (point.y < e.point.y) :
+                (point.x < e.point.x);
         }
     };
 
     class SweepLine {
     public:
+        void insert(const Segment *seg) {
+            /// @todo
+        }
+
+        const Segment *above(const Segment *seg) const {
+            /// @todo
+            return nullptr;
+        }
+
+        const Segment *below(const Segment *seg) const {
+            /// @todo
+            return nullptr;
+        }
 
     private:
     };
@@ -200,6 +213,10 @@ bool aeGeometry::findIntersections(std::vector<aePoint> &intersections, bool abo
 
         bool contains(const Event &e) const {
             return std::find(mEvents.begin(), mEvents.end(), e) != mEvents.end();
+        }
+
+        bool empty() const {
+            return mEvents.empty();
         }
 
     private:
@@ -256,27 +273,36 @@ bool aeGeometry::findIntersections(std::vector<aePoint> &intersections, bool abo
 
             case Event::LeftEnd: {
                 Segment *seg = e.seg1;
-                sweepLine.push_back(seg);
+                sweepLine.insert(seg);
                 aePoint p;
-                if (seg->intersects(sweepLine.above(seg), p)) {
+
+                const Segment *above = sweepLine.above(seg);
+                if (above && seg->intersects(*sweepLine.above(seg), p)) {
                     eventQueue.push(Event(Event::Intersection, p));
                 }
-                if (seg->intersects(sweepLine.below(seg), p)) {
+
+                const Segment *below = sweepLine.below(seg);
+                if (below && seg->intersects(*sweepLine.below(seg), p)) {
                     eventQueue.push(Event(Event::Intersection, p));
                 }
+
                 break;
             }
 
             case Event::RightEnd: {
                 Segment *seg = e.seg1;
-                sweepLine.push_back(seg);
+                sweepLine.insert(seg);
                 aePoint p;
-                if (sweepLine.above(seg)->intersects(sweepLine.below(seg), p)) {
+
+                const Segment *above = sweepLine.above(seg);
+                const Segment *below = sweepLine.below(seg);
+                if (above && below && sweepLine.above(seg)->intersects(*sweepLine.below(seg), p)) {
                     Event e(Event::Intersection, p);
                     if (!eventQueue.contains(e)) {
                         eventQueue.push(e);
                     }
                 }
+
                 break;
             }
 
