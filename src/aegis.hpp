@@ -13,6 +13,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 static const double aeEpsilon = std::numeric_limits<double>::epsilon();
+static const double aePi = 3.14159265358979323846;
+
+////////////////////////////////////////////////////////////////////////////////
 
 struct aePoint {
     double x;
@@ -70,6 +73,7 @@ double dot(const aePoint &a, const aePoint &b);
 double det(const aePoint &a, const aePoint &b);
 aePoint cross(const aePoint &a, const aePoint &b);
 
+////////////////////////////////////////////////////////////////////////////////
 
 class aeGeometry {
 public:
@@ -100,6 +104,15 @@ private:
     std::vector<aePoint> mPoints;
 
     bool findIntersections(std::vector<aePoint> &intersections, bool abortOnFirst) const;
+};
+
+////////////////////////////////////////////////////////////////////////////////
+
+class aeProjection {
+
+protected:
+    static aePoint toWebMercator(const aePoint &p);
+    static aePoint fromWebMercator(const aePoint &p);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
