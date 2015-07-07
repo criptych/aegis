@@ -365,11 +365,10 @@ double aeGeometry::calculateArea() const {
                 j = 0;
             }
 
-            area += mPoints[i].x * mPoints[j].y;
-            area -= mPoints[i].y * mPoints[j].x;
+            area += det(mPoints[i], mPoints[j]);
         }
 
-        area = 0.5 * std::abs(area);
+        area *= 0.5;
     }
 
     return area;
