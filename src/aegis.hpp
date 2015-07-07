@@ -7,6 +7,13 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
+#include <vector>
+#include <limits>
+
+////////////////////////////////////////////////////////////////////////////////
+
+static const double aeEpsilon = std::numeric_limits<double>::epsilon();
+
 struct aePoint {
     double x;
     double y;
@@ -45,30 +52,54 @@ struct aePoint {
     {
     }
 
-    double dot(const aePoint &p) const;
+    bool equals(const aePoint &rhs, const double epsilon = aeEpsilon) const;
 };
 
-enum aeGeoType {
-    AE_POINT,
-    AE_MULTIPOINT,
-    AE_LINE,
-    AE_POLYGON,
-};
+bool operator == (const aePoint &a, const aePoint &b);
+bool operator != (const aePoint &a, const aePoint &b);
+
+aePoint operator + (const aePoint &a);
+aePoint operator - (const aePoint &a);
+aePoint operator + (const aePoint &a, const aePoint &b);
+aePoint operator - (const aePoint &a, const aePoint &b);
+aePoint operator * (const aePoint &a, double b);
+aePoint operator * (double a, const aePoint &b);
+aePoint operator / (const aePoint &a, double b);
+
+double dot(const aePoint &a, const aePoint &b);
+double det(const aePoint &a, const aePoint &b);
+aePoint cross(const aePoint &a, const aePoint &b);
+
 
 class aeGeometry {
 public:
-    aeGeometry(aeGeoType type): mType(type) {}
+    enum Type {
+        Point,
+        Multipoint,
+        Polyline,
+        Polygon,
+    };
+
+public:
+    aeGeometry(Type type): mType(type) {}
 
     std::vector<aePoint> &points() { return mPoints; }
     const std::vector<aePoint> &points() const { return mPoints; }
 
+    Type getType() const { return mType; }
+
     double calculateArea() const;
 
-    bool findIntersections(std::vector<aePoint> &intersections, bool abortOnFirst) const;
+    bool isSimple() const;
+
+    bool findIntersections(std::vector<aePoint> &intersections) const;
+    bool findIntersections() const;
 
 private:
-    aeGeoType mType;
+    Type mType;
     std::vector<aePoint> mPoints;
+
+    bool findIntersections(std::vector<aePoint> &intersections, bool abortOnFirst) const;
 };
 
 ////////////////////////////////////////////////////////////////////////////////

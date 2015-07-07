@@ -12,6 +12,9 @@ extern "C" {
 #include <iostream>
 #include <cmath>
 #include <cassert>
+#include <queue>
+#include <list>
+#include <algorithm>
 
 #include "aegis.hpp"
 
@@ -19,10 +22,88 @@ extern "C" {
 
 int orient(const aePoint &p, const aePoint &q, const aePoint &r) {
     double f = (r.x - q.x) * (q.y - p.y) - (r.y - q.y) * (q.x - p.x);
-    return (f < 0.0) ? -1 : (f > 0.0) : 1 : 0;
+    return (f < 0.0) ? -1 : (f > 0.0) ? 1 : 0;
 }
 
+bool aePoint::equals(const aePoint &p, double e) const {
+    return std::abs(p.x - x) <= e &&
+           std::abs(p.y - y) <= e &&
+           std::abs(p.z - z) <= e &&
+           std::abs(p.m - m) <= e;
+}
 
+bool operator == (const aePoint &a, const aePoint &b) {
+    //~ return a.x == b.x && a.y == b.y && a.z == b.z && a.m == b.m;
+    return a.equals(b);
+}
+
+bool operator != (const aePoint &a, const aePoint &b) {
+    //~ return a.x != b.x || a.y != b.y || a.z != b.z || a.m != b.m;
+    return !a.equals(b);
+}
+
+aePoint operator + (const aePoint &a) {
+    return a;
+}
+
+aePoint operator - (const aePoint &a) {
+    return aePoint(-a.x, -a.y, -a.z, -a.m);
+}
+
+aePoint operator + (const aePoint &a, const aePoint &b) {
+    return aePoint(a.x + b.x, a.y + b.y, a.z + b.z, a.m + b.m);
+}
+
+aePoint operator - (const aePoint &a, const aePoint &b) {
+    return aePoint(a.x - b.x, a.y - b.y, a.z - b.z, a.m - b.m);
+}
+
+aePoint operator * (const aePoint &a, double b) {
+    return aePoint(a.x * b, a.y * b, a.z * b, a.m * b);
+}
+
+aePoint operator * (double a, const aePoint &b) {
+    return aePoint(a * b.x, a * b.y, a * b.z, a * b.m);
+}
+
+aePoint operator / (const aePoint &a, double b) {
+    return aePoint(a.x / b, a.y / b, a.z / b, a.m / b);
+}
+
+double dot(const aePoint &a, const aePoint &b)
+{
+    return a.x * b.x + a.y * b.y + a.z * b.z;
+}
+
+double det(const aePoint &a, const aePoint &b)
+{
+    //~ return cross(a, b).z;
+    return a.x * b.y - a.y * b.x;
+}
+
+aePoint cross(const aePoint &a, const aePoint &b)
+{
+    return aePoint(
+        a.y * b.z - a.z * b.y,
+        a.z * b.x - a.x * b.z,
+        a.x * b.y - a.y * b.x
+    );
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+bool aeGeometry::isSimple() const {
+    return !findIntersections();
+}
+
+bool aeGeometry::findIntersections() const {
+    std::vector<aePoint> intersections;
+    return findIntersections(intersections, true);
+}
+
+bool aeGeometry::findIntersections(std::vector<aePoint> &intersections) const {
+    return findIntersections(intersections, false);
+}
 
 bool aeGeometry::findIntersections(std::vector<aePoint> &intersections, bool abortOnFirst) const {
     struct Segment {
@@ -33,13 +114,96 @@ bool aeGeometry::findIntersections(std::vector<aePoint> &intersections, bool abo
         Segment(const aePoint &a, const aePoint &b): a(a), b(b) {}
 
         bool intersects(const Segment &s) const {
+            aePoint p;
+            return intersects(s, p);
+        }
+        bool intersects(const Segment &s, aePoint &p) const {
+            aePoint l1 = {   b.x -   a.x,   b.y -   a.y };
+            aePoint l2 = { s.b.x - s.a.x, s.b.y - s.a.y };
+
+            //#~ double d = l1.x * l2.y - l1.y * l2.x;
+            double d = det(l1, l2);
+
+            if (d != 0.0) {
+                //#~ double t = (l2.x * (a.y - s.a.y) - l2.y * (a.x - s.a.x)) / d;
+                double t = det(l2, a - s.a) / d;
+
+                if (t >= 0.0 && t <= 1.0) {
+                    p = a + t * l1;
+                    return true;
+                }
+            }
+
             return false;
         }
     };
 
     struct Event {
-        aePoint p;
-        Segment *s;
+        enum Type { Invalid, LeftEnd, RightEnd, Intersection } type;
+        aePoint point;
+        Segment *seg1;
+        Segment *seg2;
+
+        Event()
+        {
+        }
+
+        Event(Type type):
+            type(type), point(), seg1(), seg2()
+        {
+        }
+
+        Event(Type type, const aePoint &point):
+            type(type), point(point), seg1(), seg2()
+        {
+        }
+
+        Event(Type type, Segment *segment):
+            type(type), point(), seg1(segment), seg2()
+        {
+        }
+
+        bool operator == (const Event &e) const {
+            return point == e.point;
+        }
+
+        bool operator < (const Event &e) const {
+            if (point.x == e.point.x)
+                return point.y < e.point.y;
+            return point.x < e.point.x;
+        }
+    };
+
+    class SweepLine {
+    public:
+
+    private:
+    };
+
+    class EventQueue {
+    public:
+        void push(const Event &e) {
+            mEvents.push_back(e);
+            std::push_heap(mEvents.begin(), mEvents.end());
+        }
+
+        Event peek() {
+            return mEvents.front();
+        }
+
+        Event pop() {
+            Event e = mEvents.front();
+            std::pop_heap(mEvents.begin(), mEvents.end());
+            mEvents.pop_back();
+            return e;
+        }
+
+        bool contains(const Event &e) const {
+            return std::find(mEvents.begin(), mEvents.end(), e) != mEvents.end();
+        }
+
+    private:
+        std::vector<Event> mEvents;
     };
 
 /*
@@ -47,9 +211,83 @@ bool aeGeometry::findIntersections(std::vector<aePoint> &intersections, bool abo
     Sort EQ by increasing x and y;
     Initialize sweep line SL to be empty;
     Initialize output intersection list IL to be empty;
+*/
 
-    while (EQ is nonempty) {
-        Let E = the next event from EQ;
+    intersections.clear();
+
+    SweepLine sweepLine;
+    EventQueue eventQueue;
+
+    unsigned int n = mPoints.size();
+
+    std::vector<Segment> segments;
+    segments.reserve(n);
+
+    for (unsigned int i = 0, j = 1; i < n; i++, j++)
+    {
+        if (j >= n) {
+            j = 0;
+        }
+
+        segments.push_back(Segment(mPoints[i], mPoints[j]));
+
+        Event l(Event::LeftEnd, &segments.back());
+        Event r(Event::RightEnd, &segments.back());
+
+        if (mPoints[j].x < mPoints[i].x) {
+            l.point = mPoints[j];
+            r.point = mPoints[i];
+        } else {
+            l.point = mPoints[i];
+            r.point = mPoints[j];
+        }
+
+        eventQueue.push(l);
+        eventQueue.push(r);
+    }
+
+    while (!eventQueue.empty()) {
+        Event e = eventQueue.pop();
+
+        switch (e.type) {
+            case Event::Invalid: {
+                throw "Invalid Event type";
+            }
+
+            case Event::LeftEnd: {
+                Segment *seg = e.seg1;
+                sweepLine.push_back(seg);
+                aePoint p;
+                if (seg->intersects(sweepLine.above(seg), p)) {
+                    eventQueue.push(Event(Event::Intersection, p));
+                }
+                if (seg->intersects(sweepLine.below(seg), p)) {
+                    eventQueue.push(Event(Event::Intersection, p));
+                }
+                break;
+            }
+
+            case Event::RightEnd: {
+                Segment *seg = e.seg1;
+                sweepLine.push_back(seg);
+                aePoint p;
+                if (sweepLine.above(seg)->intersects(sweepLine.below(seg), p)) {
+                    Event e(Event::Intersection, p);
+                    if (!eventQueue.contains(e)) {
+                        eventQueue.push(e);
+                    }
+                }
+                break;
+            }
+
+            case Event::Intersection: {
+                intersections.push_back(e.point);
+                //! @todo
+                break;
+            }
+        }
+
+/*
         if (E is a left endpoint) {
             Let segE = E's segment;
             Add segE to SL;
@@ -82,36 +320,33 @@ bool aeGeometry::findIntersections(std::vector<aePoint> &intersections, bool abo
                 if (I is not in EQ already)
                     Insert I into EQ;
         }
-        remove E from EQ;
-    }
-    return IL;
 */
+    }
 
+    return intersections.size() > 0;
+
+    throw "Not implemented";
     return false;
 }
 
 double aeGeometry::calculateArea() const {
-    if (mType != AE_POLYGON) {
-        return 0.0;
-    }
-
-    unsigned int i, j, n = mPoints.size();
-
-    if (n < 3) {
-        return 0.0;
-    }
-
+    unsigned int n = mPoints.size();
     double area = 0.0;
 
-    for (i = 0, j = 1; i < n; i++, j++) {
-        if (j >= n) {
-            j = 0;
+    if ((mType == Polygon) && (n >= 3)) {
+        for (unsigned int i = 0, j = 1; i < n; i++, j++) {
+            if (j >= n) {
+                j = 0;
+            }
+
+            area += mPoints[i].x * mPoints[j].y;
+            area -= mPoints[i].y * mPoints[j].x;
         }
-        area += mPoints[i].x * mPoints[j].y;
-        area -= mPoints[i].y * mPoints[j].x;
+
+        area = 0.5 * std::abs(area);
     }
 
-    return 0.5 * std::abs(area);
+    return area;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
