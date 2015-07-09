@@ -116,6 +116,32 @@ SCENARIO("check if polygon is simple", "[simple]") {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+
+SCENARIO("calculate statistics", "[stats]") {
+    double data[] = { 2, 4, 4, 4, 5, 5, 7, 9 };
+
+    GIVEN("a list of sample data: [2, 4, 4, 4, 5, 5, 7, 9]") {
+        aeStats st(std::begin(data), std::end(data));
+
+        THEN("the mean is 5.0") {
+            REQUIRE(st.mean() == Approx(5.0).epsilon(aeEpsilon));
+        }
+        THEN("the population variance is 4.0") {
+            REQUIRE(st.variance(true) == Approx(4.0).epsilon(aeEpsilon));
+        }
+        THEN("the population standard deviation is 2.0") {
+            REQUIRE(st.stdev(true) == Approx(2.0).epsilon(aeEpsilon));
+        }
+        THEN("the skewness is 0.61386567") {
+            REQUIRE(st.skewness() == Approx(0.61386567).epsilon(aeEpsilon));
+        }
+        THEN("the kurtosis is 2.4336") {
+            REQUIRE(st.kurtosis() == Approx(2.4336).epsilon(aeEpsilon));
+        }
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
 //  EOF
 ////////////////////////////////////////////////////////////////////////////////
 

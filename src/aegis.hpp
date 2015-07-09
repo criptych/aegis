@@ -234,10 +234,78 @@ protected:
 
 ////////////////////////////////////////////////////////////////////////////////
 
+template <typename T>
+class aeStatsT {
+private:
+    static constexpr T mT2 = T(2), mT3 = T(3), mT4 = T(4), mT6 = T(6);
+
+public:
+    aeStatsT() {
+        clear();
+    }
+
+    template <typename I>
+    aeStatsT(const I &i, const I &j) {
+        update(i, j);
+    }
+
+    void clear() {
+        mN = 0;
+        mM[3] = mM[2] = mM[1] = mM[0] = T();
+    }
+
+    void update(const T &x) {
+        T n1(mN++), n(mN);
+        T d = x - mM[0];
+        T dn = d / n;
+        T dn2 = dn * dn;
+        T a = d * dn * n1;
+        mM[3] += a*dn2*((n-mT3)*n+mT3) + mT6*dn2*mM[1] - mT4*dn*mM[2];
+        mM[2] += a*dn*(n-mT2) - mT3*dn*mM[1];
+        mM[1] += a;
+        mM[0] += dn;
+    }
+
+    template <typename I>
+    void update(const I &i, const I &j) {
+        for (I k(i); k != j; k++) {
+            update(*k);
+        }
+    }
+
+    T mean() const {
+        return mM[0];
+    }
+
+    T variance(bool finite = false) const {
+        return mM[1] / T(finite ? mN : (mN - 1));
+    }
+
+    T stdev(bool finite = false) const {
+        return std::sqrt(variance(finite));
+    }
+
+    T skewness() const {
+        /// @todo
+        return T();
+    }
+
+    T kurtosis() const {
+        return (T(mN) * mM[3]) / (mM[1] * mM[1]) - mT3;
+    }
+
+private:
+    unsigned long mN;
+    T mM[4];
+};
+
+////////////////////////////////////////////////////////////////////////////////
+
 typedef aePointT<double> aePoint;
 typedef aeExtentT<double> aeExtent;
 typedef aeGeometryT<double> aeGeometry;
 typedef aeProjectionT<double> aeProjection;
+typedef aeStatsT<double> aeStats;
 
 ////////////////////////////////////////////////////////////////////////////////
 
