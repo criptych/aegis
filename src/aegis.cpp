@@ -20,108 +20,27 @@ extern "C" {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-int orient(const aePoint &p, const aePoint &q, const aePoint &r) {
-    double f = (r.x - q.x) * (q.y - p.y) - (r.y - q.y) * (q.x - p.x);
-    return (f < 0.0) ? -1 : (f > 0.0) ? 1 : 0;
-}
-
-bool aePoint::equals(const aePoint &p, double e) const {
-    return std::abs(p.x - x) <= e &&
-           std::abs(p.y - y) <= e &&
-           std::abs(p.z - z) <= e &&
-           std::abs(p.m - m) <= e;
-}
-
-bool operator == (const aePoint &a, const aePoint &b) {
-    //~ return a.x == b.x && a.y == b.y && a.z == b.z && a.m == b.m;
-    return a.equals(b);
-}
-
-bool operator != (const aePoint &a, const aePoint &b) {
-    //~ return a.x != b.x || a.y != b.y || a.z != b.z || a.m != b.m;
-    return !a.equals(b);
-}
-
-aePoint operator + (const aePoint &a) {
-    return a;
-}
-
-aePoint operator - (const aePoint &a) {
-    return aePoint(-a.x, -a.y, -a.z, -a.m);
-}
-
-aePoint operator + (const aePoint &a, const aePoint &b) {
-    return aePoint(a.x + b.x, a.y + b.y, a.z + b.z, a.m + b.m);
-}
-
-aePoint operator - (const aePoint &a, const aePoint &b) {
-    return aePoint(a.x - b.x, a.y - b.y, a.z - b.z, a.m - b.m);
-}
-
-aePoint operator * (const aePoint &a, double b) {
-    return aePoint(a.x * b, a.y * b, a.z * b, a.m * b);
-}
-
-aePoint operator * (double a, const aePoint &b) {
-    return aePoint(a * b.x, a * b.y, a * b.z, a * b.m);
-}
-
-aePoint operator / (const aePoint &a, double b) {
-    return aePoint(a.x / b, a.y / b, a.z / b, a.m / b);
-}
-
-double dot(const aePoint &a, const aePoint &b)
-{
-    return a.x * b.x + a.y * b.y + a.z * b.z;
-}
-
-double det(const aePoint &a, const aePoint &b)
-{
-    return a.x * b.y - a.y * b.x; // cross(a, b).z
-}
-
-aePoint cross(const aePoint &a, const aePoint &b)
-{
-    return aePoint(
-        a.y * b.z - a.z * b.y,
-        a.z * b.x - a.x * b.z,
-        a.x * b.y - a.y * b.x
-    );
-}
-
-////////////////////////////////////////////////////////////////////////////////
-
-bool aeGeometry::findIntersections() const {
-    std::vector<aePoint> intersections;
-    return findIntersections(intersections, true);
-}
-
-bool aeGeometry::findIntersections(std::vector<aePoint> &intersections) const {
-    return findIntersections(intersections, false);
-}
-
-bool aeGeometry::findIntersections(std::vector<aePoint> &intersections, bool abortOnFirst) const {
+template <typename T>
+bool aeGeometryT<T>::findIntersections(std::vector< aePointT<T> > &intersections, bool abortOnFirst) const {
     struct Segment {
-        aePoint a;
-        aePoint b;
+        aePointT<T> a;
+        aePointT<T> b;
 
         Segment(): a(), b() {}
-        Segment(const aePoint &a, const aePoint &b): a(a), b(b) {}
+        Segment(const aePointT<T> &a, const aePointT<T> &b): a(a), b(b) {}
 
         bool intersects(const Segment &s) const {
-            aePoint p;
+            aePointT<T> p;
             return intersects(s, p);
         }
-        bool intersects(const Segment &s, aePoint &p) const {
-            aePoint l1 = {   b.x -   a.x,   b.y -   a.y };
-            aePoint l2 = { s.b.x - s.a.x, s.b.y - s.a.y };
+        bool intersects(const Segment &s, aePointT<T> &p) const {
+            aePointT<T> l1 = {   b.x -   a.x,   b.y -   a.y };
+            aePointT<T> l2 = { s.b.x - s.a.x, s.b.y - s.a.y };
 
-            //#~ double d = l1.x * l2.y - l1.y * l2.x;
-            double d = det(l1, l2);
+            T d = det(l1, l2);
 
             if (d != 0.0) {
-                //#~ double t = (l2.x * (a.y - s.a.y) - l2.y * (a.x - s.a.x)) / d;
-                double t = det(l2, a - s.a) / d;
+                T t = det(l2, a - s.a) / d;
 
                 if (t >= 0.0 && t <= 1.0) {
                     p = a + t * l1;
@@ -135,7 +54,7 @@ bool aeGeometry::findIntersections(std::vector<aePoint> &intersections, bool abo
 
     struct Event {
         enum Type { Invalid, LeftEnd, RightEnd, Intersection } type;
-        aePoint point;
+        aePointT<T> point;
         Segment *seg1;
         Segment *seg2;
 
@@ -148,7 +67,7 @@ bool aeGeometry::findIntersections(std::vector<aePoint> &intersections, bool abo
         {
         }
 
-        Event(Type type, const aePoint &point):
+        Event(Type type, const aePointT<T> &point):
             type(type), point(point), seg1(), seg2()
         {
         }
@@ -269,7 +188,7 @@ bool aeGeometry::findIntersections(std::vector<aePoint> &intersections, bool abo
             case Event::LeftEnd: {
                 Segment *seg = e.seg1;
                 sweepLine.insert(seg);
-                aePoint p;
+                aePointT<T> p;
 
                 const Segment *above = sweepLine.above(seg);
                 if (above && seg->intersects(*sweepLine.above(seg), p)) {
@@ -287,7 +206,7 @@ bool aeGeometry::findIntersections(std::vector<aePoint> &intersections, bool abo
             case Event::RightEnd: {
                 Segment *seg = e.seg1;
                 sweepLine.insert(seg);
-                aePoint p;
+                aePointT<T> p;
 
                 const Segment *above = sweepLine.above(seg);
                 const Segment *below = sweepLine.below(seg);
@@ -350,9 +269,10 @@ bool aeGeometry::findIntersections(std::vector<aePoint> &intersections, bool abo
     return intersections.size() > 0;
 }
 
-double aeGeometry::calculateArea() const {
+template <typename T>
+T aeGeometryT<T>::calculateArea() const {
     unsigned int n = mPoints.size();
-    double area = 0.0;
+    T area = 0.0;
 
     if ((mType == Polygon) && (n >= 3)) {
         for (unsigned int i = 0, j = 1; i < n; i++, j++) {
@@ -369,9 +289,13 @@ double aeGeometry::calculateArea() const {
     return area;
 }
 
+template bool aeGeometry::findIntersections() const;
+template double aeGeometry::calculateArea() const;
+
 ////////////////////////////////////////////////////////////////////////////////
 
-aePoint aeProjection::toWebMercator(const aePoint &p)
+template <typename T>
+aePointT<T> aeProjectionT<T>::toWebMercator(const aePointT<T> &p)
 {
     static const double degsToRads = aePi / 180.0;
     static const double scaleFactor = 128.0 / aePi;
@@ -379,16 +303,20 @@ aePoint aeProjection::toWebMercator(const aePoint &p)
      * x = (128/pi)*(2**zoom)*(lon+pi);
      * y = (128/pi)*(2**zoom)*(pi-ln(tan(pi/4+lat/2)));
      */
-    aePoint q(p);
+    aePointT<T> q(p);
     q.x = scaleFactor * (aePi + degsToRads * p.x);
     q.y = scaleFactor * (aePi - std::log(std::tan(aePi / 4.0 + degsToRads * p.y / 2.0)));
     return q;
 }
 
-aePoint aeProjection::fromWebMercator(const aePoint &p)
+template <typename T>
+aePointT<T> aeProjectionT<T>::fromWebMercator(const aePointT<T> &p)
 {
     throw aeNotImplementedError();
 }
+
+template aePoint aeProjection::toWebMercator(const aePoint &p);
+template aePoint aeProjection::fromWebMercator(const aePoint &p);
 
 ////////////////////////////////////////////////////////////////////////////////
 //  EOF

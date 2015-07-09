@@ -7,6 +7,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
+#include <cmath>
 #include <exception>
 #include <limits>
 #include <string>
@@ -46,72 +47,126 @@ typedef aeExceptionT<aeExceptionBase> aeNotImplementedError;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-struct aePoint {
-    double x;
-    double y;
-    double z;
-    double m;
+template <typename T>
+struct aePointT {
+    T x, y, z, m;
 
-    aePoint():
-        x(), y(), z(), m()
-    {
+    aePointT(): x(), y(), z(), m() {
     }
 
-    aePoint(
-        double x,
-        double y
-    ):
-        x(x), y(y), z(), m()
-    {
+    aePointT(
+        const T &x,
+        const T &y
+    ): x(x), y(y), z(), m() {
     }
 
-    aePoint(
-        double x,
-        double y,
-        double z
-    ):
-        x(x), y(y), z(z), m()
-    {
+    aePointT(
+        const T &x,
+        const T &y,
+        const T &z
+    ): x(x), y(y), z(z), m() {
     }
 
-    aePoint(
-        double x,
-        double y,
-        double z,
-        double m
-    ):
-        x(x), y(y), z(z), m(m)
-    {
+    aePointT(
+        const T &x,
+        const T &y,
+        const T &z,
+        const T &m
+    ): x(x), y(y), z(z), m(m) {
     }
 
-    bool equals(const aePoint &rhs, const double epsilon = aeEpsilon) const;
-};
-
-bool operator == (const aePoint &a, const aePoint &b);
-bool operator != (const aePoint &a, const aePoint &b);
-
-aePoint operator + (const aePoint &a);
-aePoint operator - (const aePoint &a);
-aePoint operator + (const aePoint &a, const aePoint &b);
-aePoint operator - (const aePoint &a, const aePoint &b);
-aePoint operator * (const aePoint &a, double b);
-aePoint operator * (double a, const aePoint &b);
-aePoint operator / (const aePoint &a, double b);
-
-double dot(const aePoint &a, const aePoint &b);
-double det(const aePoint &a, const aePoint &b);
-aePoint cross(const aePoint &a, const aePoint &b);
-
-////////////////////////////////////////////////////////////////////////////////
-
-struct aeExtent {
-    aePoint min;
-    aePoint max;
+    bool equals(const aePointT<T> &rhs, const T &epsilon = T(aeEpsilon)) const;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
 
-class aeGeometry {
+template <typename T>
+bool aePointT<T>::equals(const aePointT<T> &p, const T &e) const {
+    return std::abs(p.x - x) <= e &&
+           std::abs(p.y - y) <= e &&
+           std::abs(p.z - z) <= e &&
+           std::abs(p.m - m) <= e;
+}
+
+template <typename T>
+bool operator == (const aePointT<T> &a, const aePointT<T> &b) {
+    return a.equals(b);
+}
+
+template <typename T>
+bool operator != (const aePointT<T> &a, const aePointT<T> &b) {
+    return !a.equals(b);
+}
+
+template <typename T>
+aePointT<T> operator + (const aePointT<T> &a) {
+    return a;
+}
+
+template <typename T>
+aePointT<T> operator - (const aePointT<T> &a) {
+    return aePointT<T>(-a.x, -a.y, -a.z, -a.m);
+}
+
+template <typename T>
+aePointT<T> operator + (const aePointT<T> &a, const aePointT<T> &b) {
+    return aePointT<T>(a.x + b.x, a.y + b.y, a.z + b.z, a.m + b.m);
+}
+
+template <typename T>
+aePointT<T> operator - (const aePointT<T> &a, const aePointT<T> &b) {
+    return aePointT<T>(a.x - b.x, a.y - b.y, a.z - b.z, a.m - b.m);
+}
+
+template <typename T>
+aePointT<T> operator * (const aePointT<T> &a, const T &b) {
+    return aePointT<T>(a.x * b, a.y * b, a.z * b, a.m * b);
+}
+
+template <typename T>
+aePointT<T> operator * (const T &a, const aePointT<T> &b) {
+    return aePointT<T>(a * b.x, a * b.y, a * b.z, a * b.m);
+}
+
+template <typename T>
+aePointT<T> operator / (const aePointT<T> &a, const T &b) {
+    return aePointT<T>(a.x / b, a.y / b, a.z / b, a.m / b);
+}
+
+template <typename T>
+T dot(const aePointT<T> &a, const aePointT<T> &b)
+{
+    return a.x * b.x + a.y * b.y + a.z * b.z;
+}
+
+template <typename T>
+T det(const aePointT<T> &a, const aePointT<T> &b)
+{
+    return a.x * b.y - a.y * b.x; // cross(a, b).z
+}
+
+template <typename T>
+aePointT<T> cross(const aePointT<T> &a, const aePointT<T> &b)
+{
+    return aePointT<T>(
+        a.y * b.z - a.z * b.y,
+        a.z * b.x - a.x * b.z,
+        a.x * b.y - a.y * b.x
+    );
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+template <typename T>
+struct aeExtentT {
+    aePointT<T> min;
+    aePointT<T> max;
+};
+
+////////////////////////////////////////////////////////////////////////////////
+
+template <typename T>
+class aeGeometryT {
 public:
     enum Type {
         Geometry,
@@ -138,35 +193,51 @@ public:
     };
 
 public:
-    aeGeometry(Type type): mType(type) {}
+    aeGeometryT(Type type): mType(type) {}
 
-    std::vector<aePoint> &points() { return mPoints; }
-    const std::vector<aePoint> &points() const { return mPoints; }
+    std::vector< aePointT<T> > &points() { return mPoints; }
+    const std::vector< aePointT<T> > &points() const { return mPoints; }
 
     Type getType() const { return mType; }
     bool hasZ() const { return mType & HasZ; }
     bool hasM() const { return mType & HasM; }
 
-    double calculateArea() const;
+    T calculateArea() const;
 
-    bool findIntersections(std::vector<aePoint> &intersections) const;
-    bool findIntersections() const;
+private:
+    bool findIntersections(std::vector< aePointT<T> > &intersections, bool abortOnFirst) const;
+
+public:
+    bool findIntersections() const {
+        std::vector< aePointT<T> > intersections;
+        return findIntersections(intersections, true);
+    }
+
+    bool findIntersections(std::vector< aePointT<T> > &intersections) const {
+        return findIntersections(intersections, false);
+    }
 
 private:
     Type mType;
-    std::vector<aePoint> mPoints;
-
-    bool findIntersections(std::vector<aePoint> &intersections, bool abortOnFirst) const;
+    std::vector< aePointT<T> > mPoints;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
 
-class aeProjection {
+template <typename T>
+class aeProjectionT {
 
 protected:
-    static aePoint toWebMercator(const aePoint &p);
-    static aePoint fromWebMercator(const aePoint &p);
+    static aePointT<T> toWebMercator(const aePointT<T> &p);
+    static aePointT<T> fromWebMercator(const aePointT<T> &p);
 };
+
+////////////////////////////////////////////////////////////////////////////////
+
+typedef aePointT<double> aePoint;
+typedef aeExtentT<double> aeExtent;
+typedef aeGeometryT<double> aeGeometry;
+typedef aeProjectionT<double> aeProjection;
 
 ////////////////////////////////////////////////////////////////////////////////
 
