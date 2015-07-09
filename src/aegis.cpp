@@ -263,7 +263,7 @@ bool aeGeometry::findIntersections(std::vector<aePoint> &intersections, bool abo
 
         switch (e.type) {
             case Event::Invalid: {
-                throw "Invalid Event type";
+                throw aeInternalError("aeGeometry::findIntersections: invalid Event type");
             }
 
             case Event::LeftEnd: {
@@ -344,7 +344,7 @@ bool aeGeometry::findIntersections(std::vector<aePoint> &intersections, bool abo
 */
     }
 
-    throw "Not implemented";
+    throw aeNotImplementedError();
     return false;
 
     return intersections.size() > 0;
@@ -387,7 +387,7 @@ aePoint aeProjection::toWebMercator(const aePoint &p)
 
 aePoint aeProjection::fromWebMercator(const aePoint &p)
 {
-    return p;
+    throw aeNotImplementedError();
 }
 
 ////////////////////////////////////////////////////////////////////////////////

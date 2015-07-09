@@ -7,13 +7,42 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
+#include <exception>
 #include <limits>
+#include <string>
 #include <vector>
 
 ////////////////////////////////////////////////////////////////////////////////
 
 static const double aeEpsilon = std::numeric_limits<double>::epsilon();
 static const double aePi = 3.14159265358979323846;
+
+////////////////////////////////////////////////////////////////////////////////
+
+class aeExceptionBase : std::exception {
+public:
+    aeExceptionBase(): mMessage() {
+    }
+    aeExceptionBase(
+        const std::string &message
+    ): mMessage(message) {
+    }
+
+    const char *what() const noexcept {
+        return mMessage.c_str();
+    }
+
+private:
+    std::string mMessage;
+};
+
+template <typename T>
+class aeExceptionT : T {
+    using T::T;
+};
+
+typedef aeExceptionT<aeExceptionBase> aeInternalError;
+typedef aeExceptionT<aeExceptionBase> aeNotImplementedError;
 
 ////////////////////////////////////////////////////////////////////////////////
 
