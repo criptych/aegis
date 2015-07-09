@@ -84,8 +84,8 @@ SCENARIO("check if polygon is simple", "[simple]") {
         g.points().push_back({1.0, 1.0});
         REQUIRE(g.points().size() == 3);
 
-        THEN("isSimple() is true") {
-            REQUIRE(g.isSimple());
+        THEN("findIntersections() is false") {
+            REQUIRE(!g.findIntersections());
         }
     }
 
@@ -96,8 +96,8 @@ SCENARIO("check if polygon is simple", "[simple]") {
         g.points().push_back({0.0, 1.0});
         REQUIRE(g.points().size() == 4);
 
-        THEN("isSimple() is true") {
-            REQUIRE(g.isSimple());
+        THEN("findIntersections() is false") {
+            REQUIRE(!g.findIntersections());
         }
     }
 
@@ -108,8 +108,8 @@ SCENARIO("check if polygon is simple", "[simple]") {
         g.points().push_back({1.0, 1.0});
         REQUIRE(g.points().size() == 4);
 
-        THEN("isSimple() is false") {
-            REQUIRE(!g.isSimple());
+        THEN("findIntersections() is true") {
+            REQUIRE(g.findIntersections());
         }
     }
 

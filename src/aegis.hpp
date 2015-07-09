@@ -113,8 +113,6 @@ public:
 
     double calculateArea() const;
 
-    bool isSimple() const;
-
     bool findIntersections(std::vector<aePoint> &intersections) const;
     bool findIntersections() const;
 

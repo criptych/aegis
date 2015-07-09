@@ -92,10 +92,6 @@ aePoint cross(const aePoint &a, const aePoint &b)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-bool aeGeometry::isSimple() const {
-    return !findIntersections();
-}
-
 bool aeGeometry::findIntersections() const {
     std::vector<aePoint> intersections;
     return findIntersections(intersections, true);
