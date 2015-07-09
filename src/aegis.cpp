@@ -8,13 +8,13 @@ extern "C" {
 #include <lualib.h>
 }; // extern "C"
 
-#include <vector>
-#include <iostream>
-#include <cmath>
-#include <cassert>
-#include <queue>
-#include <list>
 #include <algorithm>
+#include <cassert>
+#include <cmath>
+#include <iostream>
+#include <list>
+#include <queue>
+#include <vector>
 
 #include "aegis.hpp"
 
@@ -77,8 +77,7 @@ double dot(const aePoint &a, const aePoint &b)
 
 double det(const aePoint &a, const aePoint &b)
 {
-    //~ return cross(a, b).z;
-    return a.x * b.y - a.y * b.x;
+    return a.x * b.y - a.y * b.x; // cross(a, b).z
 }
 
 aePoint cross(const aePoint &a, const aePoint &b)
@@ -345,10 +344,10 @@ bool aeGeometry::findIntersections(std::vector<aePoint> &intersections, bool abo
 */
     }
 
-    return intersections.size() > 0;
-
     throw "Not implemented";
     return false;
+
+    return intersections.size() > 0;
 }
 
 double aeGeometry::calculateArea() const {
