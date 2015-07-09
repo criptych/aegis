@@ -78,10 +78,27 @@ aePoint cross(const aePoint &a, const aePoint &b);
 class aeGeometry {
 public:
     enum Type {
+        Geometry,
         Point,
-        Multipoint,
-        Polyline,
+        LineString,
         Polygon,
+        MultiPoint,
+        MultiLineString,
+        MultiPolygon,
+        GeometryCollection,
+        CircularString,
+        CompoundCurve,
+        CurvePolygon,
+        MultiCurve,
+        MultiSurface,
+        Curve,
+        Surface,
+        PolyhedralSurface,
+        TIN,
+        Triangle,
+
+        HasZ = 0x1000,
+        HasM = 0x2000,
     };
 
 public:
@@ -91,6 +108,8 @@ public:
     const std::vector<aePoint> &points() const { return mPoints; }
 
     Type getType() const { return mType; }
+    bool hasZ() const { return mType & HasZ; }
+    bool hasM() const { return mType & HasM; }
 
     double calculateArea() const;
 
