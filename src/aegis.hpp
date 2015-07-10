@@ -25,6 +25,7 @@ class aeExceptionBase : std::exception {
 public:
     aeExceptionBase(): mMessage() {
     }
+
     aeExceptionBase(
         const std::string &message
     ): mMessage(message) {
@@ -38,13 +39,15 @@ private:
     std::string mMessage;
 };
 
-template <typename T>
-class aeExceptionT : T {
-    using T::T;
+#define AE_EXCEPTION(B, T, P) \
+class T : B { \
+public: \
+    T(): B(P) {} \
+    T(const std::string &message): B(std::string(P) + ": " + message) {} \
 };
 
-typedef aeExceptionT<aeExceptionBase> aeInternalError;
-typedef aeExceptionT<aeExceptionBase> aeNotImplementedError;
+AE_EXCEPTION(aeExceptionBase, aeInternalError, "internal error");
+AE_EXCEPTION(aeExceptionBase, aeNotImplementedError, "feature not implemented");
 
 ////////////////////////////////////////////////////////////////////////////////
 
