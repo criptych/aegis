@@ -14,7 +14,7 @@ SCENARIO("calculate area of simple polygons", "[area]") {
         REQUIRE(g.points().size() == 0);
 
         THEN("the area is defined as zero") {
-            REQUIRE(g.calculateArea() == 0.0);
+            REQUIRE(g.calculateArea() == Approx(0.0));
         }
     }
 
@@ -23,7 +23,7 @@ SCENARIO("calculate area of simple polygons", "[area]") {
         REQUIRE(g.points().size() == 1);
 
         THEN("the area is defined as zero") {
-            REQUIRE(g.calculateArea() == 0.0);
+            REQUIRE(g.calculateArea() == Approx(0.0));
         }
     }
 
@@ -33,7 +33,7 @@ SCENARIO("calculate area of simple polygons", "[area]") {
         REQUIRE(g.points().size() == 2);
 
         THEN("the area is defined as zero") {
-            REQUIRE(g.calculateArea() == 0.0);
+            REQUIRE(g.calculateArea() == Approx(0.0));
         }
     }
 
@@ -44,7 +44,7 @@ SCENARIO("calculate area of simple polygons", "[area]") {
         REQUIRE(g.points().size() == 3);
 
         THEN("the area is 1/2") {
-            REQUIRE(g.calculateArea() == 0.5);
+            REQUIRE(g.calculateArea() == Approx(0.5));
         }
     }
 
@@ -56,7 +56,7 @@ SCENARIO("calculate area of simple polygons", "[area]") {
         REQUIRE(g.points().size() == 4);
 
         THEN("the area is 1") {
-            REQUIRE(g.calculateArea() == 1.0);
+            REQUIRE(g.calculateArea() == Approx(1.0));
         }
     }
 
@@ -70,7 +70,7 @@ SCENARIO("calculate area of simple polygons", "[area]") {
         REQUIRE(g.points().size() == 6);
 
         THEN("the area is 5") {
-            REQUIRE(g.calculateArea() == 5.0);
+            REQUIRE(g.calculateArea() == Approx(5.0));
         }
     }
 }
@@ -118,10 +118,29 @@ SCENARIO("check if polygon is simple", "[simple]") {
 ////////////////////////////////////////////////////////////////////////////////
 
 SCENARIO("calculate statistics", "[stats]") {
-    double data[] = { 2, 4, 4, 4, 5, 5, 7, 9 };
+    aeStats st;
+
+    GIVEN("an empty set of data") {
+        THEN("the mean is undefined") {
+            REQUIRE(st.mean() == Approx(0.0));
+        }
+        THEN("the population variance is undefined") {
+            REQUIRE(st.variance(true) == Approx(0.0));
+        }
+        THEN("the population standard deviation is undefined") {
+            REQUIRE(st.stdev(true) == Approx(0.0));
+        }
+        THEN("the skewness is undefined") {
+            REQUIRE(st.skewness() == Approx(0.0));
+        }
+        THEN("the kurtosis is undefined") {
+            REQUIRE(st.kurtosis() == Approx(0.0));
+        }
+    }
 
     GIVEN("a list of sample data: [2, 4, 4, 4, 5, 5, 7, 9]") {
-        aeStats st(std::begin(data), std::end(data));
+        double data[] = { 2, 4, 4, 4, 5, 5, 7, 9 };
+        st.update(std::begin(data), std::end(data));
 
         THEN("the mean is 5.0") {
             REQUIRE(st.mean() == Approx(5.0).epsilon(aeEpsilon));
