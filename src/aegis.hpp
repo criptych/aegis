@@ -261,8 +261,8 @@ public:
     }
 
     void update(const T &x) {
-        T n1(mN++);
-        T n(mN);
+        T n1(mN);
+        T n(++mN);
         T d = x - mM[0];
         T dn = d / n;
         T dn2 = dn * dn;
@@ -275,7 +275,7 @@ public:
 
     template <typename I>
     void update(const I &i, const I &j) {
-        for (I k(i); k != j; k++) {
+        for (I k(i); k != j; ++k) {
             update(*k);
         }
     }

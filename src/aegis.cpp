@@ -154,7 +154,7 @@ bool aeGeometryT<T>::findIntersections(std::vector< aePointT<T> > &intersections
     std::vector<Segment> segments;
     segments.reserve(n);
 
-    for (unsigned int i = 0, j = 1; i < n; i++, j++)
+    for (unsigned int i = 0, j = 1; i < n; ++i, ++j)
     {
         if (j >= n) {
             j = 0;
@@ -275,7 +275,7 @@ T aeGeometryT<T>::calculateArea() const {
     T area = 0.0;
 
     if ((mType == Polygon) && (n >= 3)) {
-        for (unsigned int i = 0, j = 1; i < n; i++, j++) {
+        for (unsigned int i = 0, j = 1; i < n; ++i, ++j) {
             if (j >= n) {
                 j = 0;
             }
