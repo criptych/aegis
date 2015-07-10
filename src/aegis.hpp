@@ -16,6 +16,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 static const double aeEpsilon = std::numeric_limits<double>::epsilon();
+static const double aeNaN = std::numeric_limits<double>::quiet_NaN();
 static const double aePi = 3.14159265358979323846;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -280,11 +281,11 @@ public:
     }
 
     T mean() const {
-        return mM[0];
+        return (mN > 0) ? mM[0] : T(aeNaN);
     }
 
     T variance(bool finite = false) const {
-        return (mN > 1) ? (mM[1] / T(finite ? mN : (mN - 1))) : T();
+        return (mN > 1) ? (mM[1] / T(finite ? mN : (mN - 1))) : T(aeNaN);
     }
 
     T stdev(bool finite = false) const {

@@ -122,19 +122,19 @@ SCENARIO("calculate statistics", "[stats]") {
 
     GIVEN("an empty set of data") {
         THEN("the mean is undefined") {
-            REQUIRE(st.mean() == Approx(0.0));
+            REQUIRE(std::isnan(st.mean()));
         }
         THEN("the population variance is undefined") {
-            REQUIRE(st.variance(true) == Approx(0.0));
+            REQUIRE(std::isnan(st.variance(true)));
         }
         THEN("the population standard deviation is undefined") {
-            REQUIRE(st.stdev(true) == Approx(0.0));
+            REQUIRE(std::isnan(st.stdev(true)));
         }
         THEN("the skewness is undefined") {
-            REQUIRE(st.skewness() == Approx(0.0));
+            REQUIRE(std::isnan(st.skewness()));
         }
         THEN("the kurtosis is undefined") {
-            REQUIRE(st.kurtosis() == Approx(0.0));
+            REQUIRE(std::isnan(st.kurtosis()));
         }
     }
 
