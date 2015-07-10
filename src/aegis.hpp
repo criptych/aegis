@@ -196,11 +196,13 @@ public:
         HasM = 0x2000,
     };
 
+    typedef std::vector< aePointT<T> > Points;
+
 public:
     aeGeometryT(Type type): mType(type) {}
 
-    std::vector< aePointT<T> > &points() { return mPoints; }
-    const std::vector< aePointT<T> > &points() const { return mPoints; }
+    Points &points() { return mPoints; }
+    const Points &points() const { return mPoints; }
 
     Type getType() const { return mType; }
     bool hasZ() const { return mType & HasZ; }
@@ -209,21 +211,21 @@ public:
     T calculateArea() const;
 
 private:
-    bool findIntersections(std::vector< aePointT<T> > &intersections, bool abortOnFirst) const;
+    bool findIntersections(Points &intersections, bool abortOnFirst) const;
 
 public:
     bool findIntersections() const {
-        std::vector< aePointT<T> > intersections;
+        Points intersections;
         return findIntersections(intersections, true);
     }
 
-    bool findIntersections(std::vector< aePointT<T> > &intersections) const {
+    bool findIntersections(Points &intersections) const {
         return findIntersections(intersections, false);
     }
 
 private:
     Type mType;
-    std::vector< aePointT<T> > mPoints;
+    Points mPoints;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
