@@ -21,7 +21,7 @@ static const double aePi = 3.14159265358979323846;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-class aeExceptionBase : std::exception {
+class aeExceptionBase : public std::exception {
 public:
     aeExceptionBase(): mMessage() {
     }
@@ -40,7 +40,7 @@ private:
 };
 
 #define AE_EXCEPTION(B, T, P) \
-class T : B { \
+class T : public B { \
 public: \
     T(): B(P) {} \
     T(const std::string &message): B(std::string(P) + ": " + message) {} \
