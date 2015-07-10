@@ -234,7 +234,7 @@ protected:
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <typename T>
+template <typename T=double, typename N=unsigned long>
 class aeStatsT {
 private:
     static constexpr T mT2 = T(2), mT3 = T(3), mT4 = T(4), mT6 = T(6);
@@ -246,16 +246,22 @@ public:
 
     template <typename I>
     aeStatsT(const I &i, const I &j) {
+        clear();
         update(i, j);
     }
 
     void clear() {
-        mN = 0;
+        mN = N();
         mM[3] = mM[2] = mM[1] = mM[0] = T();
     }
 
+    N count() const {
+        return mN;
+    }
+
     void update(const T &x) {
-        T n1(mN++), n(mN);
+        T n1(mN++);
+        T n(mN);
         T d = x - mM[0];
         T dn = d / n;
         T dn2 = dn * dn;
@@ -278,7 +284,7 @@ public:
     }
 
     T variance(bool finite = false) const {
-        return mM[1] / T(finite ? mN : (mN - 1));
+        return (mN > 1) ? (mM[1] / T(finite ? mN : (mN - 1))) : T();
     }
 
     T stdev(bool finite = false) const {
@@ -286,8 +292,7 @@ public:
     }
 
     T skewness() const {
-        /// @todo
-        return T();
+        return mM[2] * std::sqrt(T(mN) / (mM[1]*mM[1]*mM[1]));
     }
 
     T kurtosis() const {
@@ -295,7 +300,7 @@ public:
     }
 
 private:
-    unsigned long mN;
+    N mN;
     T mM[4];
 };
 
