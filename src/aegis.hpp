@@ -235,7 +235,7 @@ protected:
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <typename T=double, typename N=unsigned long>
+template <typename T, typename N=unsigned long long>
 class aeStatsT {
 private:
     static constexpr T mT2 = T(2), mT3 = T(3), mT4 = T(4), mT6 = T(6);
