@@ -9,12 +9,6 @@ extern "C" {
 }; // extern "C"
 
 #include <algorithm>
-#include <cassert>
-#include <cmath>
-#include <iostream>
-#include <list>
-#include <queue>
-#include <vector>
 
 #include "aegis.hpp"
 

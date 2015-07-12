@@ -32,6 +32,9 @@ ADD_EXECUTABLE(aegis-test
     src/testmain.cpp
     src/tests.cpp
     src/aegis.cpp
+    src/aeconst.cpp
+    src/aeexcept.cpp
+    src/aestats.cpp
 )
 
 ADD_CUSTOM_TARGET(check COMMAND aegis-test)
