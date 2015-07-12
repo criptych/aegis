@@ -113,7 +113,7 @@ TEST_CASE("statistics calculation", "[stats]") {
         CHECK(std::isnan(st.kurtosis()));
     }
 
-    SECTION("single datum") {
+    SECTION("single value [1]") {
         aeStats st;
         st.update(1.0);
 
@@ -125,6 +125,21 @@ TEST_CASE("statistics calculation", "[stats]") {
         CHECK(std::isnan(st.stdev(false)));
         CHECK(std::isnan(st.skewness()));
         CHECK(std::isnan(st.kurtosis()));
+    }
+
+    SECTION("two values [1 2]") {
+        aeStats st;
+        st.update(1.0);
+        st.update(2.0);
+
+        REQUIRE(st.count() == 2);
+        CHECK(st.mean() == Approx(1.5).epsilon(EPSILON));
+        CHECK(st.variance(true) == Approx(0.25).epsilon(EPSILON));
+        CHECK(st.stdev(true) == Approx(0.5).epsilon(EPSILON));
+        CHECK(st.variance(false) == Approx(0.5).epsilon(EPSILON));
+        CHECK(st.stdev(false) == Approx(0.7071067812).epsilon(EPSILON));
+        CHECK(st.skewness() == Approx(0.0).epsilon(EPSILON));
+        CHECK(st.kurtosis() == Approx(-2.0).epsilon(EPSILON));
     }
 
     SECTION("sample data: [2, 4, 4, 4, 5, 5, 7, 9]") {
