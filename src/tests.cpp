@@ -119,12 +119,12 @@ TEST_CASE("statistics calculation", "[stats]") {
 
         REQUIRE(st.count() == 1);
         CHECK(st.mean() == Approx(1.0).epsilon(EPSILON));
-        CHECK(st.variance(true) == Approx(0.0).epsilon(EPSILON));
-        CHECK(st.stdev(true) == Approx(0.0).epsilon(EPSILON));
-        CHECK(st.variance(false) == Approx(0.0).epsilon(EPSILON));
-        CHECK(st.stdev(false) == Approx(0.0).epsilon(EPSILON));
-        CHECK(st.skewness() == Approx(0.0).epsilon(EPSILON));
-        CHECK(st.kurtosis() == Approx(0.0).epsilon(EPSILON));
+        CHECK(std::isnan(st.variance(true)));
+        CHECK(std::isnan(st.stdev(true)));
+        CHECK(std::isnan(st.variance(false)));
+        CHECK(std::isnan(st.stdev(false)));
+        CHECK(std::isnan(st.skewness()));
+        CHECK(std::isnan(st.kurtosis()));
     }
 
     SECTION("sample data: [2, 4, 4, 4, 5, 5, 7, 9]") {
@@ -151,19 +151,23 @@ TEST_CASE("statistics calculation", "[stats]") {
         SECTION("list 1 statistics") {
             REQUIRE(st1.count() == 4);
             CHECK(st1.mean() == Approx(3.5).epsilon(EPSILON));
-            CHECK(st1.variance(true) == Approx(4.0).epsilon(EPSILON));
-            CHECK(st1.stdev(true) == Approx(2.0).epsilon(EPSILON));
-            CHECK(st1.skewness() == Approx(-1.154701).epsilon(EPSILON));
-            CHECK(st1.kurtosis() == Approx(-0.666667).epsilon(EPSILON));
+            CHECK(st1.variance(true) == Approx(0.75).epsilon(EPSILON));
+            CHECK(st1.stdev(true) == Approx(0.8660254038).epsilon(EPSILON));
+            CHECK(st1.variance(false) == Approx(1.0).epsilon(EPSILON));
+            CHECK(st1.stdev(false) == Approx(1.0).epsilon(EPSILON));
+            CHECK(st1.skewness() == Approx(-1.1547005384).epsilon(EPSILON));
+            CHECK(st1.kurtosis() == Approx(-0.6666666667).epsilon(EPSILON));
         }
 
         SECTION("list 2 statistics") {
             REQUIRE(st2.count() == 4);
             CHECK(st2.mean() == Approx(6.5).epsilon(EPSILON));
-            CHECK(st2.variance(true) == Approx(4.0).epsilon(EPSILON));
-            CHECK(st2.stdev(true) == Approx(2.0).epsilon(EPSILON));
-            CHECK(st2.skewness() == Approx(0.493382).epsilon(EPSILON));
-            CHECK(st2.kurtosis() == Approx(-1.371901).epsilon(EPSILON));
+            CHECK(st2.variance(true) == Approx(2.75).epsilon(EPSILON));
+            CHECK(st2.stdev(true) == Approx(1.6583123952).epsilon(EPSILON));
+            CHECK(st2.variance(false) == Approx(3.6666666667).epsilon(EPSILON));
+            CHECK(st2.stdev(false) == Approx(1.9148542155).epsilon(EPSILON));
+            CHECK(st2.skewness() == Approx(0.4933822002).epsilon(EPSILON));
+            CHECK(st2.kurtosis() == Approx(-1.3719008264).epsilon(EPSILON));
         }
 
         aeStats st(st1 + st2);
@@ -173,8 +177,10 @@ TEST_CASE("statistics calculation", "[stats]") {
             CHECK(st.mean() == Approx(5.0).epsilon(EPSILON));
             CHECK(st.variance(true) == Approx(4.0).epsilon(EPSILON));
             CHECK(st.stdev(true) == Approx(2.0).epsilon(EPSILON));
-            CHECK(st.skewness() == Approx(0.61386567).epsilon(EPSILON));
-            CHECK(st.kurtosis() == Approx(2.4336).epsilon(EPSILON));
+            CHECK(st.variance(false) == Approx(4.5714285714).epsilon(EPSILON));
+            CHECK(st.stdev(false) == Approx(2.1380899352).epsilon(EPSILON));
+            CHECK(st.skewness() == Approx(0.656250).epsilon(EPSILON));
+            CHECK(st.kurtosis() == Approx(-0.218750).epsilon(EPSILON));
         }
     }
 }
