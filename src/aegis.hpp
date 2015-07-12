@@ -283,7 +283,7 @@ public:
     }
 
     aeStatsT<T, N> &update(const aeStatsT<T, N> &rhs) {
-        T d(mM1 - rhs.mM1), d2(d * d), d3(d2 * d), d4(d2 * d2);
+        T d(rhs.mM1 - mM1), d2(d * d), d3(d2 * d), d4(d2 * d2);
         T an(mN), bn(rhs.mN), an2(an * an), bn2(bn * bn), abn(an * bn);
         T n(an + bn), dn(an - bn), n2(n * n);
         mM4 += rhs.mM4 + d4 * abn * (an2 + bn2 - abn) / (n2 * n) +
