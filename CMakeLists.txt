@@ -42,6 +42,8 @@ ADD_EXECUTABLE(aegis-test
     src/aeexcept.cpp
     src/aegeom.cpp
     src/aelayer.cpp
+    src/aepoint.cpp
+    src/aeproj.cpp
     src/aestats.cpp
     src/aesymbol.cpp
 )

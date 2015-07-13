@@ -4,6 +4,7 @@
 
 #include "aepoint.hpp"
 
+template <> const
 aePointT<double> aePointT<double>::Undefined(aeNaN, aeNaN, aeNaN, aeNaN);
 
 ////////////////////////////////////////////////////////////////////////////////
