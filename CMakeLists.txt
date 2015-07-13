@@ -1,3 +1,7 @@
+################################################################################
+##
+################################################################################
+
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
 PROJECT(AEGIS CXX)
@@ -17,6 +21,8 @@ ELSE()
     )
 ENDIF()
 
+################################################################################
+
 FIND_PACKAGE(Lua51 REQUIRED QUIET)
 
 INCLUDE_DIRECTORIES(
@@ -34,7 +40,13 @@ ADD_EXECUTABLE(aegis-test
     src/aegis.cpp
     src/aeconst.cpp
     src/aeexcept.cpp
+    src/aegeom.cpp
     src/aestats.cpp
 )
 
 ADD_CUSTOM_TARGET(check COMMAND aegis-test)
+
+################################################################################
+##  EOF
+################################################################################
+
