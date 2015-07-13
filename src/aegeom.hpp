@@ -21,7 +21,8 @@ struct aeExtentT {
     aePointT<T> min;
     aePointT<T> max;
 
-    aeExtentT(): min(aePointT<T>::Undefined), max(aePointT<T>::Undefined) {
+    aeExtentT(
+    ): min(aeNaN, aeNaN, aeNaN, aeNaN), max(aeNaN, aeNaN, aeNaN, aeNaN) {
     }
 
     aeExtentT(
