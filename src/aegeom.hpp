@@ -20,6 +20,21 @@ template <typename T>
 struct aeExtentT {
     aePointT<T> min;
     aePointT<T> max;
+
+    aeExtentT(): min(aePointT<T>::Undefined), max(aePointT<T>::Undefined) {
+    }
+
+    aeExtentT(
+        const aePointT<T> &min,
+        const aePointT<T> &max
+    ): min(min), max(max) {
+    }
+
+    bool isEmpty() const {
+        return (min.x == max.x && min.y == max.y) ||
+                std::isnan(min.x) || std::isnan(min.y) ||
+                std::isnan(max.x) || std::isnan(max.y);
+    }
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -54,42 +69,43 @@ public:
     typedef std::vector< aePointT<T> > Points;
 
 public:
-    aeGeometryT(Type type): mType(type) {}
+    aeGeometryT(Type type): mType(type), mUpdateExtent(true) {}
 
     Points &points() { return mPoints; }
     const Points &points() const { return mPoints; }
 
 private:
     void updateExtent() const {
-        mExtent.min = mExtent.max = aePointT<T>::Undefined;
+        aeExtentT<T> extent;
 
-        for (aePointT<T> &p : mPoints) {
-            if (mExtent.min.x > p.x || std::isnan(mExtent.min.x)) {
-                mExtent.min.x = p.x;
+        for (const aePointT<T> &p : mPoints) {
+            if (extent.min.x > p.x || std::isnan(extent.min.x)) {
+                extent.min.x = p.x;
             }
-            if (mExtent.min.y > p.y || std::isnan(mExtent.min.y)) {
-                mExtent.min.y = p.y;
+            if (extent.min.y > p.y || std::isnan(extent.min.y)) {
+                extent.min.y = p.y;
             }
-            if (mExtent.min.z > p.z || std::isnan(mExtent.min.z)) {
-                mExtent.min.z = p.z;
+            if (extent.min.z > p.z || std::isnan(extent.min.z)) {
+                extent.min.z = p.z;
             }
-            if (mExtent.min.m > p.m || std::isnan(mExtent.min.m)) {
-                mExtent.min.m = p.m;
+            if (extent.min.m > p.m || std::isnan(extent.min.m)) {
+                extent.min.m = p.m;
             }
-            if (mExtent.max.x < p.x || std::isnan(mExtent.max.x)) {
-                mExtent.max.x = p.x;
+            if (extent.max.x < p.x || std::isnan(extent.max.x)) {
+                extent.max.x = p.x;
             }
-            if (mExtent.max.y < p.y || std::isnan(mExtent.max.y)) {
-                mExtent.max.y = p.y;
+            if (extent.max.y < p.y || std::isnan(extent.max.y)) {
+                extent.max.y = p.y;
             }
-            if (mExtent.max.z < p.z || std::isnan(mExtent.max.z)) {
-                mExtent.max.z = p.z;
+            if (extent.max.z < p.z || std::isnan(extent.max.z)) {
+                extent.max.z = p.z;
             }
-            if (mExtent.max.m < p.m || std::isnan(mExtent.max.m)) {
-                mExtent.max.m = p.m;
+            if (extent.max.m < p.m || std::isnan(extent.max.m)) {
+                extent.max.m = p.m;
             }
         }
 
+        mExtent = extent;
         mUpdateExtent = false;
     }
 
@@ -123,8 +139,8 @@ public:
 private:
     Type mType;
     Points mPoints;
-    aeExtentT<T> mExtent;
-    bool mUpdateExtent;
+    mutable aeExtentT<T> mExtent;
+    mutable bool mUpdateExtent;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
