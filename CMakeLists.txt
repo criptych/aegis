@@ -41,7 +41,9 @@ ADD_EXECUTABLE(aegis-test
     src/aeconst.cpp
     src/aeexcept.cpp
     src/aegeom.cpp
+    src/aelayer.cpp
     src/aestats.cpp
+    src/aesymbol.cpp
 )
 
 ADD_CUSTOM_TARGET(check COMMAND aegis-test)
