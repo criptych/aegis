@@ -59,6 +59,48 @@ public:
     Points &points() { return mPoints; }
     const Points &points() const { return mPoints; }
 
+private:
+    void updateExtent() const {
+        mExtent.min = mExtent.max = aePointT<T>::Undefined;
+
+        for (aePointT<T> &p : mPoints) {
+            if (mExtent.min.x > p.x || std::isnan(mExtent.min.x)) {
+                mExtent.min.x = p.x;
+            }
+            if (mExtent.min.y > p.y || std::isnan(mExtent.min.y)) {
+                mExtent.min.y = p.y;
+            }
+            if (mExtent.min.z > p.z || std::isnan(mExtent.min.z)) {
+                mExtent.min.z = p.z;
+            }
+            if (mExtent.min.m > p.m || std::isnan(mExtent.min.m)) {
+                mExtent.min.m = p.m;
+            }
+            if (mExtent.max.x < p.x || std::isnan(mExtent.max.x)) {
+                mExtent.max.x = p.x;
+            }
+            if (mExtent.max.y < p.y || std::isnan(mExtent.max.y)) {
+                mExtent.max.y = p.y;
+            }
+            if (mExtent.max.z < p.z || std::isnan(mExtent.max.z)) {
+                mExtent.max.z = p.z;
+            }
+            if (mExtent.max.m < p.m || std::isnan(mExtent.max.m)) {
+                mExtent.max.m = p.m;
+            }
+        }
+
+        mUpdateExtent = false;
+    }
+
+public:
+    const aeExtentT<T> &extent() const {
+        if (mUpdateExtent) {
+            updateExtent();
+        }
+        return mExtent;
+    }
+
     Type type() const { return mType; }
     bool hasZ() const { return mType & HasZ; }
     bool hasM() const { return mType & HasM; }
@@ -81,6 +123,8 @@ public:
 private:
     Type mType;
     Points mPoints;
+    aeExtentT<T> mExtent;
+    bool mUpdateExtent;
 };
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -47,6 +47,8 @@ struct aePointT {
     }
 
     bool equals(const aePointT<T> &rhs, const T &epsilon = T(aeEpsilon)) const;
+
+    static const aePointT<T> Undefined;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
