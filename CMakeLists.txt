@@ -23,6 +23,10 @@ SET(TESTSRCS
     src/tests.cpp
 )
 
+SET(APPSRCS
+    src/aemain.cpp
+)
+
 IF(NOT CMAKE_BUILD_TYPE)
     SET(CMAKE_BUILD_TYPE "Release")
 ENDIF()
@@ -56,6 +60,9 @@ SET_TARGET_PROPERTIES(libaegis PROPERTIES OUTPUT_NAME "aegis")
 
 ADD_EXECUTABLE(aegis-test ${TESTSRCS})
 TARGET_LINK_LIBRARIES(aegis-test libaegis)
+
+ADD_EXECUTABLE(aegis ${APPSRCS})
+TARGET_LINK_LIBRARIES(aegis libaegis)
 
 ADD_CUSTOM_TARGET(check COMMAND aegis-test)
 
