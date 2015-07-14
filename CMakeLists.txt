@@ -6,6 +6,23 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
 PROJECT(AEGIS CXX)
 
+SET(LIBSRCS
+    src/aegis.cpp
+    src/aeconst.cpp
+    src/aeexcept.cpp
+    src/aegeom.cpp
+    src/aelayer.cpp
+    src/aepoint.cpp
+    src/aeproj.cpp
+    src/aestats.cpp
+    src/aesymbol.cpp
+)
+
+SET(TESTSRCS
+    src/testmain.cpp
+    src/tests.cpp
+)
+
 IF(NOT CMAKE_BUILD_TYPE)
     SET(CMAKE_BUILD_TYPE "Release")
 ENDIF()
@@ -34,19 +51,11 @@ LINK_LIBRARIES(
     ${LUA_LIBRARIES}
 )
 
-ADD_EXECUTABLE(aegis-test
-    src/testmain.cpp
-    src/tests.cpp
-    src/aegis.cpp
-    src/aeconst.cpp
-    src/aeexcept.cpp
-    src/aegeom.cpp
-    src/aelayer.cpp
-    src/aepoint.cpp
-    src/aeproj.cpp
-    src/aestats.cpp
-    src/aesymbol.cpp
-)
+ADD_LIBRARY(libaegis ${LIBSRCS})
+SET_TARGET_PROPERTIES(libaegis PROPERTIES OUTPUT_NAME "aegis")
+
+ADD_EXECUTABLE(aegis-test ${TESTSRCS})
+TARGET_LINK_LIBRARIES(aegis-test libaegis)
 
 ADD_CUSTOM_TARGET(check COMMAND aegis-test)
 
