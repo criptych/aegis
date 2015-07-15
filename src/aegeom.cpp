@@ -314,9 +314,15 @@ T aeGeometryT<T>::calculateArea() const {
     return area;
 }
 
-template void aeGeometry::updateExtent() const;
-template bool aeGeometry::findIntersections() const;
-template double aeGeometry::calculateArea() const;
+////////////////////////////////////////////////////////////////////////////////
+
+template void aeGeometryT<double>::updateExtent() const;
+template bool aeGeometryT<double>::findIntersections() const;
+template double aeGeometryT<double>::calculateArea() const;
+
+template void aeGeometryT<float>::updateExtent() const;
+template bool aeGeometryT<float>::findIntersections() const;
+template float aeGeometryT<float>::calculateArea() const;
 
 ////////////////////////////////////////////////////////////////////////////////
 // EOF

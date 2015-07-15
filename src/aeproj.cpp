@@ -28,8 +28,13 @@ aePointT<T> aeProjectionT<T>::fromWebMercator(const aePointT<T> &p)
     throw aeNotImplementedError();
 }
 
-template aePoint aeProjection::toWebMercator(const aePoint &p);
-template aePoint aeProjection::fromWebMercator(const aePoint &p);
+////////////////////////////////////////////////////////////////////////////////
+
+template aePointT<double> aeProjectionT<double>::toWebMercator(const aePointT<double> &p);
+template aePointT<double> aeProjectionT<double>::fromWebMercator(const aePointT<double> &p);
+
+template aePointT<float> aeProjectionT<float>::toWebMercator(const aePointT<float> &p);
+template aePointT<float> aeProjectionT<float>::fromWebMercator(const aePointT<float> &p);
 
 ////////////////////////////////////////////////////////////////////////////////
 // EOF
