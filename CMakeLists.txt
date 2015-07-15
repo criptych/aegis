@@ -27,8 +27,10 @@ SET(LIBSRCS
 )
 
 SET(TESTSRCS
-    src/testmain.cpp
-    src/tests.cpp
+    tests/testmain.cpp
+    tests/test_aeextent.cpp
+    tests/test_aegeom.cpp
+    tests/test_aestats.cpp
 )
 
 SET(APPSRCS
@@ -56,6 +58,7 @@ FIND_PACKAGE(Lua51 REQUIRED QUIET)
 
 INCLUDE_DIRECTORIES(
     ${CMAKE_CURRENT_SOURCE_DIR}/include/
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/
     ${LUA_INCLUDE_DIR}
 )
 
