@@ -101,12 +101,20 @@ public:
         return (mN > 0) ? mM1 : T(aeNaN);
     }
 
-    T variance(bool finite = false) const {
-        return (mN > 1) ? (mM2 / T(finite ? mN : (mN - 1))) : T(aeNaN);
+    T variance() const {
+        return (mN > 1) ? (mM2 / T(mN - 1)) : T(aeNaN);
     }
 
-    T stdev(bool finite = false) const {
-        return std::sqrt(variance(finite));
+    T popVariance() const {
+        return (mN > 1) ? (mM2 / T(mN)) : T(aeNaN);
+    }
+
+    T stdev() const {
+        return std::sqrt(variance());
+    }
+
+    T popStdev() const {
+        return std::sqrt(popVariance());
     }
 
     T skewness() const {
