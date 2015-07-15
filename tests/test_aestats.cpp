@@ -14,6 +14,8 @@ TEST_CASE("statistics calculation", "[aeStats]") {
         aeStats st;
 
         REQUIRE(st.count() == 0);
+        CHECK(std::isnan(st.min()));
+        CHECK(std::isnan(st.max()));
         CHECK(std::isnan(st.mean()));
         CHECK(std::isnan(st.variance(true)));
         CHECK(std::isnan(st.stdev(true)));
@@ -28,6 +30,8 @@ TEST_CASE("statistics calculation", "[aeStats]") {
         st.update(1.0);
 
         REQUIRE(st.count() == 1);
+        CHECK(st.min() == Approx(1.0));
+        CHECK(st.max() == Approx(1.0));
         CHECK(st.mean() == Approx(1.0).epsilon(EPSILON));
         CHECK(std::isnan(st.variance(true)));
         CHECK(std::isnan(st.stdev(true)));
@@ -43,6 +47,8 @@ TEST_CASE("statistics calculation", "[aeStats]") {
         st.update(2.0);
 
         REQUIRE(st.count() == 2);
+        CHECK(st.min() == Approx(1.0));
+        CHECK(st.max() == Approx(2.0));
         CHECK(st.mean() == Approx(1.5).epsilon(EPSILON));
         CHECK(st.variance(true) == Approx(0.25).epsilon(EPSILON));
         CHECK(st.stdev(true) == Approx(0.5).epsilon(EPSILON));
@@ -57,6 +63,8 @@ TEST_CASE("statistics calculation", "[aeStats]") {
         aeStats st(std::begin(data), std::end(data));
 
         REQUIRE(st.count() == 8);
+        CHECK(st.min() == Approx(2.0));
+        CHECK(st.max() == Approx(9.0));
         CHECK(st.mean() == Approx(5.0).epsilon(EPSILON));
         CHECK(st.variance(true) == Approx(4.0).epsilon(EPSILON));
         CHECK(st.stdev(true) == Approx(2.0).epsilon(EPSILON));
@@ -75,6 +83,8 @@ TEST_CASE("statistics calculation", "[aeStats]") {
 
         SECTION("list 1 statistics") {
             REQUIRE(st1.count() == 4);
+            CHECK(st1.min() == Approx(2.0));
+            CHECK(st1.max() == Approx(4.0));
             CHECK(st1.mean() == Approx(3.5).epsilon(EPSILON));
             CHECK(st1.variance(true) == Approx(0.75).epsilon(EPSILON));
             CHECK(st1.stdev(true) == Approx(0.8660254038).epsilon(EPSILON));
@@ -86,6 +96,8 @@ TEST_CASE("statistics calculation", "[aeStats]") {
 
         SECTION("list 2 statistics") {
             REQUIRE(st2.count() == 4);
+            CHECK(st2.min() == Approx(5.0));
+            CHECK(st2.max() == Approx(9.0));
             CHECK(st2.mean() == Approx(6.5).epsilon(EPSILON));
             CHECK(st2.variance(true) == Approx(2.75).epsilon(EPSILON));
             CHECK(st2.stdev(true) == Approx(1.6583123952).epsilon(EPSILON));
@@ -99,6 +111,8 @@ TEST_CASE("statistics calculation", "[aeStats]") {
 
         SECTION("combined statistics") {
             REQUIRE(st.count() == 8);
+            CHECK(st.min() == Approx(2.0));
+            CHECK(st.max() == Approx(9.0));
             CHECK(st.mean() == Approx(5.0).epsilon(EPSILON));
             CHECK(st.variance(true) == Approx(4.0).epsilon(EPSILON));
             CHECK(st.stdev(true) == Approx(2.0).epsilon(EPSILON));

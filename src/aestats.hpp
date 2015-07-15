@@ -90,11 +90,11 @@ public:
     }
 
     T min() const {
-        return mMin;
+        return (mN > 0) ? mMin : T(aeNaN);
     }
 
     T max() const {
-        return mMax;
+        return (mN > 0) ? mMax : T(aeNaN);
     }
 
     T mean() const {
