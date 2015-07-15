@@ -12,6 +12,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmath>
+#include <utility>
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -84,6 +85,15 @@ struct aeExtentT {
         return (min.x == max.x && min.y == max.y) ||
                 std::isnan(min.x) || std::isnan(min.y) ||
                 std::isnan(max.x) || std::isnan(max.y);
+    }
+
+    bool validate() {
+        bool valid = true;
+        if (min.x > max.x) { std::swap(min.x, max.x); valid = false; }
+        if (min.y > max.y) { std::swap(min.y, max.y); valid = false; }
+        if (min.z > max.z) { std::swap(min.z, max.z); valid = false; }
+        if (min.m > max.m) { std::swap(min.m, max.m); valid = false; }
+        return valid;
     }
 };
 
