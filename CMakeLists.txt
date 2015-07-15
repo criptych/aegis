@@ -14,6 +14,17 @@ IF(NOT AEGIS_SHAREDLIB AND NOT AEGIS_STATICLIB)
 ENDIF()
 
 SET(LIBSRCS
+    src/aegis.hpp
+    src/aeconst.hpp
+    src/aeexcept.hpp
+    src/aeextent.hpp
+    src/aegeom.hpp
+    src/aelayer.hpp
+    src/aepoint.hpp
+    src/aeproj.hpp
+    src/aestats.hpp
+    src/aesymbol.hpp
+
     src/aegis.cpp
     src/aeconst.cpp
     src/aeexcept.cpp
@@ -27,6 +38,8 @@ SET(LIBSRCS
 )
 
 SET(TESTSRCS
+    include/catch.hpp
+
     tests/testmain.cpp
     tests/test_aeextent.cpp
     tests/test_aegeom.cpp
