@@ -33,6 +33,7 @@ public:
 
     void clear() {
         mN = N();
+        mMin = mMax = T();
         mM4 = mM3 = mM2 = mM1 = T();
     }
 
@@ -41,6 +42,13 @@ public:
     }
 
     aeStatsT<T, N> &update(const T &x) {
+        if (mN == 0) {
+            mMin = mMax = x;
+        } else {
+            if (mMin > x) { mMin = x; }
+            if (mMax < x) { mMax = x; }
+        }
+
         T n1(mN);
         T n(++mN);
         T d(x - mM1);
@@ -55,6 +63,11 @@ public:
     }
 
     aeStatsT<T, N> &update(const aeStatsT<T, N> &rhs) {
+        if (rhs.mN > 0) {
+            if (mMin > rhs.mMin) { mMin = rhs.mMin; }
+            if (mMax > rhs.mMax) { mMax = rhs.mMax; }
+        }
+
         T d(rhs.mM1 - mM1), d2(d * d), d3(d2 * d), d4(d2 * d2);
         T an(mN), bn(rhs.mN), an2(an * an), bn2(bn * bn), abn(an * bn);
         T n(an + bn), dn(an - bn), n2(n * n);
@@ -74,6 +87,14 @@ public:
         for (I k(i); k != j; ++k) {
             update(*k);
         }
+    }
+
+    T min() const {
+        return mMin;
+    }
+
+    T max() const {
+        return mMax;
     }
 
     T mean() const {
@@ -109,6 +130,8 @@ public:
 
 private:
     N mN;
+    T mMin;
+    T mMax;
     T mM1;
     T mM2;
     T mM3;
