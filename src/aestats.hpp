@@ -65,7 +65,7 @@ public:
     aeStatsT<T, N> &update(const aeStatsT<T, N> &rhs) {
         if (rhs.mN > 0) {
             if (mMin > rhs.mMin) { mMin = rhs.mMin; }
-            if (mMax > rhs.mMax) { mMax = rhs.mMax; }
+            if (mMax < rhs.mMax) { mMax = rhs.mMax; }
         }
 
         T d(rhs.mM1 - mM1), d2(d * d), d3(d2 * d), d4(d2 * d2);
