@@ -5,6 +5,28 @@
 #include "aestats.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////
+
+template aeStatsT<double, unsigned long long> &
+aeStatsT<double, unsigned long long>::update(
+    const double &x
+);
+
+template aeStatsT<double, unsigned long long> &
+aeStatsT<double, unsigned long long>::update(
+    const aeStatsT<double, unsigned long long> &x
+);
+
+template aeStatsT<float, unsigned long long> &
+aeStatsT<float, unsigned long long>::update(
+    const float &x
+);
+
+template aeStatsT<float, unsigned long long> &
+aeStatsT<float, unsigned long long>::update(
+    const aeStatsT<float, unsigned long long> &x
+);
+
+////////////////////////////////////////////////////////////////////////////////
 //  EOF
 ////////////////////////////////////////////////////////////////////////////////
 
