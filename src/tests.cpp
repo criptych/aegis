@@ -7,7 +7,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-TEST_CASE("extent operations", "[extent]") {
+TEST_CASE("extent operations", "[aeExtent][extent]") {
     aeExtent e1 = { aePoint(0.0, 0.0), aePoint(1.0, 1.0) };
     aeExtent e2 = { aePoint(1.0, 1.0), aePoint(2.0, 2.0) };
 
@@ -37,7 +37,7 @@ TEST_CASE("extent operations", "[extent]") {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-TEST_CASE("polygon area", "[geometry][area]") {
+TEST_CASE("polygon area", "[aeGeometry][area]") {
     aeGeometry g = { aeGeometry::Polygon };
 
     SECTION("empty polygon") {
@@ -94,7 +94,7 @@ TEST_CASE("polygon area", "[geometry][area]") {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-TEST_CASE("polygon extent", "[geometry][extent]") {
+TEST_CASE("polygon extent", "[aeGeometry][extent]") {
     aeGeometry g = { aeGeometry::Polygon };
 
     SECTION("empty polygon") {
@@ -175,7 +175,7 @@ TEST_CASE("polygon extent", "[geometry][extent]") {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-TEST_CASE("simple polygons", "[geometry][simple]") {
+TEST_CASE("simple polygons", "[aeGeometry][simple]") {
     aeGeometry g = { aeGeometry::Polygon };
 
     SECTION("unit right triangle") {
@@ -210,7 +210,7 @@ TEST_CASE("simple polygons", "[geometry][simple]") {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-TEST_CASE("statistics calculation", "[stats]") {
+TEST_CASE("statistics calculation", "[aeStats]") {
     static const double EPSILON = 0.0000000001;
 
     SECTION("empty data set") {
