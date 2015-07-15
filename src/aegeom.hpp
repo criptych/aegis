@@ -76,39 +76,7 @@ public:
     const Points &points() const { return mPoints; }
 
 private:
-    void updateExtent() const {
-        aeExtentT<T> extent;
-
-        for (const aePointT<T> &p : mPoints) {
-            if (extent.min.x > p.x || std::isnan(extent.min.x)) {
-                extent.min.x = p.x;
-            }
-            if (extent.min.y > p.y || std::isnan(extent.min.y)) {
-                extent.min.y = p.y;
-            }
-            if (extent.min.z > p.z || std::isnan(extent.min.z)) {
-                extent.min.z = p.z;
-            }
-            if (extent.min.m > p.m || std::isnan(extent.min.m)) {
-                extent.min.m = p.m;
-            }
-            if (extent.max.x < p.x || std::isnan(extent.max.x)) {
-                extent.max.x = p.x;
-            }
-            if (extent.max.y < p.y || std::isnan(extent.max.y)) {
-                extent.max.y = p.y;
-            }
-            if (extent.max.z < p.z || std::isnan(extent.max.z)) {
-                extent.max.z = p.z;
-            }
-            if (extent.max.m < p.m || std::isnan(extent.max.m)) {
-                extent.max.m = p.m;
-            }
-        }
-
-        mExtent = extent;
-        mUpdateExtent = false;
-    }
+    void updateExtent() const;
 
 public:
     const aeExtentT<T> &extent() const {
