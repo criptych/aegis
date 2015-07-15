@@ -17,6 +17,7 @@ SET(LIBSRCS
     src/aegis.cpp
     src/aeconst.cpp
     src/aeexcept.cpp
+    src/aeextent.cpp
     src/aegeom.cpp
     src/aelayer.cpp
     src/aepoint.cpp
