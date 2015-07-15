@@ -9,6 +9,7 @@
 
 #include "aeconst.hpp"
 #include "aeexcept.hpp"
+#include "aeextent.hpp"
 #include "aegeom.hpp"
 #include "aelayer.hpp"
 #include "aepoint.hpp"
