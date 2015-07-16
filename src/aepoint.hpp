@@ -105,20 +105,17 @@ aePointT<T> operator / (const aePointT<T> &a, const T &b) {
 }
 
 template <typename T>
-T dot(const aePointT<T> &a, const aePointT<T> &b)
-{
+T dot(const aePointT<T> &a, const aePointT<T> &b) {
     return a.x * b.x + a.y * b.y + a.z * b.z;
 }
 
 template <typename T>
-T det(const aePointT<T> &a, const aePointT<T> &b)
-{
+T det(const aePointT<T> &a, const aePointT<T> &b) {
     return a.x * b.y - a.y * b.x; // cross(a, b).z
 }
 
 template <typename T>
-aePointT<T> cross(const aePointT<T> &a, const aePointT<T> &b)
-{
+aePointT<T> cross(const aePointT<T> &a, const aePointT<T> &b) {
     return aePointT<T>(
         a.y * b.z - a.z * b.y,
         a.z * b.x - a.x * b.z,

@@ -10,8 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename T>
-void aeGeometryT<T>::update() const
-{
+void aeGeometryT<T>::update() const {
     aeExtentT<T> extent;
 
     T area = T();
@@ -71,23 +70,22 @@ bool aeGeometryT<T>::findIntersections(Points &intersections, bool abortOnFirst)
         Segment *seg1;
         Segment *seg2;
 
-        Event()
-        {
+        Event() {
         }
 
-        Event(Type type):
-            type(type), point(), seg1(), seg2()
-        {
+        Event(Type type): type(type), point(), seg1(), seg2() {
         }
 
-        Event(Type type, const aePointT<T> &point):
-            type(type), point(point), seg1(), seg2()
-        {
+        Event(
+            Type type,
+            const aePointT<T> &point
+        ): type(type), point(point), seg1(), seg2() {
         }
 
-        Event(Type type, Segment *segment):
-            type(type), point(), seg1(segment), seg2()
-        {
+        Event(
+            Type type,
+            Segment *segment
+        ): type(type), point(), seg1(segment), seg2() {
         }
 
         bool operator == (const Event &e) const {
@@ -95,9 +93,13 @@ bool aeGeometryT<T>::findIntersections(Points &intersections, bool abortOnFirst)
         }
 
         bool operator < (const Event &e) const {
-            return (point.x == e.point.x) ?
-                (point.y < e.point.y) :
-                (point.x < e.point.x);
+            return (
+                point.x == e.point.x
+            ) ? (
+                point.y < e.point.y
+            ) : (
+                point.x < e.point.x
+            );
         }
     };
 
@@ -167,8 +169,7 @@ bool aeGeometryT<T>::findIntersections(Points &intersections, bool abortOnFirst)
     std::vector<Segment> segments;
     segments.reserve(n);
 
-    for (unsigned int i = 0, j = 1; i < n; ++i, ++j)
-    {
+    for (unsigned int i = 0, j = 1; i < n; ++i, ++j) {
         if (j >= n) {
             j = 0;
         }
@@ -246,19 +247,23 @@ bool aeGeometryT<T>::findIntersections(Points &intersections, bool abortOnFirst)
             Add segE to SL;
             Let segA = the segment Above segE in SL;
             Let segB = the segment Below segE in SL;
-            if (I = Intersect( segE with segA) exists)
+            if (I = Intersect( segE with segA) exists) {
                 Insert I into EQ;
-            if (I = Intersect( segE with segB) exists)
+            }
+            if (I = Intersect( segE with segB) exists) {
                 Insert I into EQ;
+            }
         }
         else if (E is a right endpoint) {
             Let segE = E's segment;
             Let segA = the segment Above segE in SL;
             Let segB = the segment Below segE in SL;
             Delete segE from SL;
-            if (I = Intersect( segA with segB) exists)
-                If (I is not in EQ already)
+            if (I = Intersect( segA with segB) exists) {
+                If (I is not in EQ already) {
                     Insert I into EQ;
+                }
+            }
         }
         else {  // E is an intersection event
             Add E’s intersect point to the output list IL;
@@ -266,12 +271,16 @@ bool aeGeometryT<T>::findIntersections(Points &intersections, bool abortOnFirst)
             Swap their positions so that segE2 is now above segE1;
             Let segA = the segment above segE2 in SL;
             Let segB = the segment below segE1 in SL;
-            if (I = Intersect(segE2 with segA) exists)
-                if (I is not in EQ already)
+            if (I = Intersect(segE2 with segA) exists) {
+                if (I is not in EQ already) {
                     Insert I into EQ;
-            if (I = Intersect(segE1 with segB) exists)
-                if (I is not in EQ already)
+                }
+            }
+            if (I = Intersect(segE1 with segB) exists) {
+                if (I is not in EQ already) {
                     Insert I into EQ;
+                }
+            }
         }
 */
     }
