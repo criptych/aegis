@@ -2,26 +2,25 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __AEGIS_HPP__
-#define __AEGIS_HPP__ 1
-
-////////////////////////////////////////////////////////////////////////////////
-
-#include "aeconst.hpp"
-#include "aecurve.hpp"
-#include "aeexcept.hpp"
-#include "aeextent.hpp"
-#include "aegeom.hpp"
-#include "aelayer.hpp"
-#include "aepoint.hpp"
-#include "aeproj.hpp"
 #include "aertree.hpp"
-#include "aestats.hpp"
-#include "aesymbol.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////
 
-#endif // __AEGIS_HPP__
+template <typename K, typename T>
+std::vector<K> aeRtreeT<K, T>::search(const aeExtentT<T> &extent) const {
+    //!@todo
+    return std::vector<K>();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+template std::vector<unsigned long> aeRtreeT<unsigned long, double>::search(
+    const aeExtentT<double> &extent
+) const;
+
+template std::vector<void*> aeRtreeT<void*, double>::search(
+    const aeExtentT<double> &extent
+) const;
 
 ////////////////////////////////////////////////////////////////////////////////
 //  EOF

@@ -23,6 +23,7 @@ SET(LIBSRCS
     src/aelayer.hpp
     src/aepoint.hpp
     src/aeproj.hpp
+    src/aertree.hpp
     src/aestats.hpp
     src/aesymbol.hpp
 
@@ -35,6 +36,7 @@ SET(LIBSRCS
     src/aelayer.cpp
     src/aepoint.cpp
     src/aeproj.cpp
+    src/aertree.cpp
     src/aestats.cpp
     src/aesymbol.cpp
 )
