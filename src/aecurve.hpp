@@ -1,0 +1,82 @@
+////////////////////////////////////////////////////////////////////////////////
+//
+////////////////////////////////////////////////////////////////////////////////
+
+#ifndef __AECURVE_HPP__
+#define __AECURVE_HPP__ 1
+
+////////////////////////////////////////////////////////////////////////////////
+
+#include "aepoint.hpp"
+
+////////////////////////////////////////////////////////////////////////////////
+
+#include <vector>
+
+////////////////////////////////////////////////////////////////////////////////
+
+template <typename T, typename C>
+class aeCurveBaseT {
+protected:
+    aeCurveBaseT() {}
+
+public:
+    virtual aePointT<T> evaluate(const T &x) const = 0;
+
+    aePointT<T> operator[] (const T &x) const {
+        return this->C::evaluate(x);
+    }
+};
+
+////////////////////////////////////////////////////////////////////////////////
+
+template <typename T, unsigned int Degree=3>
+class aeBezierCurveT : public aeCurveBaseT< T, aeBezierCurveT<T> > {
+public:
+    typedef std::vector< aePointT<T> > Points;
+
+public:
+    aeBezierCurveT() {
+    }
+
+    template <typename I>
+    aeBezierCurveT(
+        const I &a,
+        const I &b
+    ): mControlPoints(a, b) {
+    }
+
+    virtual aePointT<T> evaluate(const T &x) const;
+
+    Points &controlPoints() { return mControlPoints; }
+    const Points &controlPoints() const { return mControlPoints; }
+
+private:
+    Points mControlPoints;
+};
+
+////////////////////////////////////////////////////////////////////////////////
+
+template <typename T, unsigned int Degree=3>
+class aeNurbsCurveT : public aeCurveBaseT< T, aeBezierCurveT<T> > {
+public:
+    virtual aePointT<T> evaluate(const T &x) const;
+
+private:
+    std::vector< aePointT<T> > mControlPoints;
+    std::vector<T> mKnots;
+};
+
+////////////////////////////////////////////////////////////////////////////////
+
+typedef aeBezierCurveT<double> aeBezierCurve;
+typedef aeNurbsCurveT<double> aeNurbsCurve;
+
+////////////////////////////////////////////////////////////////////////////////
+
+#endif // __AECURVE_HPP__
+
+////////////////////////////////////////////////////////////////////////////////
+//  EOF
+////////////////////////////////////////////////////////////////////////////////
+

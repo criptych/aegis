@@ -16,6 +16,7 @@ ENDIF()
 SET(LIBSRCS
     src/aegis.hpp
     src/aeconst.hpp
+    src/aecurve.hpp
     src/aeexcept.hpp
     src/aeextent.hpp
     src/aegeom.hpp
@@ -27,6 +28,7 @@ SET(LIBSRCS
 
     src/aegis.cpp
     src/aeconst.cpp
+    src/aecurve.cpp
     src/aeexcept.cpp
     src/aeextent.cpp
     src/aegeom.cpp

@@ -8,6 +8,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "aeconst.hpp"
+#include "aecurve.hpp"
 #include "aeexcept.hpp"
 #include "aeextent.hpp"
 #include "aegeom.hpp"
