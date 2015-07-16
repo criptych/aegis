@@ -58,8 +58,11 @@ private:
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename T, unsigned int Degree=3>
-class aeNurbsCurveT : public aeCurveBaseT< T, aeBezierCurveT<T> > {
+class aeNurbsCurveT : public aeCurveBaseT< T, aeNurbsCurveT<T> > {
 public:
+    aeNurbsCurveT() {
+    }
+
     virtual aePointT<T> evaluate(const T &x) const;
 
 private:
