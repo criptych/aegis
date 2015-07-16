@@ -10,43 +10,31 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename T>
-void aeGeometryT<T>::updateExtent() const
+void aeGeometryT<T>::update() const
 {
     aeExtentT<T> extent;
 
+    T area = T();
+    aePointT<T> q;
+
+    if (!mPoints.empty()) {
+        q = mPoints.back();
+    }
+
     for (const aePointT<T> &p : mPoints) {
-        if (extent.min.x > p.x || std::isnan(extent.min.x)) {
-            extent.min.x = p.x;
-        }
-        if (extent.min.y > p.y || std::isnan(extent.min.y)) {
-            extent.min.y = p.y;
-        }
-        if (extent.min.z > p.z || std::isnan(extent.min.z)) {
-            extent.min.z = p.z;
-        }
-        if (extent.min.m > p.m || std::isnan(extent.min.m)) {
-            extent.min.m = p.m;
-        }
-        if (extent.max.x < p.x || std::isnan(extent.max.x)) {
-            extent.max.x = p.x;
-        }
-        if (extent.max.y < p.y || std::isnan(extent.max.y)) {
-            extent.max.y = p.y;
-        }
-        if (extent.max.z < p.z || std::isnan(extent.max.z)) {
-            extent.max.z = p.z;
-        }
-        if (extent.max.m < p.m || std::isnan(extent.max.m)) {
-            extent.max.m = p.m;
-        }
+        extent |= p;
+        area += det(q, p);
+        q = p;
     }
 
     mExtent = extent;
-    mUpdateExtent = false;
+    mArea = area * T(0.5);
+
+    mNeedsUpdate = false;
 }
 
 template <typename T>
-bool aeGeometryT<T>::findIntersections(std::vector< aePointT<T> > &intersections, bool abortOnFirst) const {
+bool aeGeometryT<T>::findIntersections(Points &intersections, bool abortOnFirst) const {
     struct Segment {
         aePointT<T> a;
         aePointT<T> b;
@@ -294,35 +282,13 @@ bool aeGeometryT<T>::findIntersections(std::vector< aePointT<T> > &intersections
     return intersections.size() > 0;
 }
 
-template <typename T>
-T aeGeometryT<T>::calculateArea() const {
-    unsigned int n = mPoints.size();
-    T area = 0.0;
-
-    if ((mType == Polygon) && (n >= 3)) {
-        for (unsigned int i = 0, j = 1; i < n; ++i, ++j) {
-            if (j >= n) {
-                j = 0;
-            }
-
-            area += det(mPoints[i], mPoints[j]);
-        }
-
-        area *= 0.5;
-    }
-
-    return area;
-}
-
 ////////////////////////////////////////////////////////////////////////////////
 
-template void aeGeometryT<double>::updateExtent() const;
+template void aeGeometryT<double>::update() const;
 template bool aeGeometryT<double>::findIntersections() const;
-template double aeGeometryT<double>::calculateArea() const;
 
-template void aeGeometryT<float>::updateExtent() const;
+template void aeGeometryT<float>::update() const;
 template bool aeGeometryT<float>::findIntersections() const;
-template float aeGeometryT<float>::calculateArea() const;
 
 ////////////////////////////////////////////////////////////////////////////////
 // EOF

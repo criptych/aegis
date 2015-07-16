@@ -46,18 +46,25 @@ public:
     typedef std::vector< aePointT<T> > Points;
 
 public:
-    aeGeometryT(Type type): mType(type), mUpdateExtent(true) {}
+    aeGeometryT(Type type): mType(type), mNeedsUpdate(true) {}
 
     Points &points() { return mPoints; }
     const Points &points() const { return mPoints; }
 
 private:
-    void updateExtent() const;
+    void update() const;
 
 public:
+    const T &area() const {
+        if (mNeedsUpdate) {
+            update();
+        }
+        return mArea;
+    }
+
     const aeExtentT<T> &extent() const {
-        if (mUpdateExtent) {
-            updateExtent();
+        if (mNeedsUpdate) {
+            update();
         }
         return mExtent;
     }
@@ -65,8 +72,6 @@ public:
     Type type() const { return mType; }
     bool hasZ() const { return mType & HasZ; }
     bool hasM() const { return mType & HasM; }
-
-    T calculateArea() const;
 
 private:
     bool findIntersections(Points &intersections, bool abortOnFirst) const;
@@ -84,8 +89,9 @@ public:
 private:
     Type mType;
     Points mPoints;
+    mutable T mArea;
     mutable aeExtentT<T> mExtent;
-    mutable bool mUpdateExtent;
+    mutable bool mNeedsUpdate;
 };
 
 ////////////////////////////////////////////////////////////////////////////////

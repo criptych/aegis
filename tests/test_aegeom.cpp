@@ -12,14 +12,14 @@ TEST_CASE("polygon area", "[aeGeometry][area]") {
 
     SECTION("empty polygon") {
         REQUIRE(g.points().size() == 0);
-        CHECK(g.calculateArea() == Approx(0.0));
+        CHECK(g.area() == Approx(0.0));
     }
 
     SECTION("one-point polygon") {
         g.points().push_back({0.0, 0.0});
 
         REQUIRE(g.points().size() == 1);
-        CHECK(g.calculateArea() == Approx(0.0));
+        CHECK(g.area() == Approx(0.0));
     }
 
     SECTION("two-point polygon") {
@@ -27,7 +27,7 @@ TEST_CASE("polygon area", "[aeGeometry][area]") {
         g.points().push_back({1.0, 0.0});
 
         REQUIRE(g.points().size() == 2);
-        CHECK(g.calculateArea() == Approx(0.0));
+        CHECK(g.area() == Approx(0.0));
     }
 
     SECTION("unit right triangle") {
@@ -36,7 +36,7 @@ TEST_CASE("polygon area", "[aeGeometry][area]") {
         g.points().push_back({1.0, 1.0});
 
         REQUIRE(g.points().size() == 3);
-        CHECK(g.calculateArea() == Approx(0.5));
+        CHECK(g.area() == Approx(0.5));
     }
 
     SECTION("unit square") {
@@ -46,7 +46,7 @@ TEST_CASE("polygon area", "[aeGeometry][area]") {
         g.points().push_back({0.0, 1.0});
 
         REQUIRE(g.points().size() == 4);
-        CHECK(g.calculateArea() == Approx(1.0));
+        CHECK(g.area() == Approx(1.0));
     }
 
     SECTION("irregular hexagon") {
@@ -58,7 +58,7 @@ TEST_CASE("polygon area", "[aeGeometry][area]") {
         g.points().push_back({0.0, 1.0});
 
         REQUIRE(g.points().size() == 6);
-        CHECK(g.calculateArea() == Approx(5.0));
+        CHECK(g.area() == Approx(5.0));
     }
 }
 
