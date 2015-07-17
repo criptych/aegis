@@ -30,6 +30,16 @@ private:
     std::string mMessage;
 };
 
+////////////////////////////////////////////////////////////////////////////////
+
+class aeException : public aeExceptionBase {
+public:
+    aeException() {}
+    aeException(const std::string &message): aeExceptionBase(message) {}
+};
+
+////////////////////////////////////////////////////////////////////////////////
+
 #define AE_EXCEPTION(B, T, P) \
 class T : public B { \
 public: \
@@ -37,8 +47,10 @@ public: \
     T(const std::string &message): B(std::string(P) + ": " + message) {} \
 };
 
-AE_EXCEPTION(aeExceptionBase, aeInternalError, "internal error");
-AE_EXCEPTION(aeExceptionBase, aeNotImplementedError, "feature not implemented");
+AE_EXCEPTION(aeException, aeInternalError, "internal error");
+AE_EXCEPTION(aeException, aeNotImplementedError, "feature not implemented");
+AE_EXCEPTION(aeException, aeArgumentError, "invalid argument");
+AE_EXCEPTION(aeException, aeInvalidStateError, "invalid object state");
 
 ////////////////////////////////////////////////////////////////////////////////
 
