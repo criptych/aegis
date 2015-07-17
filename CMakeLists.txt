@@ -45,6 +45,7 @@ SET(TESTSRCS
     include/catch.hpp
 
     tests/testmain.cpp
+    tests/test_aecurve.cpp
     tests/test_aeextent.cpp
     tests/test_aegeom.cpp
     tests/test_aestats.cpp
