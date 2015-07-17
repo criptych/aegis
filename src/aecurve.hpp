@@ -15,23 +15,23 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <typename T, typename C>
+template <typename C, typename T, typename X=T>
 class aeCurveBaseT {
 protected:
     aeCurveBaseT() {}
 
 public:
-    virtual aePointT<T> evaluate(const T &x) const = 0;
+    virtual aePointT<T> evaluate(const X &x) const = 0;
 
-    aePointT<T> operator[] (const T &x) const {
-        return this->C::evaluate(x);
+    aePointT<T> operator[] (const X &x) const {
+        return this->evaluate(x);
     }
 };
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <typename T, unsigned int Degree=3>
-class aeBezierCurveT : public aeCurveBaseT< T, aeBezierCurveT<T> > {
+template <unsigned int Degree, typename T, typename X=T>
+class aeBezierCurveT : public aeCurveBaseT< aeBezierCurveT<Degree, T, X>, T, X > {
 public:
     typedef std::vector< aePointT<T> > Points;
 
@@ -46,7 +46,7 @@ public:
     ): mControlPoints(a, b) {
     }
 
-    virtual aePointT<T> evaluate(const T &x) const;
+    virtual aePointT<T> evaluate(const X &x) const;
 
     Points &controlPoints() { return mControlPoints; }
     const Points &controlPoints() const { return mControlPoints; }
@@ -57,23 +57,35 @@ private:
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <typename T, unsigned int Degree=3>
-class aeNurbsCurveT : public aeCurveBaseT< T, aeNurbsCurveT<T> > {
+template <unsigned int Degree, typename T, typename X=T>
+class aeNurbsCurveT : public aeCurveBaseT< aeNurbsCurveT<Degree, T, X>, T, X > {
+public:
+    typedef std::vector< aePointT<T> > Points;
+    typedef std::vector<T> Knots;
+
 public:
     aeNurbsCurveT() {
     }
 
-    virtual aePointT<T> evaluate(const T &x) const;
+    virtual aePointT<T> evaluate(const X &x) const;
+
+    Points &controlPoints() { return mControlPoints; }
+    const Points &controlPoints() const { return mControlPoints; }
+
+    Knots &knots() { return mKnots; }
+    const Knots &knots() const { return mKnots; }
 
 private:
-    std::vector< aePointT<T> > mControlPoints;
+    Points mControlPoints;
     std::vector<T> mKnots;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
 
-typedef aeBezierCurveT<double> aeBezierCurve;
-typedef aeNurbsCurveT<double> aeNurbsCurve;
+typedef aeBezierCurveT<2, double> aeQuadraticBezierCurve;
+typedef aeBezierCurveT<3, double> aeCubicBezierCurve;
+typedef aeNurbsCurveT<2, double> aeQuadraticNurbsCurve;
+typedef aeNurbsCurveT<3, double> aeCubicNurbsCurve;
 
 ////////////////////////////////////////////////////////////////////////////////
 
