@@ -18,7 +18,11 @@
 template <typename K, typename T=double>
 class aeRtreeT {
 public:
-    aeRtreeT() {}
+    aeRtreeT(
+        float minFill = 0.3f,
+        unsigned int capacity = 32
+    ): mMinFill(minFill), mCapacity(capacity) {
+    }
 
     std::vector<K> search(const aeExtentT<T> &extent) const;
 
@@ -36,8 +40,8 @@ private:
     };
 
 private:
-    unsigned int mCapacity;
     float mMinFill;
+    unsigned int mCapacity;
     Page mRoot;
 };
 
