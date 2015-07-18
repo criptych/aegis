@@ -45,10 +45,17 @@ SET(TESTSRCS
     include/catch.hpp
 
     tests/testmain.cpp
+    tests/test_aeconst.cpp
     tests/test_aecurve.cpp
+    tests/test_aeexcept.cpp
     tests/test_aeextent.cpp
     tests/test_aegeom.cpp
+    tests/test_aelayer.cpp
+    tests/test_aepoint.cpp
+    tests/test_aeproj.cpp
+    tests/test_aertree.cpp
     tests/test_aestats.cpp
+    tests/test_aesymbol.cpp
 )
 
 SET(APPSRCS
