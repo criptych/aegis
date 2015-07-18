@@ -3,13 +3,23 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "aertree.hpp"
+#include "aeexcept.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename K, typename T>
 std::vector<K> aeRtreeT<K, T>::search(const aeExtentT<T> &extent) const {
-    //!@todo
-    return std::vector<K>();
+    throw aeNotImplementedError();
+}
+
+template <typename K, typename T>
+void aeRtreeT<K, T>::insert(const K &key, const aeExtentT<T> &extent) {
+    throw aeNotImplementedError();
+}
+
+template <typename K, typename T>
+void aeRtreeT<K, T>::remove(const K &key) {
+    throw aeNotImplementedError();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
