@@ -77,8 +77,9 @@ TEST_CASE("NURBS curve evaluation", "[aeCurve]") {
         curve.controlPoints().push_back(aePoint(1.0, 1.0));
         curve.controlPoints().push_back(aePoint(1.0, 0.0));
 
+        aePoint p;
         REQUIRE(curve.controlPoints().size() == 4);
-        aePoint p = curve.evaluate(0.5);
+        REQUIRE_NOTHROW(p = curve.evaluate(0.5));
         CHECK(p.x == Approx(0.5));
         CHECK(p.y == Approx(0.75));
     }
@@ -89,8 +90,9 @@ TEST_CASE("NURBS curve evaluation", "[aeCurve]") {
         curve.controlPoints().push_back(aePoint(1.0, 0.0));
         curve.controlPoints().push_back(aePoint(1.0, 1.0));
 
+        aePoint p;
         REQUIRE(curve.controlPoints().size() == 4);
-        aePoint p = curve.evaluate(0.5);
+        REQUIRE_NOTHROW(p = curve.evaluate(0.5));
         CHECK(p.x == Approx(0.5));
         CHECK(p.y == Approx(0.5));
     }
