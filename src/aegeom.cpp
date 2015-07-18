@@ -293,11 +293,8 @@ bool aeGeometryT<T>::findIntersections(Points &intersections, bool abortOnFirst)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template void aeGeometryT<double>::update() const;
-template bool aeGeometryT<double>::findIntersections() const;
-
-template void aeGeometryT<float>::update() const;
-template bool aeGeometryT<float>::findIntersections() const;
+template class aeGeometryT<double>;
+template class aeGeometryT<float>;
 
 ////////////////////////////////////////////////////////////////////////////////
 // EOF

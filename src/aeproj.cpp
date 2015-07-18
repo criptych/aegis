@@ -28,11 +28,8 @@ aePointT<T> aeProjectionT<T>::fromWebMercator(const aePointT<T> &p) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template aePointT<double> aeProjectionT<double>::toWebMercator(const aePointT<double> &p);
-template aePointT<double> aeProjectionT<double>::fromWebMercator(const aePointT<double> &p);
-
-template aePointT<float> aeProjectionT<float>::toWebMercator(const aePointT<float> &p);
-template aePointT<float> aeProjectionT<float>::fromWebMercator(const aePointT<float> &p);
+template class aeProjectionT<double>;
+template class aeProjectionT<float>;
 
 ////////////////////////////////////////////////////////////////////////////////
 // EOF

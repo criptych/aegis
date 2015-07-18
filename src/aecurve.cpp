@@ -36,13 +36,11 @@ aePointT<T> aeBezierCurveT<Degree, T, X>::evaluate(const X &x) const {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template aePointT<double> aeBezierCurveT<2, double, double>::evaluate(
-    const double &x
-) const;
+template class aeBezierCurveT<2, double, double>;
+template class aeBezierCurveT<3, double, double>;
 
-template aePointT<double> aeBezierCurveT<3, double, double>::evaluate(
-    const double &x
-) const;
+template class aeBezierCurveT<2, float, float>;
+template class aeBezierCurveT<3, float, float>;
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -53,13 +51,11 @@ aePointT<T> aeNurbsCurveT<Degree, T, X>::evaluate(const X &x) const {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template aePointT<double> aeNurbsCurveT<2, double, double>::evaluate(
-    const double &x
-) const;
+template class aeNurbsCurveT<2, double, double>;
+template class aeNurbsCurveT<3, double, double>;
 
-template aePointT<double> aeNurbsCurveT<3, double, double>::evaluate(
-    const double &x
-) const;
+template class aeNurbsCurveT<2, float, float>;
+template class aeNurbsCurveT<3, float, float>;
 
 ////////////////////////////////////////////////////////////////////////////////
 //  EOF

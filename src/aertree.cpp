@@ -14,13 +14,11 @@ std::vector<K> aeRtreeT<K, T>::search(const aeExtentT<T> &extent) const {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template std::vector<unsigned long> aeRtreeT<unsigned long, double>::search(
-    const aeExtentT<double> &extent
-) const;
+template class aeRtreeT<unsigned long, double>;
+template class aeRtreeT<void*, double>;
 
-template std::vector<void*> aeRtreeT<void*, double>::search(
-    const aeExtentT<double> &extent
-) const;
+template class aeRtreeT<unsigned long, float>;
+template class aeRtreeT<void*, float>;
 
 ////////////////////////////////////////////////////////////////////////////////
 //  EOF
