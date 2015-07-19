@@ -25,11 +25,21 @@ TEST_CASE("extent operations", "[aeExtent][extent]") {
         CHECK(e.max.y == Approx(2.0));
     }
 
-    SECTION("check intersection") {
+    SECTION("check empty intersection") {
         aeExtent e = e1 & e2;
         CHECK(e.isEmpty());
         CHECK(e.min.x == Approx(1.0));
         CHECK(e.min.y == Approx(1.0));
+        CHECK(e.max.x == Approx(1.0));
+        CHECK(e.max.y == Approx(1.0));
+    }
+
+    SECTION("check non-empty intersection") {
+        aeExtent e3 = { aePoint(0.5, 0.5), aePoint(1.5, 1.5) };
+        aeExtent e = e1 & e3;
+        CHECK(!e.isEmpty());
+        CHECK(e.min.x == Approx(0.5));
+        CHECK(e.min.y == Approx(0.5));
         CHECK(e.max.x == Approx(1.0));
         CHECK(e.max.y == Approx(1.0));
     }
