@@ -8,6 +8,25 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 TEST_CASE("exceptions", "[aeException]") {
+    CHECK_THROWS_AS(
+        throw aeInternalError("aeException test"),
+        aeInternalError
+    );
+
+    CHECK_THROWS_AS(
+        throw aeNotImplementedError("aeException test"),
+        aeNotImplementedError
+    );
+
+    CHECK_THROWS_AS(
+        throw aeArgumentError("aeException test"),
+        aeArgumentError
+    );
+
+    CHECK_THROWS_AS(
+        throw aeInvalidStateError("aeException test"),
+        aeInvalidStateError
+    );
 }
 
 ////////////////////////////////////////////////////////////////////////////////
