@@ -11,7 +11,40 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
+#include <type_traits>
 #include <vector>
+
+////////////////////////////////////////////////////////////////////////////////
+
+namespace {
+    template <unsigned int N>
+    constexpr unsigned int factorial() {
+        return N * factorial<N-1>();
+    }
+
+    template <>
+    constexpr unsigned int factorial<0>() {
+        return 1;
+    }
+
+    template <unsigned int N, unsigned int M>
+    constexpr unsigned int binomial() {
+        return factorial<N>() / (factorial<M>() * factorial<N-M>());
+    }
+
+    template <typename T, unsigned int N>
+    T ipow(const T &t, std::integral_constant<unsigned int, N>) {
+        return t * ipow(t, std::integral_constant<unsigned int, N-1>());
+    }
+
+    template <typename T>
+    T ipow(const T &t, std::integral_constant<unsigned int, 0>) {
+        return T(1);
+    }
+
+    template <typename T, typename X, unsigned int N>
+    T bezier(const X &x, std::integral_constant<unsigned int, N>()
+};
 
 ////////////////////////////////////////////////////////////////////////////////
 
