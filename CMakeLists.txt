@@ -24,6 +24,7 @@ SET(LIBSRCS
     src/aepoint.hpp
     src/aeproj.hpp
     src/aertree.hpp
+    src/aescript.hpp
     src/aestats.hpp
     src/aesymbol.hpp
     src/aetypes.hpp
@@ -39,6 +40,7 @@ SET(LIBSRCS
     src/aepoint.cpp
     src/aeproj.cpp
     src/aertree.cpp
+    src/aescript.cpp
     src/aestats.cpp
     src/aesymbol.cpp
     src/aetypes.cpp
@@ -58,6 +60,7 @@ SET(TESTSRCS
     tests/test_aepoint.cpp
     tests/test_aeproj.cpp
     tests/test_aertree.cpp
+    tests/test_aescript.cpp
     tests/test_aestats.cpp
     tests/test_aesymbol.cpp
     tests/test_aetypes.cpp
@@ -93,16 +96,17 @@ INCLUDE_DIRECTORIES(
 IF(AEGIS_SHAREDLIB)
     ADD_LIBRARY(libshared SHARED ${LIBSRCS})
     SET_TARGET_PROPERTIES(libshared PROPERTIES OUTPUT_NAME "aegis")
+    TARGET_LINK_LIBRARIES(libshared ${LUA_LIBRARY})
 ENDIF()
 
 IF(AEGIS_STATICLIB)
     ADD_LIBRARY(libstatic STATIC ${LIBSRCS})
     SET_TARGET_PROPERTIES(libstatic PROPERTIES OUTPUT_NAME "aegis")
+    TARGET_LINK_LIBRARIES(libstatic ${LUA_LIBRARY})
 ENDIF()
 
 ADD_EXECUTABLE(aegis-test ${TESTSRCS})
 ADD_EXECUTABLE(aegis ${APPSRCS})
-TARGET_LINK_LIBRARIES(aegis ${LUA_LIBRARIES})
 
 IF(AEGIS_SHAREDLIB)
     TARGET_LINK_LIBRARIES(aegis-test libshared)

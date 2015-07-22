@@ -16,6 +16,7 @@
 #include "aepoint.hpp"
 #include "aeproj.hpp"
 #include "aertree.hpp"
+#include "aescript.hpp"
 #include "aestats.hpp"
 #include "aesymbol.hpp"
 #include "aetypes.hpp"
