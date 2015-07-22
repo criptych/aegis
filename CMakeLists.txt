@@ -27,6 +27,7 @@ SET(LIBSRCS
     src/aestats.hpp
     src/aesymbol.hpp
     src/aetypes.hpp
+    src/aeuuid.hpp
 
     src/aegis.cpp
     src/aeconst.cpp
@@ -41,6 +42,7 @@ SET(LIBSRCS
     src/aestats.cpp
     src/aesymbol.cpp
     src/aetypes.cpp
+    src/aeuuid.cpp
 )
 
 SET(TESTSRCS
@@ -59,6 +61,7 @@ SET(TESTSRCS
     tests/test_aestats.cpp
     tests/test_aesymbol.cpp
     tests/test_aetypes.cpp
+    tests/test_aeuuid.cpp
 )
 
 SET(APPSRCS

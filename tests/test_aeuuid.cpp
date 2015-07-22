@@ -2,28 +2,29 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __AEGIS_HPP__
-#define __AEGIS_HPP__ 1
-
-////////////////////////////////////////////////////////////////////////////////
-
-#include "aeconst.hpp"
-#include "aecurve.hpp"
-#include "aeexcept.hpp"
-#include "aeextent.hpp"
-#include "aegeom.hpp"
-#include "aelayer.hpp"
-#include "aepoint.hpp"
-#include "aeproj.hpp"
-#include "aertree.hpp"
-#include "aestats.hpp"
-#include "aesymbol.hpp"
-#include "aetypes.hpp"
+#include "catch.hpp"
 #include "aeuuid.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////
 
-#endif // __AEGIS_HPP__
+std::ostream &operator << (std::ostream &os, const aeUuid &uuid) {
+    return os << std::string(uuid);
+}
+
+TEST_CASE("UUID", "[aeUuid]") {
+    aeUuid uu1;
+    aeUuid uu2;
+
+    SECTION("operations") {
+        CHECK(uu1 != uu2);
+    }
+
+    SECTION("copying") {
+        aeUuid uu3(uu1);
+        CHECK(uu1 == uu3);
+        CHECK(uu2 != uu3);
+    }
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 //  EOF
