@@ -35,6 +35,10 @@ public:
 
     ~aeScriptThread();
 
+    aeScriptThread &loadSafeLibraries();
+    aeScriptThread &loadBasicLibraries();
+    aeScriptThread &loadAllLibraries();
+
     aeScriptThread &execute(const aeScript &script);
     aeScriptThread spawn(const aeScript &script);
     aeScriptThread spawn();

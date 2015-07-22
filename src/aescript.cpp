@@ -65,6 +65,30 @@ aeScriptThread::~aeScriptThread() {
     }
 }
 
+aeScriptThread &aeScriptThread::loadSafeLibraries() {
+    luaL_requiref(mState, "string", luaopen_string, 1);
+    luaL_requiref(mState, "utf8", luaopen_utf8, 1);
+    luaL_requiref(mState, "table", luaopen_table, 1);
+    luaL_requiref(mState, "math", luaopen_math, 1);
+    return *this;
+}
+
+aeScriptThread &aeScriptThread::loadBasicLibraries() {
+    loadSafeLibraries();
+    luaL_requiref(mState, "_G", luaopen_base, 1);
+    luaL_requiref(mState, "package", luaopen_package, 1);
+    luaL_requiref(mState, "coroutine", luaopen_coroutine, 1);
+    return *this;
+}
+
+aeScriptThread &aeScriptThread::loadAllLibraries() {
+    loadBasicLibraries();
+    luaL_requiref(mState, "io", luaopen_io, 1);
+    luaL_requiref(mState, "os", luaopen_os, 1);
+    luaL_requiref(mState, "debug", luaopen_debug, 1);
+    return *this;
+}
+
 aeScriptThread &aeScriptThread::execute(const aeScript &script) {
     if (luaL_loadbuffer(
         mState,
@@ -73,6 +97,12 @@ aeScriptThread &aeScriptThread::execute(const aeScript &script) {
         script.name().c_str()
     )) {
         throw aeArgumentError(lua_tostring(mState, -1));
+    }
+    if (
+        lua_pushlstring(mState, script.name().c_str(), script.name().size()),
+        lua_pcall(mState, 1, 0, 0)
+    ) {
+        throw aeInvalidStateError(lua_tostring(mState, -1));
     }
     return *this;
 }
