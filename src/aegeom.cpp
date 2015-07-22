@@ -106,16 +106,16 @@ bool aeGeometryT<T>::findIntersections(Points &intersections, bool abortOnFirst)
     class SweepLine {
     public:
         void insert(const Segment *seg) {
-            /// @todo
+            //!@todo implement
         }
 
         const Segment *above(const Segment *seg) const {
-            /// @todo
+            //!@todo implement
             return nullptr;
         }
 
         const Segment *below(const Segment *seg) const {
-            /// @todo
+            //!@todo implement
             return nullptr;
         }
 
@@ -236,7 +236,7 @@ bool aeGeometryT<T>::findIntersections(Points &intersections, bool abortOnFirst)
 
             case Event::Intersection: {
                 intersections.push_back(e.point);
-                //! @todo
+                //!@todo implement
                 break;
             }
         }
