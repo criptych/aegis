@@ -9,10 +9,12 @@
 
 #include "aegeom.hpp"
 #include "aesymbol.hpp"
+#include "aetypes.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////
 
 struct aeFeature {
+    aeOID id;
     aeGeometry *geometry;
     aeSymbol *symbol;
 };

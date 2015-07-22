@@ -26,6 +26,7 @@ SET(LIBSRCS
     src/aertree.hpp
     src/aestats.hpp
     src/aesymbol.hpp
+    src/aetypes.hpp
 
     src/aegis.cpp
     src/aeconst.cpp
@@ -39,6 +40,7 @@ SET(LIBSRCS
     src/aertree.cpp
     src/aestats.cpp
     src/aesymbol.cpp
+    src/aetypes.cpp
 )
 
 SET(TESTSRCS
@@ -56,6 +58,7 @@ SET(TESTSRCS
     tests/test_aertree.cpp
     tests/test_aestats.cpp
     tests/test_aesymbol.cpp
+    tests/test_aetypes.cpp
 )
 
 SET(APPSRCS
