@@ -86,7 +86,7 @@ ENDIF()
 
 ################################################################################
 
-ADD_SUBDIRECTORY(lua-5.3.1)
+ADD_SUBDIRECTORY(lua-5.3.1 EXCLUDE_FROM_ALL)
 
 INCLUDE_DIRECTORIES(
     ${CMAKE_CURRENT_SOURCE_DIR}/include/
