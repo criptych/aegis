@@ -7,6 +7,11 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
+template <typename T>
+std::ostream &operator << (std::ostream &os, const aePointT<T> &p) {
+    return os << '<' << p.x << ',' << p.y << ',' << p.z << ',' << p.m << '>';
+}
+
 TEST_CASE("point primitive", "[aePoint]") {
     aePoint a(0.0, 0.0);
     aePoint b(1.0, 1.0);
