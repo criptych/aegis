@@ -53,15 +53,16 @@ namespace {
             const X &x,
             const T *t
         ) {
-            return t[I] * _ipow<X, binomial<N, I>()>()(x) +
-                   _sum<T, X, N, I-1>()(x, t);
+            return binomial<N, I>() * _ipow<X, N-I>()(X(1)-x) *
+                   _ipow<X, I>()(x) * t[I] + _sum<T, X, N, I-1>()(x, t);
         }
     };
 
     template <typename T, typename X, unsigned int N>
     struct _sum<T, X, N, 0> {
         T operator () (const X &x, const T *t) {
-            return t[0] * _ipow<X, binomial<N, 0>()>()(x);
+            return binomial<N, 0>() * _ipow<X, N>()(X(1)-x) *
+                   _ipow<X, 0>()(x) * t[0];
         }
     };
 
