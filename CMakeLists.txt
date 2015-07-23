@@ -86,25 +86,25 @@ ENDIF()
 
 ################################################################################
 
-FIND_PACKAGE(Lua51 REQUIRED QUIET)
+ADD_SUBDIRECTORY(lua-5.3.1)
 
 INCLUDE_DIRECTORIES(
     ${CMAKE_CURRENT_SOURCE_DIR}/include/
     ${CMAKE_CURRENT_SOURCE_DIR}/src/
-    ${LUA_INCLUDE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/lua-5.3.1/src/
 )
 
 IF(AEGIS_SHAREDLIB)
     ADD_LIBRARY(libshared SHARED ${LIBSRCS})
     SET_TARGET_PROPERTIES(libshared PROPERTIES OUTPUT_NAME "aegis")
-    TARGET_LINK_LIBRARIES(libshared ${LUA_LIBRARY})
+    TARGET_LINK_LIBRARIES(libshared liblua)
     SET(LIBNAME libshared)
 ENDIF()
 
 IF(AEGIS_STATICLIB)
     ADD_LIBRARY(libstatic STATIC ${LIBSRCS})
     SET_TARGET_PROPERTIES(libstatic PROPERTIES OUTPUT_NAME "aegis")
-    TARGET_LINK_LIBRARIES(libstatic ${LUA_LIBRARY})
+    TARGET_LINK_LIBRARIES(libstatic liblua)
     SET(LIBNAME libstatic)
 ENDIF()
 
