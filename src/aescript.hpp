@@ -35,8 +35,24 @@ public:
 
     ~aeScriptThread();
 
+    /**
+     * Loads built-in libraries that are deemed "safe", with no facilities to
+     * break sandboxing (under normal circumstances; bugs and malicious code
+     * notwithstanding).
+     */
     aeScriptThread &loadSafeLibraries();
+
+    /**
+     * Loads potentially unsafe built-in libraries, including facilities to
+     * load external code or cause the interpreter to hang/freeze.
+     */
     aeScriptThread &loadBasicLibraries();
+
+    /**
+     * Loads patently unsafe built-in libraries, including facilities to access
+     * the filesystem, start external processes, close the application
+     * unexpectedly, or directly manipulate the interpreter state.
+     */
     aeScriptThread &loadAllLibraries();
 
     aeScriptThread &execute(const aeScript &script);
