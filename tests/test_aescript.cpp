@@ -27,6 +27,13 @@ TEST_CASE("script", "[aeScript]") {
         aeScript script("for i = 1, 10 do print(i) end");
         CHECK_NOTHROW(host.execute(script));
     }
+
+    SECTION("loading") {
+        host.loadBasicLibraries();
+        aeScript script;
+        script.load("test.lua");
+        CHECK_NOTHROW(host.execute(script));
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////

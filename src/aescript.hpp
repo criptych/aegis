@@ -13,12 +13,17 @@
 
 class aeScript {
 public:
-    aeScript(const std::string &source, const std::string &name = "");
+    aeScript() {}
+    aeScript(const std::string &source);
+    aeScript(const std::string &source, const std::string &name);
+
+    void load(const std::string &filename);
 
     std::string source() const;
     std::string &source();
 
     std::string name() const;
+    std::string &name();
 
 private:
     std::string mSource;
@@ -28,6 +33,9 @@ private:
 class aeScriptThread {
 protected:
     aeScriptThread(struct lua_State *state);
+
+    int pushThread(const aeScriptThread &thread);
+    int pushThread() { return pushThread(*this); }
 
 public:
     aeScriptThread(const aeScriptThread &thread) = delete;
@@ -55,6 +63,8 @@ public:
      */
     aeScriptThread &loadAllLibraries();
 
+    aeScriptThread &loadLibrary(const char *name, int(*loader)(struct lua_State*));
+
     aeScriptThread &execute(const aeScript &script);
     aeScriptThread spawn(const aeScript &script);
     aeScriptThread spawn();
@@ -67,6 +77,10 @@ class aeScriptHost : public aeScriptThread {
 public:
     aeScriptHost();
 };
+
+////////////////////////////////////////////////////////////////////////////////
+
+extern "C" int luaopen_aegis(struct lua_State*);
 
 ////////////////////////////////////////////////////////////////////////////////
 

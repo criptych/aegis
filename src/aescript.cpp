@@ -15,18 +15,42 @@ extern "C" {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-extern "C" int luaopen_aegis(struct lua_State*) {
-    return 0;
-}
+#include <fstream>
+#include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
+
+aeScript::aeScript(
+    const std::string &source
+): mSource(source), mName(source) {
+}
 
 aeScript::aeScript(
     const std::string &source,
     const std::string &name
 ): mSource(source), mName(name) {
+    if (mName[0] != '@' && mName[0] != '=') {
+        mName = '=' + mName;
+    }
 }
 
+void aeScript::load(const std::string &filename) {
+    try {
+        std::ifstream str;
+        str.open(filename);
+        if (str) {
+            str >> mSource;
+            mName = "@"+filename;
+            str.close();
+        } else {
+            mName = mSource = "";
+        }
+    }
+    catch (...) {
+        mName = mSource = "";
+        throw;
+    }
+}
 
 std::string aeScript::source() const {
     return mSource;
@@ -40,11 +64,19 @@ std::string aeScript::name() const {
     return mName;
 }
 
+std::string &aeScript::name() {
+    return mName;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 
 aeScriptThread::aeScriptThread(struct lua_State *state): mState(state) {
     lua_pushthread(mState);
     lua_rawsetp(mState, LUA_REGISTRYINDEX, this);
+}
+
+int aeScriptThread::pushThread(const aeScriptThread &thread) {
+    return lua_rawgetp(mState, LUA_REGISTRYINDEX, &thread);
 }
 
 aeScriptThread::aeScriptThread(aeScriptThread &&thread): mState() {
@@ -89,6 +121,11 @@ aeScriptThread &aeScriptThread::loadAllLibraries() {
     return *this;
 }
 
+aeScriptThread &aeScriptThread::loadLibrary(const char *name, lua_CFunction loader) {
+    luaL_requiref(mState, name, loader, 1);
+    return *this;
+}
+
 aeScriptThread &aeScriptThread::execute(const aeScript &script) {
     if (luaL_loadbuffer(
         mState,
@@ -118,6 +155,15 @@ aeScriptThread aeScriptThread::spawn() {
 ////////////////////////////////////////////////////////////////////////////////
 
 aeScriptHost::aeScriptHost(): aeScriptThread(luaL_newstate()) {
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//  Bindings and library
+////////////////////////////////////////////////////////////////////////////////
+
+extern "C" int luaopen_aegis(lua_State *state) {
+    lua_newtable(state);
+    return 1;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
