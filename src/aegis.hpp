@@ -18,6 +18,7 @@
 #include "aertree.hpp"
 #include "aescript.hpp"
 #include "aestats.hpp"
+#include "aestream.hpp"
 #include "aesymbol.hpp"
 #include "aetypes.hpp"
 #include "aeuuid.hpp"
