@@ -26,7 +26,9 @@ struct aeUuid {
     aeUuid(Version version = Version::Random);
     aeUuid(uint32_t data1, uint16_t data2, uint16_t data3, uint8_t data4[8]);
 
-    operator std::string() const;
+    std::string toString() const;
+
+    operator std::string() const { return toString(); }
 
     Version version() const;
 

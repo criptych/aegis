@@ -73,11 +73,11 @@ aeUuid::aeUuid(
     data[15] = data4[7];
 }
 
-aeUuid::operator std::string() const {
+std::string aeUuid::toString() const {
     char uuid[37];
     snprintf(
         uuid, sizeof(uuid),
-        "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x",
+        "%02X%02X%02X%02X-%02X%02X-%02X%02X-%02X%02X-%02X%02X%02X%02X%02X%02X",
         data[ 0], data[ 1], data[ 2], data[ 3],
         data[ 4], data[ 5], data[ 6], data[ 7],
         data[ 8], data[ 9], data[10], data[11],
