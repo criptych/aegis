@@ -64,6 +64,93 @@ TEST_CASE("polygon area", "[aeGeometry][area]") {
 
 ////////////////////////////////////////////////////////////////////////////////
 
+TEST_CASE("polygon centroid", "[aeGeometry][centroid]") {
+    aeGeometry g = { aeGeometry::Polygon };
+
+    SECTION("empty polygon") {
+        CAPTURE(g.area());
+        CAPTURE(g.centroid().x);
+        CAPTURE(g.centroid().y);
+
+        REQUIRE(g.points().size() == 0);
+        CHECK(std::isnan(g.centroid().x));
+        CHECK(std::isnan(g.centroid().y));
+    }
+
+    SECTION("one-point polygon") {
+        g.points().push_back({0.0, 0.0});
+
+        CAPTURE(g.area());
+        CAPTURE(g.centroid().x);
+        CAPTURE(g.centroid().y);
+
+        REQUIRE(g.points().size() == 1);
+        CHECK(g.centroid().x == Approx(0.0));
+        CHECK(g.centroid().y == Approx(0.0));
+    }
+
+    SECTION("two-point polygon") {
+        g.points().push_back({0.0, 0.0});
+        g.points().push_back({1.0, 0.0});
+
+        CAPTURE(g.area());
+        CAPTURE(g.centroid().x);
+        CAPTURE(g.centroid().y);
+
+        REQUIRE(g.points().size() == 2);
+        CHECK(g.centroid().x == Approx(0.5));
+        CHECK(g.centroid().y == Approx(0.0));
+    }
+
+    SECTION("unit right triangle") {
+        g.points().push_back({0.0, 0.0});
+        g.points().push_back({1.0, 0.0});
+        g.points().push_back({1.0, 1.0});
+
+        CAPTURE(g.area());
+        CAPTURE(g.centroid().x);
+        CAPTURE(g.centroid().y);
+
+        REQUIRE(g.points().size() == 3);
+        CHECK(g.centroid().x == Approx(0.6666666667));
+        CHECK(g.centroid().y == Approx(0.3333333333));
+    }
+
+    SECTION("unit square") {
+        g.points().push_back({0.0, 0.0});
+        g.points().push_back({1.0, 0.0});
+        g.points().push_back({1.0, 1.0});
+        g.points().push_back({0.0, 1.0});
+
+        CAPTURE(g.area());
+        CAPTURE(g.centroid().x);
+        CAPTURE(g.centroid().y);
+
+        REQUIRE(g.points().size() == 4);
+        CHECK(g.centroid().x == Approx(0.5));
+        CHECK(g.centroid().y == Approx(0.5));
+    }
+
+    SECTION("irregular hexagon") {
+        g.points().push_back({0.0, 0.0});
+        g.points().push_back({3.0, 0.0});
+        g.points().push_back({3.0, 1.0});
+        g.points().push_back({2.0, 2.0});
+        g.points().push_back({1.0, 2.0});
+        g.points().push_back({0.0, 1.0});
+
+        CAPTURE(g.area());
+        CAPTURE(g.centroid().x);
+        CAPTURE(g.centroid().y);
+
+        REQUIRE(g.points().size() == 6);
+        CHECK(g.centroid().x == Approx( 3.0/ 2.0));
+        CHECK(g.centroid().y == Approx(13.0/15.0));
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 TEST_CASE("polygon extent", "[aeGeometry][extent]") {
     aeGeometry g = { aeGeometry::Polygon };
 
