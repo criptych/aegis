@@ -15,8 +15,7 @@ extern "C" {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <fstream>
-#include <iostream>
+#include "aestream.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -36,15 +35,12 @@ aeScript::aeScript(
 
 void aeScript::load(const std::string &filename) {
     try {
-        std::ifstream str;
-        str.open(filename);
-        if (str) {
-            str >> mSource;
-            mName = "@"+filename;
-            str.close();
-        } else {
-            mName = mSource = "";
-        }
+        aeFileInputStream str(filename);
+        char tmp[str.length()];
+        str.read(tmp, sizeof(tmp));
+        mSource.assign(tmp, sizeof(tmp));
+        mName = "@"+filename;
+        str.close();
     }
     catch (...) {
         mName = mSource = "";
