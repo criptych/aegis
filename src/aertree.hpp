@@ -82,9 +82,7 @@ private:
 ////////////////////////////////////////////////////////////////////////////////
 
 typedef aeRtreeT<void*, double> aeRtree;
-typedef aeRtreeT<int32_t, double> aeRtreeInt32;
-typedef aeRtreeT<uint32_t, double> aeRtreeUint32;
-typedef aeRtreeT<ptrdiff_t, double> aeRtreeInt;
+typedef aeRtreeT<int, double> aeRtreeInt;
 
 ////////////////////////////////////////////////////////////////////////////////
 
