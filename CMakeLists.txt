@@ -71,6 +71,11 @@ SET(TESTSRCS
     tests/test_aeuuid.cpp
 )
 
+SET(WX_COMPONENTS
+    #aui propgrid adv net stc ribbon webview html xml
+    gl core base
+)
+
 SET(APPSRCS
     src/aemain.cpp
 )
@@ -118,7 +123,7 @@ IF(AEGIS_TESTS)
     TARGET_LINK_LIBRARIES(aegis-test ${LIBNAME})
 ENDIF()
 
-FIND_PACKAGE(wxWidgets 3.0)
+FIND_PACKAGE(wxWidgets 3.0 COMPONENTS ${WX_COMPONENTS})
 IF(wxWidgets_FOUND)
     INCLUDE_DIRECTORIES(${wxWidgets_INCLUDE_DIRS})
     ADD_EXECUTABLE(aegis ${APPSRCS})
