@@ -34,6 +34,13 @@ TEST_CASE("script", "[aeScript]") {
         script.load("test.lua");
         CHECK_NOTHROW(host.execute(script));
     }
+
+    SECTION("bindings") {
+        host.loadBasicLibraries();
+        host.loadLibrary("ae", luaopen_aegis);
+        aeScript script("print(ae.Extent()); print(ae.Projection()); print(ae.Stats()); print(ae.Uuid())");
+        CHECK_NOTHROW(host.execute(script));
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
