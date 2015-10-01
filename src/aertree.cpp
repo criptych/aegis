@@ -5,6 +5,8 @@
 #include "aertree.hpp"
 #include "aeexcept.hpp"
 
+//! @see <http://www.superliminal.com/sources/sources.htm>
+
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename K, typename T>
