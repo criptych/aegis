@@ -62,6 +62,13 @@ public:
         return mArea;
     }
 
+    const aePointT<T> &centroid() const {
+        if (mNeedsUpdate) {
+            update();
+        }
+        return mCentroid;
+    }
+
     const aeExtentT<T> &extent() const {
         if (mNeedsUpdate) {
             update();
@@ -90,6 +97,7 @@ private:
     Type mType;
     Points mPoints;
     mutable T mArea;
+    mutable aePointT<T> mCentroid;
     mutable aeExtentT<T> mExtent;
     mutable bool mNeedsUpdate;
 };

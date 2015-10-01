@@ -14,20 +14,34 @@ void aeGeometryT<T>::update() const {
     aeExtentT<T> extent;
 
     T area = T();
-    aePointT<T> q;
+    aePointT<T> q, c;
 
     if (!mPoints.empty()) {
         q = mPoints.back();
-    }
 
-    for (const aePointT<T> &p : mPoints) {
-        extent |= p;
-        area += det(q, p);
-        q = p;
+        for (const aePointT<T> &p : mPoints) {
+            extent |= p;
+            T d = det(q, p);
+            c += (q + p) * d;
+            area += d;
+            q = p;
+        }
     }
 
     mExtent = extent;
     mArea = area * T(0.5);
+
+    if (mPoints.size() == 1) {
+        // N == 1 -> centroid = single point
+        mCentroid = mPoints[0];
+    } else if (mPoints.size() == 2) {
+        // N == 2 -> centroid = midpoint
+        mCentroid = (mPoints[0] + mPoints[1]) / T(2);
+    } else {
+        // N == 0 -> centroid = <NaN, NaN>
+        // N > 2 -> centroid = calculated from area
+        mCentroid = c / (mArea * T(6.0));
+    }
 
     mNeedsUpdate = false;
 }
