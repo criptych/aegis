@@ -121,7 +121,7 @@ ENDIF()
 ADD_EXECUTABLE(aegis ${APPSRCS})
 TARGET_LINK_LIBRARIES(aegis ${LIBNAME})
 
-ADD_CUSTOM_TARGET(check COMMAND aegis-test)
+ADD_CUSTOM_TARGET(check COMMAND aegis-test -s -d y -r xml -o testout.xml)
 
 ################################################################################
 ##  EOF
