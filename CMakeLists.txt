@@ -27,6 +27,7 @@ SET(LIBSRCS
     src/aertree.hpp
     src/aescript.hpp
     src/aestats.hpp
+    src/aestream.hpp
     src/aesymbol.hpp
     src/aetypes.hpp
     src/aeuuid.hpp
@@ -43,6 +44,7 @@ SET(LIBSRCS
     src/aertree.cpp
     src/aescript.cpp
     src/aestats.cpp
+    src/aestream.cpp
     src/aesymbol.cpp
     src/aetypes.cpp
     src/aeuuid.cpp
@@ -63,6 +65,7 @@ SET(TESTSRCS
     tests/test_aertree.cpp
     tests/test_aescript.cpp
     tests/test_aestats.cpp
+    tests/test_aestream.cpp
     tests/test_aesymbol.cpp
     tests/test_aetypes.cpp
     tests/test_aeuuid.cpp
@@ -87,24 +90,26 @@ ENDIF()
 ################################################################################
 
 ADD_SUBDIRECTORY(lua-5.3.1 EXCLUDE_FROM_ALL)
+ADD_SUBDIRECTORY(physfs-2.1 EXCLUDE_FROM_ALL)
 
 INCLUDE_DIRECTORIES(
     ${CMAKE_CURRENT_SOURCE_DIR}/include/
     ${CMAKE_CURRENT_SOURCE_DIR}/src/
     ${CMAKE_CURRENT_SOURCE_DIR}/lua-5.3.1/src/
+    ${CMAKE_CURRENT_SOURCE_DIR}/physfs-2.1/src/
 )
 
 IF(AEGIS_SHAREDLIB)
     ADD_LIBRARY(libshared SHARED ${LIBSRCS})
     SET_TARGET_PROPERTIES(libshared PROPERTIES OUTPUT_NAME "aegis")
-    TARGET_LINK_LIBRARIES(libshared liblua)
+    TARGET_LINK_LIBRARIES(libshared liblua physfs-static)
     SET(LIBNAME libshared)
 ENDIF()
 
 IF(AEGIS_STATICLIB)
     ADD_LIBRARY(libstatic STATIC ${LIBSRCS})
     SET_TARGET_PROPERTIES(libstatic PROPERTIES OUTPUT_NAME "aegis")
-    TARGET_LINK_LIBRARIES(libstatic liblua)
+    TARGET_LINK_LIBRARIES(libstatic liblua physfs-static)
     SET(LIBNAME libstatic)
 ENDIF()
 
