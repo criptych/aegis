@@ -10,9 +10,42 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-aeFileInputStream::aeFileInputStream(const std::string &filename) {
-    if (!(mFile = PHYSFS_openRead(filename.c_str()))) {
-        throw aeStreamError(std::string("error opening file for writing: ") + PHYSFS_getLastError());
+class aePhysFS {
+public:
+    static void init();
+
+private:
+    aePhysFS();
+    ~aePhysFS();
+};
+
+void aePhysFS::init() {
+    static aePhysFS instance;
+}
+
+aePhysFS::aePhysFS() {
+    if (!PHYSFS_init(NULL)) {
+        throw aeStreamError(std::string("error initializing filesystem: ") + PHYSFS_getLastError());
+    }
+
+    const char *baseDir = PHYSFS_getBaseDir();
+
+    if (!PHYSFS_mount(baseDir, "/", 0)) {
+        throw aeStreamError(std::string("error mounting filesystem: ") + PHYSFS_getLastError());
+    }
+}
+
+aePhysFS::~aePhysFS() {
+    PHYSFS_deinit();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+aeFileInputStream::aeFileInputStream(const std::string &filename): mFile() {
+    aePhysFS::init();
+    mFile = PHYSFS_openRead(filename.c_str());
+    if (!mFile) {
+        throw aeStreamError(std::string("error opening file for reading: ") + PHYSFS_getLastError() + " (\"" + filename + "\")");
     }
 }
 
@@ -45,9 +78,11 @@ int64_t aeFileInputStream::length() {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-aeFileOutputStream::aeFileOutputStream(const std::string &filename) {
-    if (!(mFile = PHYSFS_openWrite(filename.c_str()))) {
-        throw aeStreamError(std::string("error opening file for writing: ") + PHYSFS_getLastError());
+aeFileOutputStream::aeFileOutputStream(const std::string &filename): mFile() {
+    aePhysFS::init();
+    mFile = PHYSFS_openWrite(filename.c_str());
+    if (!mFile) {
+        throw aeStreamError(std::string("error opening file for writing: ") + PHYSFS_getLastError() + " (\"" + filename + "\")");
     }
 }
 
