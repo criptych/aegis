@@ -161,8 +161,178 @@ aeScriptHost::aeScriptHost(): aeScriptThread(luaL_newstate()) {
 //  Bindings and library
 ////////////////////////////////////////////////////////////////////////////////
 
+#include "aeextent.hpp"
+#include "aegeom.hpp"
+#include "aelayer.hpp"
+#include "aepoint.hpp"
+#include "aeproj.hpp"
+#include "aestats.hpp"
+#include "aesymbol.hpp"
+#include "aeuuid.hpp"
+
+#include <map>
+
+////////////////////////////////////////////////////////////////////////////////
+
+class aeScriptBindingBase {
+public:
+    aeScriptBindingBase() {
+    }
+
+    ~aeScriptBindingBase() {
+    }
+
+    void addMethod(const std::string &name, lua_CFunction func) {
+        mMethods[name] = func;
+    }
+
+protected:
+    void bind(lua_State *state, const char *name) {
+        luaL_newmetatable(state, name);
+        lua_pushvalue(state, -1);
+        lua_setfield(state, -2, "__index");
+        for (const auto &method : mMethods) {
+            lua_pushcfunction(state, method.second);
+            lua_setfield(state, -2, method.first.c_str());
+        }
+        lua_newtable(state);
+        lua_getfield(state, -2, "__new");
+        lua_setfield(state, -2, "__call");
+        lua_setmetatable(state, -2);
+        lua_setfield(state, -2, name);
+    }
+
+    static void *create(lua_State *state, const char *type, size_t size) {
+        void *p = lua_newuserdata(state, size);
+        luaL_setmetatable(state, type);
+        return p;
+    }
+
+    static void *test(lua_State *state, int index, const char *type) {
+        return luaL_testudata(state, index, type);
+    }
+
+    static void *check(lua_State *state, int index, const char *type) {
+        return luaL_checkudata(state, index, type);
+    }
+
+    static const char *toString(lua_State *state, int index, const char *type) {
+        void *p = check(state, 1, type);
+        return lua_pushfstring(state, "%s<@%p>", type, p);
+    }
+
+    std::map<std::string, lua_CFunction> mMethods;
+};
+
+template <typename T>
+class aeScriptBinding : public aeScriptBindingBase {
+public:
+    static const char *Name;
+
+public:
+    aeScriptBinding() {
+        mMethods["__new"] = __new;
+        mMethods["__gc"] = __gc;
+        mMethods["__tostring"] = __tostring;
+    }
+
+public:
+    void bind(lua_State *state) {
+        return aeScriptBindingBase::bind(state, Name);
+    }
+
+    static T *create(lua_State *state) {
+        T *t = static_cast<T*>(aeScriptBindingBase::create(state, Name, sizeof(T)));
+        new(t) T;
+        return t;
+    }
+
+    static T *push(lua_State *state, const T &o) {
+        T *t = static_cast<T*>(aeScriptBindingBase::create(state, Name, sizeof(T)));
+        *t = o;
+        return t;
+    }
+
+    static void destroy(lua_State *state, int index) {
+        T *t = check(state, index);
+        t->~T();
+    }
+
+    static T *test(lua_State *state, int index) {
+        return static_cast<T*>(aeScriptBindingBase::test(state, index, Name));
+    }
+
+    static T *check(lua_State *state, int index) {
+        return static_cast<T*>(aeScriptBindingBase::check(state, index, Name));
+    }
+
+    static int __new(lua_State *state) {
+        create(state);
+        return 1;
+    }
+
+    static int __gc(lua_State *state) {
+        destroy(state, 1);
+        return 0;
+    }
+
+    static int __tostring(lua_State *state) {
+        aeScriptBindingBase::toString(state, 1, Name);
+        return 1;
+    }
+
+};
+
+////////////////////////////////////////////////////////////////////////////////
+
+template <>
+int aeScriptBinding< aeExtentT<lua_Number> >::__tostring(lua_State *state) {
+    aeExtentT<lua_Number> *t = check(state, 1);
+    lua_pushfstring(state, "Extent((%f,%f),(%f,%f))",
+        t->min.x, t->min.y, t->max.x, t->max.y);
+    return 1;
+}
+
+//~ template <>
+//~ aeScriptBinding< aeStatsT<lua_Number> >::aeScriptBinding() {
+    //~ mMethods["update"] = update;
+//~ }
+
+template <>
+int aeScriptBinding<aeUuid>::__tostring(lua_State *state) {
+    aeUuid *t = check(state, 1);
+    std::string s = t->toString();
+    lua_pushlstring(state, s.data(), s.size());
+    return 1;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+#define BINDING(N,T) \
+template <> const char *aeScriptBinding< T >::Name(#N); \
+static aeScriptBinding< T > sBinding_##N;
+
+#define BIND(state,N) (sBinding_##N.bind(state))
+
+////////////////////////////////////////////////////////////////////////////////
+
+BINDING(Extent, aeExtentT<lua_Number>);
+BINDING(Layer, aeLayer);
+BINDING(Point, aePointT<lua_Number>);
+BINDING(Projection, aeProjectionT<lua_Number>);
+BINDING(Stats, aeStatsT<lua_Number>);
+BINDING(Symbol, aeSymbol);
+BINDING(Uuid, aeUuid);
+
 extern "C" int luaopen_aegis(lua_State *state) {
     lua_newtable(state);
+    BIND(state, Extent);
+    BIND(state, Layer);
+    BIND(state, Point);
+    BIND(state, Projection);
+    BIND(state, Stats);
+    BIND(state, Symbol);
+    BIND(state, Uuid);
     return 1;
 }
 
