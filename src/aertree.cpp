@@ -24,11 +24,15 @@ void aeRtreeT<K, T>::remove(const K &key) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template class aeRtreeT<unsigned long, double>;
 template class aeRtreeT<void*, double>;
+template class aeRtreeT<int32_t, double>;
+template class aeRtreeT<uint32_t, double>;
+template class aeRtreeT<ptrdiff_t, double>;
 
-template class aeRtreeT<unsigned long, float>;
 template class aeRtreeT<void*, float>;
+template class aeRtreeT<int32_t, float>;
+template class aeRtreeT<uint32_t, float>;
+template class aeRtreeT<ptrdiff_t, float>;
 
 ////////////////////////////////////////////////////////////////////////////////
 //  EOF
