@@ -105,6 +105,26 @@ aePointT<T> operator / (const aePointT<T> &a, const T &b) {
 }
 
 template <typename T>
+aePointT<T> &operator += (aePointT<T> &a, const aePointT<T> &b) {
+    return a.x += b.x, a.y += b.y, a.z += b.z, a.m += b.m, a;
+}
+
+template <typename T>
+aePointT<T> &operator -= (aePointT<T> &a, const aePointT<T> &b) {
+    return a.x -= b.x, a.y -= b.y, a.z -= b.z, a.m -= b.m, a;
+}
+
+template <typename T>
+aePointT<T> &operator *= (aePointT<T> &a, const T &b) {
+    return a.x *= b, a.y *= b, a.z *= b, a.m *= b, a;
+}
+
+template <typename T>
+aePointT<T> &operator /= (aePointT<T> &a, const T &b) {
+    return a.x /= b, a.y /= b, a.z /= b, a.m /= b, a;
+}
+
+template <typename T>
 T dot(const aePointT<T> &a, const aePointT<T> &b) {
     return a.x * b.x + a.y * b.y + a.z * b.z;
 }
