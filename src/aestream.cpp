@@ -54,7 +54,7 @@ aeFileInputStream::~aeFileInputStream() {
 }
 
 void aeFileInputStream::close() {
-    if (!PHYSFS_close(mFile)) {
+    if (mFile && !PHYSFS_close(mFile)) {
         throw aeStreamError(std::string("error closing file: ") + PHYSFS_getLastError());
     }
     mFile = nullptr;
@@ -91,7 +91,7 @@ aeFileOutputStream::~aeFileOutputStream() {
 }
 
 void aeFileOutputStream::close() {
-    if (!PHYSFS_close(mFile)) {
+    if (mFile && !PHYSFS_close(mFile)) {
         throw aeStreamError(std::string("error closing file: ") + PHYSFS_getLastError());
     }
     mFile = nullptr;
