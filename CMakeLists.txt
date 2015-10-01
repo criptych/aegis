@@ -118,8 +118,12 @@ IF(AEGIS_TESTS)
     TARGET_LINK_LIBRARIES(aegis-test ${LIBNAME})
 ENDIF()
 
-ADD_EXECUTABLE(aegis ${APPSRCS})
-TARGET_LINK_LIBRARIES(aegis ${LIBNAME})
+FIND_PACKAGE(wxWidgets 3.0)
+IF(wxWidgets_FOUND)
+    INCLUDE_DIRECTORIES(${wxWidgets_INCLUDE_DIRS})
+    ADD_EXECUTABLE(aegis ${APPSRCS})
+    TARGET_LINK_LIBRARIES(aegis ${LIBNAME} ${wxWidgets_LIBRARIES})
+ENDIF()
 
 ADD_CUSTOM_TARGET(check COMMAND aegis-test -s -d y -r xml -o testout.xml)
 
