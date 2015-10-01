@@ -30,7 +30,7 @@ struct aeColor {
     ): r(r), g(g), b(b), a(a) {
     }
 
-    static const aeColor Clear;
+    static const aeColor None;
     static const aeColor Black;
     static const aeColor White;
 };
@@ -38,28 +38,89 @@ struct aeColor {
 ////////////////////////////////////////////////////////////////////////////////
 
 struct aeSymbol {
-    enum Type {} type;
+    enum class Type {
+        Marker,
+        Line,
+        Fill,
+        Text
+    } type;
+
     aeColor color;
 };
 
 struct aeLineSymbol : public aeSymbol {
     float width;
-    enum EndType {} endType;
-    enum JoinType {} joinType;
+
+    enum class Style {
+        None,
+        Solid,
+        Dashed,
+        Dotted,
+        Custom
+    } style;
+
+    enum class EndType {
+        Butt,
+        Square,
+        Round
+    } endType;
+
+    enum class JoinType {
+        Bevel,
+        Miter,
+        Round
+    } joinType;
 };
 
 struct aeMarkerSymbol : public aeSymbol {
-    enum Shape {} shape;
+    enum class Style {
+        None,
+        Square,
+        Circle,
+        Diamond,
+        Cross,
+        DiagonalCross,
+        Custom
+    } shape;
+
     float size;
     float angle;
     aeLineSymbol outline;
 };
 
 struct aeFillSymbol : public aeSymbol {
-    enum Pattern {} pattern;
+    enum class Style {
+        None,
+        Solid,
+        Lines,
+        Hatch,
+        Custom
+    } style;
+
     float interval;
     float angle;
     aeLineSymbol outline;
+};
+
+struct aeTextSymbol : public aeSymbol {
+    class Font *font;
+
+    enum class HorizontalAlign {
+        Left,
+        Center,
+        Right,
+        Justify
+    } horizontalAlign;
+
+    enum class VerticalAlign {
+        Top,
+        Middle,
+        Bottom,
+    } verticalAlign;
+
+    float angle;
+    float lineSpacing;
+    float characterSpacing;
 };
 
 ////////////////////////////////////////////////////////////////////////////////

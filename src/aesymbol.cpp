@@ -6,7 +6,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-const aeColor aeColor::Clear(0.0f, 0.0f, 0.0f, 0.0f);
+const aeColor aeColor::None (0.0f, 0.0f, 0.0f, 0.0f);
 const aeColor aeColor::Black(0.0f, 0.0f, 0.0f, 1.0f);
 const aeColor aeColor::White(1.0f, 1.0f, 1.0f, 1.0f);
 
