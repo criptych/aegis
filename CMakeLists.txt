@@ -72,8 +72,8 @@ SET(TESTSRCS
 )
 
 SET(WX_COMPONENTS
-    #aui propgrid adv net stc ribbon webview html xml
-    gl core base
+    #propgrid adv net stc webview html xml
+    qa aui richtext ribbon gl core base
 )
 
 SET(APPSRCS
