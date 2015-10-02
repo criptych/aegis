@@ -14,7 +14,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 struct aeFeature {
-    aeOID id;
+    aeObjectID id;
     aeGeometry *geometry;
     aeSymbol *symbol;
 };
