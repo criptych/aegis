@@ -2,8 +2,26 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#define CATCH_CONFIG_MAIN
+#define CATCH_CONFIG_RUNNER
 #include "catch.hpp"
+
+////////////////////////////////////////////////////////////////////////////////
+
+int main(int argc, char *argv[]) {
+    Catch::Session session;
+
+    //! @todo edit session.configData() to change defaults (preferred)
+
+    int code = session.applyCommandLine(argc, argv);
+
+    //! @todo edit session.configData()/Config() to override (caution!)
+
+    if (code == 0) {
+        code = session.run();
+    }
+
+    return code;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 //  EOF
