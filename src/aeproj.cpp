@@ -8,6 +8,55 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename T>
+aeProjectionT<T>::aeProjectionT() {
+}
+
+template <typename T>
+aeProjectionT<T>::aeProjectionT(aeWKID wkid) {
+}
+
+template <typename T>
+aePointT<T> aeProjectionT<T>::project(const aePointT<T> &p) const {
+    switch (mWKID) {
+        case aeWKID::WebMercator: {
+            return toWebMercator(p);
+        }
+
+        //! @todo
+
+        default: {
+            return p;
+        }
+    }
+}
+
+template <typename T>
+aePointT<T> aeProjectionT<T>::unproject(const aePointT<T> &p) const {
+    switch (mWKID) {
+        case aeWKID::WebMercator: {
+            return fromWebMercator(p);
+        }
+
+        //! @todo
+
+        default: {
+            return p;
+        }
+    }
+}
+
+template <typename T>
+aeWKID aeProjectionT<T>::getWKID() const {
+    return mWKID;
+}
+
+template <typename T>
+std::string aeProjectionT<T>::toString() const {
+    //! @todo
+    return std::string();
+}
+
+template <typename T>
 aePointT<T> aeProjectionT<T>::toWebMercator(const aePointT<T> &p) {
     static const double degsToRads = aePi / 180.0;
     static const double scaleFactor = 128.0 / aePi;
