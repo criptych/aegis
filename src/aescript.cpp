@@ -232,8 +232,13 @@ public:
         mMethods["__tostring"] = __tostring;
     }
 
+protected:
+    virtual void define() {
+    }
+
 public:
     void bind(lua_State *state) {
+        define();
         return aeScriptBindingBase::bind(state, Name);
     }
 
@@ -276,49 +281,119 @@ public:
         aeScriptBindingBase::toString(state, 1, Name);
         return 1;
     }
-
 };
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <>
-int aeScriptBinding< aeExtentT<lua_Number> >::__tostring(lua_State *state) {
-    aeExtentT<lua_Number> *t = check(state, 1);
-    lua_pushfstring(state, "Extent((%f,%f),(%f,%f))",
-        t->min.x, t->min.y, t->max.x, t->max.y);
-    return 1;
-}
+#define BINDING(N,T,DEF)                                                       \
+template <> const char *aeScriptBinding< T >::Name(#N);                        \
+class ae##N##ScriptBinding : public aeScriptBinding< T > DEF;                  \
+static class ae##N##ScriptBinding s##N##Binding;
 
-//~ template <>
-//~ aeScriptBinding< aeStatisticsT<lua_Number> >::aeScriptBinding() {
-    //~ mMethods["update"] = update;
-//~ }
-
-template <>
-int aeScriptBinding<aeUuid>::__tostring(lua_State *state) {
-    aeUuid *t = check(state, 1);
-    std::string s = t->toString();
-    lua_pushlstring(state, s.data(), s.size());
-    return 1;
-}
+#define BIND(state,N) (s##N##Binding.bind(state))
 
 ////////////////////////////////////////////////////////////////////////////////
 
-#define BINDING(N,T) \
-template <> const char *aeScriptBinding< T >::Name(#N); \
-static aeScriptBinding< T > sBinding_##N;
+BINDING(Extent, aeExtentT<lua_Number>, {
+    void define() {
+        mMethods["__tostring"] = __tostring;
+    }
 
-#define BIND(state,N) (sBinding_##N.bind(state))
+    static int __tostring(lua_State *state) {
+        const aeExtentT<lua_Number> *t = check(state, 1);
+        lua_pushfstring(state, "Extent((%f,%f),(%f,%f))",
+            t->min.x, t->min.y, t->max.x, t->max.y);
+        return 1;
+    }
+});
 
-////////////////////////////////////////////////////////////////////////////////
+BINDING(Layer, aeLayer, {
+});
 
-BINDING(Extent, aeExtentT<lua_Number>);
-BINDING(Layer, aeLayer);
-BINDING(Point, aePointT<lua_Number>);
-BINDING(Projection, aeProjectionT<lua_Number>);
-BINDING(Statistics, aeStatisticsT<lua_Number>);
-BINDING(Symbol, aeSymbol);
-BINDING(Uuid, aeUuid);
+BINDING(Point, aePointT<lua_Number>, {
+});
+
+BINDING(Projection, aeProjectionT<lua_Number>, {
+    void define() {
+        mMethods["__tostring"] = __tostring;
+        mMethods["project"] = project;
+        mMethods["unproject"] = unproject;
+    }
+
+    static int __tostring(lua_State *state) {
+        const aeProjectionT<lua_Number> *t = check(state, 1);
+        lua_pushfstring(state, "Projection(%s)", t->toString().c_str());
+        return 1;
+    }
+
+    static int project(lua_State *state) {
+        const aeProjectionT<lua_Number> *t = check(state, 1);
+        aePointT<lua_Number> p;
+        p.x = luaL_checknumber(state, 2);
+        p.y = luaL_checknumber(state, 3);
+        p.z = luaL_optnumber  (state, 4, 0);
+        p.m = luaL_optnumber  (state, 5, 0);
+        p = t->project(p);
+        lua_pushnumber(state, p.x);
+        lua_pushnumber(state, p.y);
+        lua_pushnumber(state, p.z);
+        lua_pushnumber(state, p.m);
+        return 4;
+    }
+
+    static int unproject(lua_State *state) {
+        const aeProjectionT<lua_Number> *t = check(state, 1);
+        aePointT<lua_Number> p;
+        p.x = luaL_checknumber(state, 2);
+        p.y = luaL_checknumber(state, 3);
+        p.z = luaL_optnumber  (state, 4, 0);
+        p.m = luaL_optnumber  (state, 5, 0);
+        p = t->unproject(p);
+        lua_pushnumber(state, p.x);
+        lua_pushnumber(state, p.y);
+        lua_pushnumber(state, p.z);
+        lua_pushnumber(state, p.m);
+        return 4;
+    }
+});
+
+BINDING(Statistics, aeStatisticsT<lua_Number>, {
+    void define() {
+        mMethods["update"] = update;
+    }
+
+    static int update(lua_State *state) {
+        aeStatisticsT<lua_Number> *t = check(state, 1);
+        int n = lua_gettop(state);
+        for (int i = 2; i <= n; i++) {
+            if (LUA_TUSERDATA == lua_type(state, i)) {
+                aeStatisticsT<lua_Number> *r = check(state, i);
+                t->update(*r);
+            } else {
+                lua_Number r = luaL_checknumber(state, i);
+                t->update(r);
+            }
+        }
+        lua_settop(state, 1);
+        return 1;
+    }
+});
+
+BINDING(Symbol, aeSymbol, {
+});
+
+BINDING(Uuid, aeUuid, {
+    void define() {
+        mMethods["__tostring"] = __tostring;
+    }
+
+    static int __tostring(lua_State *state) {
+        const aeUuid *t = check(state, 1);
+        std::string s = t->toString();
+        lua_pushlstring(state, s.data(), s.size());
+        return 1;
+    }
+});
 
 extern "C" int luaopen_aegis(lua_State *state) {
     lua_newtable(state);
