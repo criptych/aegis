@@ -16,17 +16,17 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename T, typename N=unsigned long long>
-class aeStatsT {
+class aeStatisticsT {
 private:
     static constexpr T mT2 = T(2), mT3 = T(3), mT4 = T(4), mT6 = T(6);
 
 public:
-    aeStatsT() {
+    aeStatisticsT() {
         clear();
     }
 
     template <typename I>
-    aeStatsT(const I &i, const I &j) {
+    aeStatisticsT(const I &i, const I &j) {
         clear();
         update(i, j);
     }
@@ -41,7 +41,7 @@ public:
         return mN;
     }
 
-    aeStatsT<T, N> &update(const T &x) {
+    aeStatisticsT<T, N> &update(const T &x) {
         if (mN == 0) {
             mMin = mMax = x;
         } else {
@@ -62,7 +62,7 @@ public:
         return *this;
     }
 
-    aeStatsT<T, N> &update(const aeStatsT<T, N> &rhs) {
+    aeStatisticsT<T, N> &update(const aeStatisticsT<T, N> &rhs) {
         if (rhs.mN > 0) {
             if (mMin > rhs.mMin) { mMin = rhs.mMin; }
             if (mMax < rhs.mMax) { mMax = rhs.mMax; }
@@ -126,13 +126,13 @@ public:
     }
 
     template <typename X>
-    aeStatsT<T, N> &operator += (const X &rhs) {
+    aeStatisticsT<T, N> &operator += (const X &rhs) {
         return update(rhs);
     }
 
     template <typename X>
-    aeStatsT<T, N> operator + (const X &rhs) {
-        aeStatsT t(*this);
+    aeStatisticsT<T, N> operator + (const X &rhs) {
+        aeStatisticsT t(*this);
         return t += rhs;
     }
 
@@ -148,7 +148,7 @@ private:
 
 ////////////////////////////////////////////////////////////////////////////////
 
-typedef aeStatsT<double, unsigned long long> aeStats;
+typedef aeStatisticsT<double, unsigned long long> aeStatistics;
 
 ////////////////////////////////////////////////////////////////////////////////
 

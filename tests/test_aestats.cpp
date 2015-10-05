@@ -7,11 +7,11 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-TEST_CASE("statistics calculation", "[aeStats]") {
+TEST_CASE("statistics calculation", "[aeStatistics]") {
     static const double EPSILON = 0.0000000001;
 
     SECTION("empty data set") {
-        aeStats st;
+        aeStatistics st;
 
         REQUIRE(st.count() == 0);
         CHECK(std::isnan(st.min()));
@@ -26,7 +26,7 @@ TEST_CASE("statistics calculation", "[aeStats]") {
     }
 
     SECTION("single value [1]") {
-        aeStats st;
+        aeStatistics st;
         st.update(1.0);
 
         REQUIRE(st.count() == 1);
@@ -42,7 +42,7 @@ TEST_CASE("statistics calculation", "[aeStats]") {
     }
 
     SECTION("two values [1 2]") {
-        aeStats st;
+        aeStatistics st;
         st.update(1.0);
         st.update(2.0);
 
@@ -60,7 +60,7 @@ TEST_CASE("statistics calculation", "[aeStats]") {
 
     SECTION("sample data: [2, 4, 4, 4, 5, 5, 7, 9]") {
         double data[] = { 2, 4, 4, 4, 5, 5, 7, 9 };
-        aeStats st(std::begin(data), std::end(data));
+        aeStatistics st(std::begin(data), std::end(data));
 
         REQUIRE(st.count() == 8);
         CHECK(st.min() == Approx(2.0));
@@ -78,8 +78,8 @@ TEST_CASE("statistics calculation", "[aeStats]") {
         double data1[] = { 2, 4, 4, 4 };
         double data2[] = { 5, 5, 7, 9 };
 
-        aeStats st1(std::begin(data1), std::end(data1));
-        aeStats st2(std::begin(data2), std::end(data2));
+        aeStatistics st1(std::begin(data1), std::end(data1));
+        aeStatistics st2(std::begin(data2), std::end(data2));
 
         SECTION("list 1 statistics") {
             REQUIRE(st1.count() == 4);
@@ -107,7 +107,7 @@ TEST_CASE("statistics calculation", "[aeStats]") {
             CHECK(st2.kurtosis() == Approx(-1.3719008264).epsilon(EPSILON));
         }
 
-        aeStats st(st1 + st2);
+        aeStatistics st(st1 + st2);
 
         SECTION("combined statistics") {
             REQUIRE(st.count() == 8);

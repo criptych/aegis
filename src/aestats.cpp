@@ -6,8 +6,8 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template class aeStatsT<double, unsigned long long>;
-template class aeStatsT<float, unsigned long long>;
+template class aeStatisticsT<double, unsigned long long>;
+template class aeStatisticsT<float, unsigned long long>;
 
 ////////////////////////////////////////////////////////////////////////////////
 //  EOF

@@ -290,7 +290,7 @@ int aeScriptBinding< aeExtentT<lua_Number> >::__tostring(lua_State *state) {
 }
 
 //~ template <>
-//~ aeScriptBinding< aeStatsT<lua_Number> >::aeScriptBinding() {
+//~ aeScriptBinding< aeStatisticsT<lua_Number> >::aeScriptBinding() {
     //~ mMethods["update"] = update;
 //~ }
 
@@ -316,7 +316,7 @@ BINDING(Extent, aeExtentT<lua_Number>);
 BINDING(Layer, aeLayer);
 BINDING(Point, aePointT<lua_Number>);
 BINDING(Projection, aeProjectionT<lua_Number>);
-BINDING(Stats, aeStatsT<lua_Number>);
+BINDING(Statistics, aeStatisticsT<lua_Number>);
 BINDING(Symbol, aeSymbol);
 BINDING(Uuid, aeUuid);
 
@@ -326,7 +326,7 @@ extern "C" int luaopen_aegis(lua_State *state) {
     BIND(state, Layer);
     BIND(state, Point);
     BIND(state, Projection);
-    BIND(state, Stats);
+    BIND(state, Statistics);
     BIND(state, Symbol);
     BIND(state, Uuid);
     return 1;
