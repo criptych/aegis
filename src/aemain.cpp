@@ -9,11 +9,14 @@
 #include <wx/ribbon/bar.h>
 #include <wx/ribbon/buttonbar.h>
 
+#include <cstdio>
+
 ////////////////////////////////////////////////////////////////////////////////
 
 class aeMainFrame : public wxFrame {
 public:
     aeMainFrame();
+    ~aeMainFrame();
 
     bool Create(
         const wxPoint &pos=wxDefaultPosition,
@@ -26,8 +29,9 @@ protected:
         ID_ButtonNew
     };
 
-    bool CreateRibbon();
+    bool CreateRibbonBar();
     bool CreateNotebook();
+    bool CreateStatusBar();
 
     void OnNewDocument(wxRibbonButtonBarEvent &event);
 
@@ -35,6 +39,7 @@ private:
     wxRibbonBar *mRibbonBar;
     wxRibbonPage *mRibbonHome;
     wxRibbonPage *mRibbonMap;
+    wxStatusBar *mStatusBar;
 
     wxAuiNotebook *mNotebook;
 
@@ -48,17 +53,25 @@ private:
 aeMainFrame::aeMainFrame(): mRibbonBar(), mRibbonHome(), mNotebook(), mTabCount() {
 }
 
+aeMainFrame::~aeMainFrame() {
+}
+
 bool aeMainFrame::Create(const wxPoint &pos, const wxSize &size, long style) {
     if (wxFrame::Create(nullptr, wxID_ANY, L"aeGIS", pos, size, style)) {
 
-        CreateRibbon();
+        CreateRibbonBar();
         CreateNotebook();
+        CreateStatusBar();
 
         wxSizer *sizer = new wxBoxSizer(wxVERTICAL);
         SetSizer(sizer);
 
         sizer->Add(mRibbonBar, 0, wxEXPAND);
         sizer->Add(mNotebook, 1, wxEXPAND);
+        sizer->Add(mStatusBar, 0, wxEXPAND);
+
+        wxVersionInfo wxversion = wxGetLibraryVersionInfo();
+        wxLogStatus("Using %s", wxversion.GetVersionString());
 
         return true;
     }
@@ -66,7 +79,7 @@ bool aeMainFrame::Create(const wxPoint &pos, const wxSize &size, long style) {
     return false;
 }
 
-bool aeMainFrame::CreateRibbon() {
+bool aeMainFrame::CreateRibbonBar() {
 
     mRibbonBar = new wxRibbonBar(this);
 
@@ -90,13 +103,14 @@ bool aeMainFrame::CreateRibbon() {
     {
         mRibbonMap = new wxRibbonPage(mRibbonBar, wxID_ANY, L"Map");
 
-        wxRibbonPanel *layerPanel = new wxRibbonPanel(mRibbonMap, wxID_ANY, L"Layer");
-        wxRibbonButtonBar *layerButtons = new wxRibbonButtonBar(layerPanel, wxID_ANY);
-        layerButtons->AddHybridButton(wxID_ANY, L"Add", wxArtProvider::GetBitmap(wxART_INFORMATION));
+        wxRibbonPanel *dataPanel = new wxRibbonPanel(mRibbonMap, wxID_ANY, L"Data");
+        wxRibbonButtonBar *dataButtons = new wxRibbonButtonBar(dataPanel, wxID_ANY);
+        dataButtons->AddHybridButton(wxID_ANY, L"Add", wxArtProvider::GetBitmap(wxART_INFORMATION));
     }
 
     //! @todo create more ribbon controls
 
+    mRibbonBar->ShowPanels(wxRIBBON_BAR_MINIMIZED);
     mRibbonBar->Realize();
 
     return true;
@@ -104,6 +118,19 @@ bool aeMainFrame::CreateRibbon() {
 
 bool aeMainFrame::CreateNotebook() {
     mNotebook = new wxAuiNotebook(this);
+
+    return true;
+}
+
+bool aeMainFrame::CreateStatusBar() {
+    mStatusBar = new wxStatusBar(this);
+
+    int fields = 1;
+    int widths[fields] = { -1 };
+    int styles[fields] = { wxSB_NORMAL };
+
+    mStatusBar->SetFieldsCount(fields, widths);
+    mStatusBar->SetStatusStyles(fields, styles);
 
     return true;
 }
