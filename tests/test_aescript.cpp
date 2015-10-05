@@ -38,7 +38,12 @@ TEST_CASE("script", "[aeScript]") {
     SECTION("bindings") {
         host.loadBasicLibraries();
         host.loadLibrary("ae", luaopen_aegis);
-        aeScript script("print(ae.Extent()); print(ae.Projection()); print(ae.Stats()); print(ae.Uuid())");
+        aeScript script(
+            "print(ae.Extent());\n"
+            "print(ae.Projection());\n"
+            "print(ae.Statistics());\n"
+            "print(ae.Uuid())\n"
+        );
         CHECK_NOTHROW(host.execute(script));
     }
 }
