@@ -57,7 +57,7 @@ aeMainFrame::~aeMainFrame() {
 }
 
 bool aeMainFrame::Create(const wxPoint &pos, const wxSize &size, long style) {
-    if (wxFrame::Create(nullptr, wxID_ANY, L"aeGIS", pos, size, style)) {
+    if (wxFrame::Create(nullptr, wxID_ANY, _T("aeGIS"), pos, size, style)) {
 
         CreateRibbonBar();
         CreateNotebook();
@@ -84,28 +84,28 @@ bool aeMainFrame::CreateRibbonBar() {
     mRibbonBar = new wxRibbonBar(this);
 
     {
-        mRibbonHome = new wxRibbonPage(mRibbonBar, wxID_ANY, L"Home");
+        mRibbonHome = new wxRibbonPage(mRibbonBar, wxID_ANY, _T("Home"));
 
-        wxRibbonPanel *filePanel = new wxRibbonPanel(mRibbonHome, wxID_ANY, L"File");
+        wxRibbonPanel *filePanel = new wxRibbonPanel(mRibbonHome, wxID_ANY, _T("File"));
         wxRibbonButtonBar *fileButtons = new wxRibbonButtonBar(filePanel, wxID_ANY);
-        fileButtons->AddHybridButton(wxID_NEW, L"New", wxArtProvider::GetBitmap(wxART_NEW));
-        fileButtons->AddButton(wxID_OPEN, L"Open", wxArtProvider::GetBitmap(wxART_FILE_OPEN));
-        fileButtons->AddButton(wxID_SAVE, L"Save", wxArtProvider::GetBitmap(wxART_FILE_SAVE));
-        fileButtons->AddButton(wxID_SAVEAS, L"Save As", wxArtProvider::GetBitmap(wxART_FILE_SAVE_AS));
+        fileButtons->AddHybridButton(wxID_NEW, _T("New"), wxArtProvider::GetBitmap(wxART_NEW));
+        fileButtons->AddButton(wxID_OPEN, _T("Open"), wxArtProvider::GetBitmap(wxART_FILE_OPEN));
+        fileButtons->AddButton(wxID_SAVE, _T("Save"), wxArtProvider::GetBitmap(wxART_FILE_SAVE));
+        fileButtons->AddButton(wxID_SAVEAS, _T("Save As"), wxArtProvider::GetBitmap(wxART_FILE_SAVE_AS));
 
-        wxRibbonPanel *clipboardPanel = new wxRibbonPanel(mRibbonHome, wxID_ANY, L"Clipboard");
+        wxRibbonPanel *clipboardPanel = new wxRibbonPanel(mRibbonHome, wxID_ANY, _T("Clipboard"));
         wxRibbonButtonBar *clipboardButtons = new wxRibbonButtonBar(clipboardPanel, wxID_ANY);
-        clipboardButtons->AddHybridButton(wxID_PASTE, L"Paste", wxArtProvider::GetBitmap(wxART_PASTE));
-        clipboardButtons->AddButton(wxID_CUT, L"Cut", wxArtProvider::GetBitmap(wxART_CUT));
-        clipboardButtons->AddHybridButton(wxID_COPY, L"Copy", wxArtProvider::GetBitmap(wxART_COPY));
+        clipboardButtons->AddHybridButton(wxID_PASTE, _T("Paste"), wxArtProvider::GetBitmap(wxART_PASTE));
+        clipboardButtons->AddButton(wxID_CUT, _T("Cut"), wxArtProvider::GetBitmap(wxART_CUT));
+        clipboardButtons->AddHybridButton(wxID_COPY, _T("Copy"), wxArtProvider::GetBitmap(wxART_COPY));
     }
 
     {
-        mRibbonMap = new wxRibbonPage(mRibbonBar, wxID_ANY, L"Map");
+        mRibbonMap = new wxRibbonPage(mRibbonBar, wxID_ANY, _T("Map"));
 
-        wxRibbonPanel *dataPanel = new wxRibbonPanel(mRibbonMap, wxID_ANY, L"Data");
+        wxRibbonPanel *dataPanel = new wxRibbonPanel(mRibbonMap, wxID_ANY, _T("Data"));
         wxRibbonButtonBar *dataButtons = new wxRibbonButtonBar(dataPanel, wxID_ANY);
-        dataButtons->AddHybridButton(wxID_ANY, L"Add", wxArtProvider::GetBitmap(wxART_INFORMATION));
+        dataButtons->AddHybridButton(wxID_ANY, _T("Add"), wxArtProvider::GetBitmap(wxART_INFORMATION));
     }
 
     //! @todo create more ribbon controls
