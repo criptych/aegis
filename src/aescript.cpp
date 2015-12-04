@@ -228,9 +228,9 @@ public:
 
 public:
     aeScriptBinding() {
-        mMethods["__new"] = __new;
-        mMethods["__gc"] = __gc;
-        mMethods["__tostring"] = __tostring;
+        mMethods["__new"] = l_new;
+        mMethods["__gc"] = l_gc;
+        mMethods["__tostring"] = l_tostring;
     }
 
 protected:
@@ -268,17 +268,17 @@ public:
         return static_cast<T*>(aeScriptBindingBase::check(state, index, Name));
     }
 
-    static int __new(lua_State *state) {
+    static int l_new(lua_State *state) {
         create(state);
         return 1;
     }
 
-    static int __gc(lua_State *state) {
+    static int l_gc(lua_State *state) {
         destroy(state, 1);
         return 0;
     }
 
-    static int __tostring(lua_State *state) {
+    static int l_tostring(lua_State *state) {
         aeScriptBindingBase::toString(state, 1, Name);
         return 1;
     }
@@ -297,10 +297,10 @@ static class ae##N##ScriptBinding s##N##Binding
 
 BINDING(Extent, aeExtentT<lua_Number>, {
     void define() {
-        mMethods["__tostring"] = __tostring;
+        mMethods["__tostring"] = l_tostring;
     }
 
-    static int __tostring(lua_State *state) {
+    static int l_tostring(lua_State *state) {
         const aeExtentT<lua_Number> *t = check(state, 1);
         lua_pushfstring(state, "Extent((%f,%f),(%f,%f))",
             t->min.x, t->min.y, t->max.x, t->max.y);
@@ -316,12 +316,12 @@ BINDING(Point, aePointT<lua_Number>, {
 
 BINDING(Projection, aeProjectionT<lua_Number>, {
     void define() {
-        mMethods["__tostring"] = __tostring;
+        mMethods["__tostring"] = l_tostring;
         mMethods["project"] = project;
         mMethods["unproject"] = unproject;
     }
 
-    static int __tostring(lua_State *state) {
+    static int l_tostring(lua_State *state) {
         const aeProjectionT<lua_Number> *t = check(state, 1);
         lua_pushfstring(state, "Projection(%s)", t->toString().c_str());
         return 1;
@@ -385,10 +385,10 @@ BINDING(Symbol, aeSymbol, {
 
 BINDING(Uuid, aeUuid, {
     void define() {
-        mMethods["__tostring"] = __tostring;
+        mMethods["__tostring"] = l_tostring;
     }
 
-    static int __tostring(lua_State *state) {
+    static int l_tostring(lua_State *state) {
         const aeUuid *t = check(state, 1);
         std::string s = t->toString();
         lua_pushlstring(state, s.data(), s.size());
