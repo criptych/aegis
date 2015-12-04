@@ -168,7 +168,7 @@ bool aeApp::OnInit() {
     if (wxApp::OnInit()) {
         if (!mMainFrame) {
             mMainFrame = new aeMainFrame();
-            mMainFrame->Create();
+            mMainFrame->Create(wxDefaultPosition, wxSize(640, 480));
         }
 
         SetTopWindow(mMainFrame);
