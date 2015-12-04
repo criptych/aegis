@@ -1,0 +1,29 @@
+language: cpp
+compiler: gcc
+
+install:
+    - cmake --version
+
+matrix:
+    fast_finish: true
+
+env:
+    - CMAKE_BUILD_TYPE=Debug
+    - CMAKE_BUILD_TYPE=Release
+
+script:
+    - mkdir build && cd build
+    - cmake ..
+    - cmake --build . --clean-first
+    - ctest
+
+addons:
+    apt:
+        sources:
+            - ubuntu-toolchain-r-test
+            - george-edison55-precise-backports
+        packages:
+            - cmake
+            - cmake-data
+            - gcc-4.9
+            - g++-4.9
