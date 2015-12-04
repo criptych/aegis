@@ -130,7 +130,8 @@ IF(wxWidgets_FOUND)
     TARGET_LINK_LIBRARIES(aegis ${LIBNAME} ${wxWidgets_LIBRARIES})
 ENDIF()
 
-ADD_CUSTOM_TARGET(check COMMAND aegis-test -s -d y -r xml -o testout.xml)
+ADD_CUSTOM_TARGET(run-test COMMAND aegis-test -s -d y -r xml -o testout.xml)
+ADD_CUSTOM_TARGET(run-app COMMAND aegis)
 
 ################################################################################
 ##  EOF
