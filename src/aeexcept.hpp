@@ -22,6 +22,8 @@ public:
     ): mMessage(message) {
     }
 
+    ~aeExceptionBase() throw() {}
+
     const char *what() const noexcept {
         return mMessage.c_str();
     }
