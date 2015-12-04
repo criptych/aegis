@@ -21,10 +21,10 @@ SET(LIBSRCS
     src/aeexcept.hpp
     src/aeextent.hpp
     src/aegeom.hpp
+    src/aeindex.hpp
     src/aelayer.hpp
     src/aepoint.hpp
     src/aeproj.hpp
-    src/aertree.hpp
     src/aescript.hpp
     src/aestats.hpp
     src/aestream.hpp
@@ -38,10 +38,10 @@ SET(LIBSRCS
     src/aeexcept.cpp
     src/aeextent.cpp
     src/aegeom.cpp
+    src/aeindex.cpp
     src/aelayer.cpp
     src/aepoint.cpp
     src/aeproj.cpp
-    src/aertree.cpp
     src/aescript.cpp
     src/aestats.cpp
     src/aestream.cpp
@@ -59,10 +59,10 @@ SET(TESTSRCS
     tests/test_aeexcept.cpp
     tests/test_aeextent.cpp
     tests/test_aegeom.cpp
+    tests/test_aeindex.cpp
     tests/test_aelayer.cpp
     tests/test_aepoint.cpp
     tests/test_aeproj.cpp
-    tests/test_aertree.cpp
     tests/test_aescript.cpp
     tests/test_aestats.cpp
     tests/test_aestream.cpp

@@ -2,8 +2,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __AERTREE_HPP__
-#define __AERTREE_HPP__ 1
+#ifndef __AEINDEX_HPP__
+#define __AEINDEX_HPP__ 1
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -16,19 +16,16 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <typename K, typename T=double>
-class aeRtreeT {
-public:
-    aeRtreeT(
-        float minFill = 0.3f,
-        unsigned int capacity = 32
-    ): mMinFill(minFill), mCapacity(capacity) {
-    }
+template <typename C, typename K, typename T=double>
+class aeIndexBaseT {
+protected:
+    aeIndexBaseT() {}
 
+public:
     /**
      * Returns a vector of elements whose extents intersect the given extent.
      */
-    std::vector<K> search(const aeExtentT<T> &extent) const;
+    virtual std::vector<K> search(const aeExtentT<T> &extent) const = 0;
 
     /**
      * Returns a vector of elements whose extents contain the given point.
@@ -40,7 +37,7 @@ public:
     /**
      * Inserts an element with the given extent.
      */
-    void insert(const K &key, const aeExtentT<T> &extent);
+    virtual void insert(const K &key, const aeExtentT<T> &extent) = 0;
 
     /**
      * Inserts an element at the given point.
@@ -52,7 +49,7 @@ public:
     /**
      * Removes the given element.
      */
-    void remove(const K &key);
+    virtual void remove(const K &key) = 0;
 
     /**
      * Removes the given element.
@@ -63,6 +60,22 @@ public:
             remove(*i);
         }
     }
+};
+
+////////////////////////////////////////////////////////////////////////////////
+
+template <typename K, typename T=double>
+class aeRtreeIndexT : public aeIndexBaseT< aeRtreeIndexT<K, T>, K, T> {
+public:
+    aeRtreeIndexT(
+        float minFill = 0.3f,
+        unsigned int capacity = 32
+    ): mMinFill(minFill), mCapacity(capacity) {
+    }
+
+    std::vector<K> search(const aeExtentT<T> &extent) const;
+    void insert(const K &key, const aeExtentT<T> &extent);
+    void remove(const K &key);
 
 private:
     struct Page {
@@ -81,12 +94,12 @@ private:
 
 ////////////////////////////////////////////////////////////////////////////////
 
-typedef aeRtreeT<void*, double> aeRtree;
-typedef aeRtreeT<int, double> aeRtreeInt;
+typedef aeRtreeIndexT<void*, double> aeRtree;
+typedef aeRtreeIndexT<int, double> aeRtreeInt;
 
 ////////////////////////////////////////////////////////////////////////////////
 
-#endif // __AERTREE_HPP__
+#endif // __AEINDEX_HPP__
 
 ////////////////////////////////////////////////////////////////////////////////
 //  EOF

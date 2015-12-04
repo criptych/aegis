@@ -2,7 +2,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "aertree.hpp"
+#include "aeindex.hpp"
 #include "aeexcept.hpp"
 
 //! @see <http://www.superliminal.com/sources/sources.htm>
@@ -10,27 +10,27 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename K, typename T>
-std::vector<K> aeRtreeT<K, T>::search(const aeExtentT<T> & /*extent*/) const {
+std::vector<K> aeRtreeIndexT<K, T>::search(const aeExtentT<T> & /*extent*/) const {
     throw aeNotImplementedError();
 }
 
 template <typename K, typename T>
-void aeRtreeT<K, T>::insert(const K & /*key*/, const aeExtentT<T> & /*extent*/) {
+void aeRtreeIndexT<K, T>::insert(const K & /*key*/, const aeExtentT<T> & /*extent*/) {
     throw aeNotImplementedError();
 }
 
 template <typename K, typename T>
-void aeRtreeT<K, T>::remove(const K & /*key*/) {
+void aeRtreeIndexT<K, T>::remove(const K & /*key*/) {
     throw aeNotImplementedError();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template class aeRtreeT<void*, double>;
-template class aeRtreeT<int, double>;
+template class aeRtreeIndexT<void*, double>;
+template class aeRtreeIndexT<int, double>;
 
-template class aeRtreeT<void*, float>;
-template class aeRtreeT<int, float>;
+template class aeRtreeIndexT<void*, float>;
+template class aeRtreeIndexT<int, float>;
 
 ////////////////////////////////////////////////////////////////////////////////
 //  EOF
