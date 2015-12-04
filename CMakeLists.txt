@@ -85,7 +85,7 @@ IF(NOT CMAKE_BUILD_TYPE)
 ENDIF()
 
 IF(CMAKE_COMPILER_IS_GNUCXX)
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Werror")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra -pedantic -Werror")
 ELSE()
     MESSAGE(WARNING
         "Please ensure your compiler supports C++11, or add flags to enable it."

@@ -12,7 +12,9 @@ aeProjectionT<T>::aeProjectionT() {
 }
 
 template <typename T>
-aeProjectionT<T>::aeProjectionT(aeWKID wkid) {
+aeProjectionT<T>::aeProjectionT(
+    aeWKID wkid
+): mWKID(wkid) {
 }
 
 template <typename T>
@@ -71,7 +73,7 @@ aePointT<T> aeProjectionT<T>::toWebMercator(const aePointT<T> &p) {
 }
 
 template <typename T>
-aePointT<T> aeProjectionT<T>::fromWebMercator(const aePointT<T> &p) {
+aePointT<T> aeProjectionT<T>::fromWebMercator(const aePointT<T> & /*p*/) {
     throw aeNotImplementedError();
 }
 

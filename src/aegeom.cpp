@@ -47,7 +47,7 @@ void aeGeometryT<T>::update() const {
 }
 
 template <typename T>
-bool aeGeometryT<T>::findIntersections(Points &intersections, bool abortOnFirst) const {
+bool aeGeometryT<T>::findIntersections(Points &intersections, bool /*abortOnFirst*/) const {
     struct Segment {
         aePointT<T> a;
         aePointT<T> b;
@@ -119,16 +119,16 @@ bool aeGeometryT<T>::findIntersections(Points &intersections, bool abortOnFirst)
 
     class SweepLine {
     public:
-        void insert(const Segment *seg) {
+        void insert(const Segment * /*seg*/) {
             //!@todo implement
         }
 
-        const Segment *above(const Segment *seg) const {
+        const Segment *above(const Segment * /*seg*/) const {
             //!@todo implement
             return nullptr;
         }
 
-        const Segment *below(const Segment *seg) const {
+        const Segment *below(const Segment * /*seg*/) const {
             //!@todo implement
             return nullptr;
         }

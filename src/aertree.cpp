@@ -10,17 +10,17 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename K, typename T>
-std::vector<K> aeRtreeT<K, T>::search(const aeExtentT<T> &extent) const {
+std::vector<K> aeRtreeT<K, T>::search(const aeExtentT<T> & /*extent*/) const {
     throw aeNotImplementedError();
 }
 
 template <typename K, typename T>
-void aeRtreeT<K, T>::insert(const K &key, const aeExtentT<T> &extent) {
+void aeRtreeT<K, T>::insert(const K & /*key*/, const aeExtentT<T> & /*extent*/) {
     throw aeNotImplementedError();
 }
 
 template <typename K, typename T>
-void aeRtreeT<K, T>::remove(const K &key) {
+void aeRtreeT<K, T>::remove(const K & /*key*/) {
     throw aeNotImplementedError();
 }
 

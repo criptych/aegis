@@ -42,7 +42,7 @@ namespace {
 
     template <typename T>
     struct _ipow<T, 0> {
-        T operator () (const T &t) {
+        T operator () (const T & /*t*/) {
             return T(1);
         }
     };
@@ -70,7 +70,7 @@ namespace {
     T bezier(const X &x, const T *t, std::integral_constant<unsigned int, N>) {
         return _sum<T, X, N, N>()(x, t);
     }
-};
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -137,7 +137,7 @@ public:
     aeNurbsCurveT() {
     }
 
-    virtual aePointT<T> evaluate(const X &x) const {
+    virtual aePointT<T> evaluate(const X & /*x*/) const {
         throw aeNotImplementedError();
     }
 

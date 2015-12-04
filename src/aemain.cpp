@@ -125,7 +125,7 @@ bool aeMainFrame::CreateNotebook() {
 bool aeMainFrame::CreateStatusBar() {
     mStatusBar = new wxStatusBar(this);
 
-    int fields = 1;
+    const int fields = 1;
     int widths[fields] = { -1 };
     int styles[fields] = { wxSB_NORMAL };
 
@@ -135,7 +135,7 @@ bool aeMainFrame::CreateStatusBar() {
     return true;
 }
 
-void aeMainFrame::OnNewDocument(wxRibbonButtonBarEvent &event) {
+void aeMainFrame::OnNewDocument(wxRibbonButtonBarEvent & /*event*/) {
     mNotebook->AddPage(new wxRichTextCtrl(mNotebook),
                        wxString::Format(_T("New Document %d"), ++mTabCount));
 }
@@ -157,7 +157,7 @@ private:
     aeMainFrame *mMainFrame;
 };
 
-DECLARE_APP(aeApp);
+DECLARE_APP(aeApp)
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -189,7 +189,7 @@ int aeApp::OnExit() {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-IMPLEMENT_APP(aeApp);
+IMPLEMENT_APP(aeApp)
 
 ////////////////////////////////////////////////////////////////////////////////
 //  EOF

@@ -11,11 +11,13 @@ extern "C" {
 #include <lua.h>
 #include <lauxlib.h>
 #include <lualib.h>
-}; // extern "C"
+} // extern "C"
 
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "aestream.hpp"
+
+#include <vector>
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -36,9 +38,8 @@ aeScript::aeScript(
 void aeScript::load(const std::string &filename) {
     try {
         aeFileInputStream str(filename);
-        char tmp[str.length()];
-        str.read(tmp, sizeof(tmp));
-        mSource.assign(tmp, sizeof(tmp));
+        mSource.assign(str.length(), 0);
+        str.read(&mSource[0], mSource.size());
         mName = "@"+filename;
         str.close();
     }
@@ -213,7 +214,7 @@ protected:
     }
 
     static const char *toString(lua_State *state, int index, const char *type) {
-        void *p = check(state, 1, type);
+        void *p = check(state, index, type);
         return lua_pushfstring(state, "%s<@%p>", type, p);
     }
 
@@ -288,7 +289,7 @@ public:
 #define BINDING(N,T,DEF)                                                       \
 template <> const char *aeScriptBinding< T >::Name(#N);                        \
 class ae##N##ScriptBinding : public aeScriptBinding< T > DEF;                  \
-static class ae##N##ScriptBinding s##N##Binding;
+static class ae##N##ScriptBinding s##N##Binding
 
 #define BIND(state,N) (s##N##Binding.bind(state))
 

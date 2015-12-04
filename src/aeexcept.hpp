@@ -45,7 +45,7 @@ class T : public B { \
 public: \
     T(): B(P) {} \
     T(const std::string &message): B(std::string(P) + ": " + message) {} \
-};
+}
 
 AE_EXCEPTION(aeException, aeInternalError, "internal error");
 AE_EXCEPTION(aeException, aeNotImplementedError, "feature not implemented");
