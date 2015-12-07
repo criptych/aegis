@@ -118,6 +118,8 @@ ENDIF()
 
 ################################################################################
 
+SET(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
+
 ADD_SUBDIRECTORY(lua-5.3.1 EXCLUDE_FROM_ALL)
 ADD_SUBDIRECTORY(physfs-2.1 EXCLUDE_FROM_ALL)
 
