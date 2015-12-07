@@ -12,19 +12,19 @@
 
 class aePhysFS {
 public:
-    static void init();
+    static void init(const char *argv0 = nullptr);
 
 private:
-    aePhysFS();
+    aePhysFS(const char *argv0);
     ~aePhysFS();
 };
 
-void aePhysFS::init() {
-    static aePhysFS instance;
+void aePhysFS::init(const char *argv0) {
+    static aePhysFS instance(argv0);
 }
 
-aePhysFS::aePhysFS() {
-    if (!PHYSFS_init(NULL)) {
+aePhysFS::aePhysFS(const char *argv0) {
+    if (!PHYSFS_init(argv0)) {
         throw aeStreamError(std::string("error initializing filesystem: ") + PHYSFS_getLastError());
     }
 
