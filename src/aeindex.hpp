@@ -12,14 +12,21 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cinttypes>
+#include <map>
 #include <vector>
 
 ////////////////////////////////////////////////////////////////////////////////
 
-template <typename C, typename K, typename T=double>
+template <typename K, typename T=double>
 class aeIndexBaseT {
 protected:
     aeIndexBaseT() {}
+
+public:
+    typedef std::map<K, aeExtentT<T> > KeyMap;
+
+    typename KeyMap::const_iterator begin() const { return mKeyMap.begin(); }
+    typename KeyMap::const_iterator end() const { return mKeyMap.end(); }
 
 public:
     /**
@@ -60,17 +67,26 @@ public:
             remove(*i);
         }
     }
+
+private:
+    KeyMap mKeyMap;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
 
 template <typename K, typename T=double>
-class aeRtreeIndexT : public aeIndexBaseT< aeRtreeIndexT<K, T>, K, T> {
+class aeRtreeIndexT : public aeIndexBaseT<K, T> {
 public:
     aeRtreeIndexT(
         float minFill = 0.3f,
         unsigned int capacity = 32
     ): mMinFill(minFill), mCapacity(capacity) {
+    }
+
+    aeRtreeIndexT(const aeIndexBaseT<K, T> &other) {
+        for (std::pair<K, aeExtentT<T> > i : other) {
+            insert(i.first, i.second);
+        }
     }
 
     std::vector<K> search(const aeExtentT<T> &extent) const;
@@ -79,11 +95,14 @@ public:
 
 private:
     struct Page {
-        Page(): mChildren() {}
-        ~Page() {
-            for (Page *child : mChildren) { delete child; }
-        }
+        Page(): mChildren(), mExtent(), mKey() {}
+        Page(const aeExtentT<T> &extent, const K &key): mChildren(), mExtent(extent), mKey(key) {}
+
+        void insert(const K &key, const aeExtentT<T> &extent);
+
         std::vector<Page*> mChildren;
+        aeExtentT<T> mExtent;
+        K mKey;
     };
 
 private:
