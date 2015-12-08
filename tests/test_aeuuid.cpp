@@ -16,13 +16,13 @@ TEST_CASE("UUID", "[aeUuid]") {
     aeUuid uu2;
 
     SECTION("operations") {
-        CHECK(uu1 != uu2);
+        CHECK((uu1 != uu2));
     }
 
     SECTION("copying") {
         aeUuid uu3(uu1);
-        CHECK(uu1 == uu3);
-        CHECK(uu2 != uu3);
+        CHECK((uu1 == uu3));
+        CHECK((uu2 != uu3));
     }
 }
 

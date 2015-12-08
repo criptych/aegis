@@ -38,20 +38,20 @@ TEST_CASE("bezier curve evaluation", "[aeCurve]") {
 
         GIVEN("x == 0.25") {
             aePoint p(quad.evaluate(0.25));
-            CHECK(p.x == Approx(0.250).epsilon(EPSILON));
-            CHECK(p.y == Approx(0.375).epsilon(EPSILON));
+            CHECK((p.x == Approx(0.250).epsilon(EPSILON)));
+            CHECK((p.y == Approx(0.375).epsilon(EPSILON)));
         }
 
         GIVEN("x == 0.5") {
             aePoint p(quad.evaluate(0.50));
-            CHECK(p.x == Approx(0.500).epsilon(EPSILON));
-            CHECK(p.y == Approx(0.500).epsilon(EPSILON));
+            CHECK((p.x == Approx(0.500).epsilon(EPSILON)));
+            CHECK((p.y == Approx(0.500).epsilon(EPSILON)));
         }
 
         GIVEN("x == 0.75") {
             aePoint p(quad.evaluate(0.75));
-            CHECK(p.x == Approx(0.750).epsilon(EPSILON));
-            CHECK(p.y == Approx(0.375).epsilon(EPSILON));
+            CHECK((p.x == Approx(0.750).epsilon(EPSILON)));
+            CHECK((p.y == Approx(0.375).epsilon(EPSILON)));
         }
     }
 
@@ -75,20 +75,20 @@ TEST_CASE("bezier curve evaluation", "[aeCurve]") {
 
         GIVEN("x == 0.25") {
             aePoint p(cubic.evaluate(0.25));
-            CHECK(p.x == Approx(0.15625).epsilon(EPSILON));
-            CHECK(p.y == Approx(0.56250).epsilon(EPSILON));
+            CHECK((p.x == Approx(0.15625).epsilon(EPSILON)));
+            CHECK((p.y == Approx(0.56250).epsilon(EPSILON)));
         }
 
         GIVEN("x == 0.5") {
             aePoint p(cubic.evaluate(0.5));
-            CHECK(p.x == Approx(0.50000).epsilon(EPSILON));
-            CHECK(p.y == Approx(0.75000).epsilon(EPSILON));
+            CHECK((p.x == Approx(0.50000).epsilon(EPSILON)));
+            CHECK((p.y == Approx(0.75000).epsilon(EPSILON)));
         }
 
         GIVEN("x == 0.75") {
             aePoint p(cubic.evaluate(0.75));
-            CHECK(p.x == Approx(0.84375).epsilon(EPSILON));
-            CHECK(p.y == Approx(0.56250).epsilon(EPSILON));
+            CHECK((p.x == Approx(0.84375).epsilon(EPSILON)));
+            CHECK((p.y == Approx(0.56250).epsilon(EPSILON)));
         }
     }
 
@@ -102,20 +102,20 @@ TEST_CASE("bezier curve evaluation", "[aeCurve]") {
 
         GIVEN("x == 0.25") {
             aePoint p(cubic.evaluate(0.25));
-            CHECK(p.x == Approx(0.15625).epsilon(EPSILON));
-            CHECK(p.y == Approx(0.43750).epsilon(EPSILON));
+            CHECK((p.x == Approx(0.15625).epsilon(EPSILON)));
+            CHECK((p.y == Approx(0.43750).epsilon(EPSILON)));
         }
 
         GIVEN("x == 0.5") {
             aePoint p(cubic.evaluate(0.5));
-            CHECK(p.x == Approx(0.50000).epsilon(EPSILON));
-            CHECK(p.y == Approx(0.75000).epsilon(EPSILON));
+            CHECK((p.x == Approx(0.50000).epsilon(EPSILON)));
+            CHECK((p.y == Approx(0.75000).epsilon(EPSILON)));
         }
 
         GIVEN("x == 0.75") {
             aePoint p(cubic.evaluate(0.75));
-            CHECK(p.x == Approx(0.84375).epsilon(EPSILON));
-            CHECK(p.y == Approx(0.56250).epsilon(EPSILON));
+            CHECK((p.x == Approx(0.84375).epsilon(EPSILON)));
+            CHECK((p.y == Approx(0.56250).epsilon(EPSILON)));
         }
     }
 }
@@ -148,8 +148,8 @@ TEST_CASE("NURBS curve evaluation", "[aeCurve]") {
         aePoint p;
         REQUIRE(curve.controlPoints().size() == 4);
         REQUIRE_NOTHROW(p = curve.evaluate(0.5));
-        CHECK(p.x == Approx(0.5));
-        CHECK(p.y == Approx(0.75));
+        CHECK((p.x == Approx(0.5)));
+        CHECK((p.y == Approx(0.75)));
     }
 
     SECTION("simple S-curve") {
@@ -161,8 +161,8 @@ TEST_CASE("NURBS curve evaluation", "[aeCurve]") {
         aePoint p;
         REQUIRE(curve.controlPoints().size() == 4);
         REQUIRE_NOTHROW(p = curve.evaluate(0.5));
-        CHECK(p.x == Approx(0.5));
-        CHECK(p.y == Approx(0.5));
+        CHECK((p.x == Approx(0.5)));
+        CHECK((p.y == Approx(0.5)));
     }
 }
 

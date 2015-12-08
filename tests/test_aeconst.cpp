@@ -13,17 +13,17 @@
 
 TEST_CASE("constants", "[aeConst]") {
     SECTION("value of aeEpsilon") {
-        CHECK(aeEpsilon == Approx(0.0));
-        CHECK(aeEpsilon != 0.0);
+        CHECK((aeEpsilon == Approx(0.0)));
+        CHECK((aeEpsilon != 0.0));
     }
     SECTION("value of aeNaN") {
-        CHECK(aeNaN != aeNaN);
+        CHECK((aeNaN != aeNaN));
     }
     SECTION("value of aePi") {
-        CHECK(std::sin(aePi) == Approx(0.0));
-        CHECK(std::cos(aePi) == Approx(-1.0));
-        CHECK(std::tan(aePi) == Approx(0.0));
-        CHECK(std::atan(1.0) == Approx(aePi / 4.0));
+        CHECK((std::sin(aePi) == Approx(0.0)));
+        CHECK((std::cos(aePi) == Approx(-1.0)));
+        CHECK((std::tan(aePi) == Approx(0.0)));
+        CHECK((std::atan(1.0) == Approx(aePi / 4.0)));
     }
 }
 
