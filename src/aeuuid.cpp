@@ -17,7 +17,11 @@ static uint64_t _seed(std::chrono::duration_cast<std::chrono::nanoseconds>(
     std::chrono::high_resolution_clock::now().time_since_epoch()
 ).count());
 static std::mt19937 _gen(_seed);
+#ifdef _MSC_VER
+static std::uniform_int_distribution<int> _dist; // MSVC fails with uint8_t
+#else
 static std::uniform_int_distribution<uint8_t> _dist;
+#endif
 
 aeUuid::aeUuid(Version version) {
     switch (version) {
