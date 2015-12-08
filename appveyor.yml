@@ -1,0 +1,23 @@
+version: 1.0.{build}-{branch}
+
+branches:
+    except:
+        - gh-pages
+
+skip_tags: true
+
+environment:
+    matrix:
+        - CMAKE_BUILD_TYPE: Debug
+        - CMAKE_BUILD_TYPE: Release
+
+before_build:
+    - git submodule init
+    - git submodule update
+
+build_script:
+    - mkdir build && cd build
+    - cmake ..
+    - cmake --build . --clean-first
+    - ctest
+
