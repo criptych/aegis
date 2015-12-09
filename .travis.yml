@@ -4,8 +4,14 @@ compiler: gcc
 install:
     - cmake --version
 
+os:
+    - linux
+    - osx
+
 matrix:
     fast_finish: true
+    allow_failures:
+        - os: osx
 
 env:
     - CMAKE_BUILD_TYPE=Debug
