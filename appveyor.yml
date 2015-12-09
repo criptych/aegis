@@ -10,6 +10,10 @@ environment:
     matrix:
         - CMAKE_BUILD_TYPE: Debug
         - CMAKE_BUILD_TYPE: Release
+        - CMAKE_BUILD_TYPE: Debug
+          CMAKE_GENERATOR: -G "MinGW Makefiles"
+        - CMAKE_BUILD_TYPE: Release
+          CMAKE_GENERATOR: -G "MinGW Makefiles"
 
 before_build:
     - git submodule init
@@ -17,7 +21,7 @@ before_build:
 
 build_script:
     - mkdir build && cd build
-    - cmake ..
+    - cmake ${CMAKE_GENERATOR} ..
     - cmake --build . --clean-first
     - ctest
 
