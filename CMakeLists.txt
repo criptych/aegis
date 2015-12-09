@@ -87,19 +87,9 @@ ENDIF()
 
 IF(CMAKE_COMPILER_IS_GNUCXX)
     INCLUDE(CheckCXXCompilerFlag)
-    CHECK_CXX_COMPILER_FLAG("-std=c++11" CXX_HAS_CXX11)
-    CHECK_CXX_COMPILER_FLAG("-std=c++0x" CXX_HAS_CXX0X)
     CHECK_CXX_COMPILER_FLAG("-Wall" CXX_HAS_Wall)
     CHECK_CXX_COMPILER_FLAG("-Wextra" CXX_HAS_Wextra)
     CHECK_CXX_COMPILER_FLAG("-Werror" CXX_HAS_Werror)
-
-    IF(CXX_HAS_CXX11)
-        SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-    ELSEIF(CXX_HAS_CXX0X)
-        SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
-    ELSE()
-        MESSAGE(ERROR "Your version of GCC does not appear to support C++11.")
-    ENDIF()
 
     IF(CXX_HAS_Wall)
         SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
@@ -110,8 +100,16 @@ IF(CMAKE_COMPILER_IS_GNUCXX)
     IF(CXX_HAS_Werror)
         SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
     ENDIF()
+ENDIF()
+
+INCLUDE(cmake/CheckCXX11Supported.cmake)
+
+CHECK_CXX11_SUPPORTED(CXX11_SUPPORTED CXX11_FLAGS)
+
+IF(CXX11_SUPPORTED)
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CXX11_FLAGS}")
 ELSE()
-    MESSAGE(WARNING
+    MESSAGE(FATAL_ERROR
         "Please ensure your compiler supports C++11, or add flags to enable it."
     )
 ENDIF()
