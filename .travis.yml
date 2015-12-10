@@ -1,5 +1,4 @@
 language: cpp
-compiler: gcc
 
 install:
     - cmake --version
@@ -23,7 +22,8 @@ env:
 
 script:
     - mkdir build && cd build
-    - CC=gcc-4.9 CXX=g++-4.9 cmake -G "Ninja" ..
+    - if [ "$CC" = "gcc" ]; then export CC=gcc-4.9; export CXX=g++-4.9; fi
+    - cmake -G "Ninja" ..
     - cmake --build . --clean-first
 
 after_success:
