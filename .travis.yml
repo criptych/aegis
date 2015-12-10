@@ -19,7 +19,7 @@ env:
 
 script:
     - mkdir build && cd build
-    - cmake ..
+    - CC=gcc-4.9 CXX=g++-4.9 cmake ..
     - cmake --build . --clean-first
     - ctest
 
