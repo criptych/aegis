@@ -1,8 +1,9 @@
 INCLUDE(CheckCXXSourceCompiles)
 
-FUNCTION(CHECK_CXX11_SUPPORTED OUT FLAGS_OUT)
-    UNSET(${OUT} CACHE)
-    UNSET(${OUT} PARENT_SCOPE)
+FUNCTION(CHECK_CXX11_SUPPORTED VAR FLAGS_VAR)
+    IF(DEFINED "${VAR}")
+        RETURN()
+    ENDIF()
 
     IF(NOT ARGN)
         SET(ARGN
@@ -21,7 +22,6 @@ FUNCTION(CHECK_CXX11_SUPPORTED OUT FLAGS_OUT)
         ENDIF()
 
         UNSET(TEST_CXX11_SUPPORT CACHE)
-        UNSET(TEST_CXX11_SUPPORT)
 
         SET(CMAKE_REQUIRED_FLAGS "${FLAGS}")
         CHECK_CXX_SOURCE_COMPILES(
@@ -35,11 +35,14 @@ FUNCTION(CHECK_CXX11_SUPPORTED OUT FLAGS_OUT)
             ELSE()
                 MESSAGE(STATUS "C++11 is supported without flags.")
             ENDIF()
-            SET(${OUT} TRUE CACHE BOOL "Compiler supports C++11?")
-            SET(${FLAGS_OUT} "${FLAGS}" PARENT_SCOPE)
+            SET(${VAR} TRUE)
+            SET(${FLAGS_VAR} "${FLAGS}")
             BREAK()
         ENDIF()
     ENDFOREACH()
 
     UNSET(TEST_CXX11_SUPPORT CACHE)
+
+    SET(${VAR} "${${VAR}}" CACHE BOOL "Compiler supports C++11?")
+    SET(${FLAGS_VAR} "${${FLAGS_VAR}}" CACHE STRING "Compiler flags to enable C++11")
 ENDFUNCTION()
