@@ -20,9 +20,14 @@ env:
     - CMAKE_BUILD_TYPE=Debug
     - CMAKE_BUILD_TYPE=Release
 
+before_script:
+    - if [ "$CC" = "gcc" ]; then
+    -   export CC=gcc-4.9;
+    -   export CXX=g++-4.9;
+    - fi
+
 script:
     - mkdir build && cd build
-    - if [ "$CC" = "gcc" ]; then export CC=gcc-4.9; export CXX=g++-4.9; fi
     - cmake -G "Ninja" ..
     - cmake --build . --clean-first
 
