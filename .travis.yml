@@ -27,9 +27,7 @@ before_script:
     - fi
 
 script:
-    - mkdir build && cd build
-    - cmake -G "Ninja" ..
-    - cmake --build . --clean-first
+    - mkdir build && cmake -G "Ninja" build && ninja -C build
 
 after_success:
     - ctest
