@@ -19,7 +19,7 @@ env:
 
 script:
     - mkdir build && cd build
-    - CC=gcc-4.9 CXX=g++-4.9 cmake ..
+    - CC=gcc-4.9 CXX=g++-4.9 cmake -G "Ninja" ..
     - cmake --build . --clean-first
 
 after_success:
@@ -35,3 +35,4 @@ addons:
             - cmake-data
             - gcc-4.9
             - g++-4.9
+            - ninja-build
