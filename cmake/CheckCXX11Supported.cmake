@@ -25,7 +25,7 @@ FUNCTION(CHECK_CXX11_SUPPORTED VAR FLAGS_VAR)
 
         SET(CMAKE_REQUIRED_FLAGS "${FLAGS}")
         CHECK_CXX_SOURCE_COMPILES(
-            "#include <list>\nint main(){for(int i:std::list<int>()){static_cast<void>(i);}return 0;}"
+            "#if __cplusplus < 201103L\n#error\n#endif\nint main(){return 0;}"
             TEST_CXX11_SUPPORT
         )
 
