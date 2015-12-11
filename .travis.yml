@@ -21,11 +21,11 @@ env:
     - CMAKE_BUILD_TYPE=Debug
     - CMAKE_BUILD_TYPE=Release
 
-before_script:
-    - if [ "$CC" = "gcc" ]; then
-    -   export CC=gcc-4.9;
-    -   export CXX=g++-4.9;
-    - fi
+before_script: |
+    if [ "$CC" = "gcc" ]; then
+        export CC=gcc-4.9;
+        export CXX=g++-4.9;
+    fi
 
 script:
     - mkdir build && cmake -G "Ninja" build && ninja -C build
