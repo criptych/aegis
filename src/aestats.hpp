@@ -19,6 +19,7 @@ template <typename T, typename N=unsigned long long>
 class aeStatisticsT {
 private:
     static constexpr T mT2 = T(2), mT3 = T(3), mT4 = T(4), mT6 = T(6);
+    static constexpr T mNaN = T(aeNaN);
 
 public:
     aeStatisticsT() {
@@ -90,23 +91,23 @@ public:
     }
 
     T min() const {
-        return (mN > 0) ? mMin : T(aeNaN);
+        return (mN > 0) ? mMin : mNaN;
     }
 
     T max() const {
-        return (mN > 0) ? mMax : T(aeNaN);
+        return (mN > 0) ? mMax : mNaN;
     }
 
     T mean() const {
-        return (mN > 0) ? mM1 : T(aeNaN);
+        return (mN > 0) ? mM1 : mNaN;
     }
 
     T variance() const {
-        return (mN > 1) ? (mM2 / T(mN - 1)) : T(aeNaN);
+        return (mN > 1) ? (mM2 / T(mN - 1)) : mNaN;
     }
 
     T popVariance() const {
-        return (mN > 1) ? (mM2 / T(mN)) : T(aeNaN);
+        return (mN > 1) ? (mM2 / T(mN)) : mNaN;
     }
 
     T stdev() const {
