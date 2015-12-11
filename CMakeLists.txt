@@ -131,12 +131,15 @@ INCLUDE_DIRECTORIES(
     ${CMAKE_CURRENT_SOURCE_DIR}/physfs-2.1/src/
 )
 
+SET(INSTALL_TARGETS "")
+
 IF(AEGIS_BUILD_SHARED)
     MESSAGE(STATUS "Building shared AeGIS library")
     ADD_LIBRARY(libaegis-shared SHARED ${LIBSRCS})
     SET_TARGET_PROPERTIES(libaegis-shared PROPERTIES OUTPUT_NAME "aegis")
     TARGET_LINK_LIBRARIES(libaegis-shared liblua physfs-static)
     SET(LIBNAME libaegis-shared)
+    SET(INSTALL_TARGETS ${INSTALL_TARGETS} libaegis-shared)
 ENDIF()
 
 IF(AEGIS_BUILD_STATIC)
@@ -145,6 +148,7 @@ IF(AEGIS_BUILD_STATIC)
     SET_TARGET_PROPERTIES(libaegis-static PROPERTIES OUTPUT_NAME "aegis")
     TARGET_LINK_LIBRARIES(libaegis-static liblua physfs-static)
     SET(LIBNAME libaegis-static)
+    SET(INSTALL_TARGETS ${INSTALL_TARGETS} libaegis-static)
 ENDIF()
 
 IF(AEGIS_BUILD_TESTS)
@@ -158,11 +162,21 @@ IF(AEGIS_BUILD_APP)
         INCLUDE_DIRECTORIES(${wxWidgets_INCLUDE_DIRS})
         ADD_EXECUTABLE(aegis ${APPSRCS})
         TARGET_LINK_LIBRARIES(aegis ${LIBNAME} ${wxWidgets_LIBRARIES})
+        SET(INSTALL_TARGETS ${INSTALL_TARGETS} aegis)
     ENDIF()
 ENDIF()
 
 ENABLE_TESTING()
 ADD_TEST(NAME run-test COMMAND aegis-test -s -d y -r xml -o testout.xml)
+
+IF(INSTALL_TARGETS)
+    INSTALL(
+        TARGETS ${INSTALL_TARGETS}
+        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib/static
+    )
+ENDIF()
 
 ################################################################################
 ##  EOF
