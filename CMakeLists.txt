@@ -24,6 +24,7 @@ SET(LIBSRCS
     src/aegeom.hpp
     src/aeindex.hpp
     src/aelayer.hpp
+    src/aemedian.hpp
     src/aepoint.hpp
     src/aeproj.hpp
     src/aescript.hpp
@@ -41,6 +42,7 @@ SET(LIBSRCS
     src/aegeom.cpp
     src/aeindex.cpp
     src/aelayer.cpp
+    src/aemedian.cpp
     src/aepoint.cpp
     src/aeproj.cpp
     src/aescript.cpp
@@ -62,6 +64,7 @@ SET(TESTSRCS
     tests/test_aegeom.cpp
     tests/test_aeindex.cpp
     tests/test_aelayer.cpp
+    tests/test_aemedian.cpp
     tests/test_aepoint.cpp
     tests/test_aeproj.cpp
     tests/test_aescript.cpp
