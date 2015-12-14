@@ -11,9 +11,9 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-static const double aeEpsilon = std::numeric_limits<double>::epsilon();
-static const double aeNaN = std::numeric_limits<double>::quiet_NaN();
-static const double aePi = 3.14159265358979323846;
+static constexpr double aeEpsilon = std::numeric_limits<double>::epsilon();
+static constexpr double aeNaN = std::numeric_limits<double>::quiet_NaN();
+static constexpr double aePi = 3.14159265358979323846;
 
 ////////////////////////////////////////////////////////////////////////////////
 
